@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="6d1fe965-7fde-4ce2-8203-447f4f93abae" name="Zugsteuerung" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <state Id="7614fc17-6092-45ec-937c-2356273645bc" name="NO_INTERUPT">
+      <successors>
+        <transition Id="dbb5401c-7cc1-4b5a-8d8e-05ffbc9b0ce7" guard="Position &gt; EP" action="ZugFunkSender:=EPSenden" label="Position &gt; EP // ZugFunkSender:=EPSenden" precondition="auto">
+          <stateMoniker name="/6d1fe965-7fde-4ce2-8203-447f4f93abae/EP_PASSED" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="4954335e-e428-4131-938f-06824233cea8" name="EP_PASSED">
+      <successors>
+        <transition Id="a41b5c99-c6de-476e-ab67-5ec61fde7917" guard="Position &gt; AP" action="ZugFunkSender:=APSenden" label="Position &gt; AP // ZugFunkSender:=APSenden" precondition="auto">
+          <stateMoniker name="/6d1fe965-7fde-4ce2-8203-447f4f93abae/AP_PASSED" />
+        </transition>
+      </successors>
+    </state>
+    <initialNode Id="28136356-fc0f-4700-b1e3-1b550d6cfbde" name="InitialNode1">
+      <successors>
+        <transition Id="c4fe923b-0a0d-4830-a327-20a85ec9b0db">
+          <stateMoniker name="/6d1fe965-7fde-4ce2-8203-447f4f93abae/NO_INTERUPT" />
+        </transition>
+      </successors>
+    </initialNode>
+    <state Id="194510ef-d408-4345-ada2-8756a1469ffd" name="AP_PASSED">
+      <successors>
+        <transition Id="4b1ed6d0-30e8-4d29-b88a-5de057e28ab3" guard="Position &gt; BEP &amp;&amp; APAck == False" action="BremseFest:=True" label="Position &gt; BEP &amp;&amp; APAck == False // BremseFest:=True" precondition="auto">
+          <stateMoniker name="/6d1fe965-7fde-4ce2-8203-447f4f93abae/EMER_STOP" />
+        </transition>
+        <transition Id="c4bf3867-200b-4ee0-9f0f-30545b5619fc" guard="Position &gt; BEP &amp;&amp; APAck == True" label="Position &gt; BEP &amp;&amp; APAck == True">
+          <stateMoniker name="/6d1fe965-7fde-4ce2-8203-447f4f93abae/BU_PASSING" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="4f4f46f7-ff52-4d43-919d-aeedac103513" name="BU_PASSING">
+      <successors>
+        <transition Id="d5cd93cc-2114-4d85-b66e-934ab4e5a50a" guard="Position &gt; BU" label="Position &gt; BU">
+          <stateMoniker name="/6d1fe965-7fde-4ce2-8203-447f4f93abae/NO_INTERUPT" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="f68da3c0-754f-420e-8a88-d4cc8fe8fff3" name="EMER_STOP" />
+  </states>
+  <variables>
+    <programGraphHasVariables Id="f695fc03-82a9-4601-b2df-4a228225e792">
+      <variable Id="44485a00-bd92-4c4d-82cd-97ebe187f862" name="BremseFest" range="True, False" />
+    </programGraphHasVariables>
+    <programGraphHasVariables Id="0f74f9ec-785f-4217-8dd5-170081b84f56">
+      <variable Id="a82c4d89-48e5-4349-8fb5-f7f68bc90e0c" name="ZugFunkSender" range="EPSenden, APSenden" />
+    </programGraphHasVariables>
+  </variables>
+  <macros>
+    <programGraphHasMacros Id="588677ea-c6d4-4af5-9912-15521e7a1656">
+      <macro Id="65a8f152-5850-442b-9b63-11027e28516f" name="EP" body="20" />
+    </programGraphHasMacros>
+    <programGraphHasMacros Id="f3db9c3a-843f-4302-b60b-b2a43e7af809">
+      <macro Id="c971e685-464f-4425-885a-5d39a39b2325" name="AP" body="40" />
+    </programGraphHasMacros>
+    <programGraphHasMacros Id="c7e41ad7-d765-4312-80eb-fd390b583fc8">
+      <macro Id="89f7401a-2c29-4def-a325-3022dc01296e" name="BEP " body="60" />
+    </programGraphHasMacros>
+    <programGraphHasMacros Id="70ee4ee9-d8aa-45a7-8502-9dd0d909c8b6">
+      <macro Id="5836e486-502d-47bc-9e0e-6ab9bf2ea7fe" name="BU" body="100" />
+    </programGraphHasMacros>
+    <programGraphHasMacros Id="e43727ac-24f7-4733-90d0-68a235c51734">
+      <macro Id="b40c933e-df26-4759-8226-1cd8b78fda33" name="GP" body="80" />
+    </programGraphHasMacros>
+  </macros>
+  <importedVariables>
+    <programGraphHasImportedVariables Id="ca8640b5-55e7-4341-a058-48cc4fb86dd4">
+      <importedVariable Id="210dcbd7-6df8-4a37-8f44-d9913e6566cb" name="Hodometer.Position" range="0..100" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="36510f9c-90a7-4382-abcb-1aebc4536bc4">
+      <importedVariable Id="5cca4007-0692-4c4f-b473-efc2695d12db" name="Zugfunkmodul.APAck" range="True, False" />
+    </programGraphHasImportedVariables>
+  </importedVariables>
+</programGraph>

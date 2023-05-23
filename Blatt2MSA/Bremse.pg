@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="4c920a64-a401-460e-8d4a-556e9028566e" name="Bremse" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <state Id="4550ac83-6f6b-4db2-84fa-026d1f500de4" name="Offen">
+      <successors>
+        <transition Id="c1679c5c-1890-4886-91b9-b5d119e137bc" guard="BremseFest==True" label="BremseFest==True">
+          <stateMoniker name="/4c920a64-a401-460e-8d4a-556e9028566e/Geschlossen" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="6ff62573-9c01-452e-bee1-277859d90877" name="Geschlossen">
+      <successors>
+        <transition Id="d838ced3-3d85-4189-b9f8-19f5ccf27497" guard="BremseFest==False" label="BremseFest==False">
+          <stateMoniker name="/4c920a64-a401-460e-8d4a-556e9028566e/Offen" />
+        </transition>
+      </successors>
+    </state>
+    <initialNode Id="fd6124fc-7670-4b8f-ba50-201c290fbc02" name="InitialNode1">
+      <successors>
+        <transition Id="9fb84843-2491-4557-9097-58c918877a35">
+          <stateMoniker name="/4c920a64-a401-460e-8d4a-556e9028566e/Offen" />
+        </transition>
+      </successors>
+    </initialNode>
+  </states>
+  <importedVariables>
+    <programGraphHasImportedVariables Id="0f839c0f-791f-4abe-b7d4-503315e58cf2">
+      <importedVariable Id="a764c2ee-eebd-4188-9020-c937edeffed6" name="Zugsteuerung.BremseFest" range="True, False" />
+    </programGraphHasImportedVariables>
+  </importedVariables>
+</programGraph>

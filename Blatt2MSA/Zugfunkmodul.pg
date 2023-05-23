@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="bb4e6557-2bc8-416f-977a-3ac2d0439a81" name="Zugfunkmodul" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <initialNode Id="cb9b5bfa-185a-4fe7-9df2-3d839a81ae32" name="InitialNode1">
+      <successors>
+        <transition Id="ca5ee297-c967-46ad-ad24-532dac65c4ad">
+          <stateMoniker name="/bb4e6557-2bc8-416f-977a-3ac2d0439a81/NO_MSG" />
+        </transition>
+      </successors>
+    </initialNode>
+    <state Id="68dbf383-25d5-4e14-9c12-6435748851e0" name="NO_MSG">
+      <successors>
+        <transition Id="ea922b19-beba-49ab-b83e-7461ae3020a5" guard="ZugFunkSender==EPSenden" label="ZugFunkSender==EPSenden" precondition="auto">
+          <stateMoniker name="/bb4e6557-2bc8-416f-977a-3ac2d0439a81/EP_DELAY" />
+        </transition>
+        <transition Id="b3d72b89-348e-4e3a-8695-b3dd4e64dc05" guard="ZugFunkSender==APSenden" action="APAck:=False" label="ZugFunkSender==APSenden // APAck:=False" precondition="auto">
+          <stateMoniker name="/bb4e6557-2bc8-416f-977a-3ac2d0439a81/AP_DELAY" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="483543b7-cbf0-451e-8232-3cecbac7503e" name="EP_SENT">
+      <successors>
+        <transition Id="7e240a64-51e0-4c3c-9c2d-a32a6384e08c">
+          <stateMoniker name="/bb4e6557-2bc8-416f-977a-3ac2d0439a81/NO_MSG" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="fc373251-9070-496a-b591-fb92e08fb548" name="EP_DELAY">
+      <successors>
+        <transition Id="62909a53-8002-4fc7-89c6-184e922cd0af">
+          <stateMoniker name="/bb4e6557-2bc8-416f-977a-3ac2d0439a81/EP_SENT" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="3a2f9ad2-3ce6-4337-8b92-cf780903a1b6" name="AP_DELAY">
+      <successors>
+        <transition Id="32e6458d-7831-4dbd-932c-f2cbaf28b234">
+          <stateMoniker name="/bb4e6557-2bc8-416f-977a-3ac2d0439a81/AP_SENT" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="934688ff-3447-4b0f-a882-1267d4e0be7e" name="AP_SENT">
+      <successors>
+        <transition Id="bf020f61-b141-4711-9461-4fd053ace400">
+          <stateMoniker name="/bb4e6557-2bc8-416f-977a-3ac2d0439a81/AP_ACK_WAIT" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="91004ee2-111d-426d-88d0-e264dcf11826" name="AP_ACK_WAIT">
+      <successors>
+        <transition Id="8a5bf60c-26f0-4010-9337-29ff463ddc1f" guard="BUFunkSender==AP_ACK_SENT" action="APAck:=True" label="BUFunkSender==AP_ACK_SENT // APAck:=True" precondition="auto">
+          <stateMoniker name="/bb4e6557-2bc8-416f-977a-3ac2d0439a81/NO_MSG" />
+        </transition>
+      </successors>
+    </state>
+  </states>
+  <variables>
+    <programGraphHasVariables Id="a37d7288-0902-43a0-878f-d088e64a5a5f">
+      <variable Id="64ab769d-5479-4048-8529-b0eb9461d15a" name="APAck" range="True, False" />
+    </programGraphHasVariables>
+  </variables>
+  <importedVariables>
+    <programGraphHasImportedVariables Id="df98e7ed-6838-4b41-951a-ce197c0a50bc">
+      <importedVariable Id="4dec7dfd-06fb-4802-91f1-a7ab27a26345" name="Zugsteuerung.ZugFunkSender" range="EPSenden, APSenden" />
+    </programGraphHasImportedVariables>
+  </importedVariables>
+</programGraph>
