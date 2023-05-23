@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="6b44886e-d51d-48e0-ba4e-7a4480f3d5a2" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <initialNode Id="c7026776-7fb7-4c66-af60-78ede04d611b" name="InitialNode1" />
+    <state Id="770c5c1b-0cc2-4d87-b6c9-fc8920f4a637" name="State1" />
+  </states>
+</programGraph>

@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="cc7582fe-7f42-4b64-8f7a-a2839caf0e87" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <initialNode Id="34761003-a54e-4396-9244-c758495a7cce" name="InitialNode1">
+      <successors>
+        <transition Id="674c8be8-03a5-433c-a254-a260a7f4f48c">
+          <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/Idle" />
+        </transition>
+      </successors>
+    </initialNode>
+    <state Id="015290ab-e416-4742-8ae3-6af4f7dee7f9" name="Idle">
+      <successors>
+        <transition Id="bec7c065-65a8-4905-8a06-f55a137b148d" guard="EPMsg==True" action="EPMsg = False" label="EPMsg==True // EPMsg = False">
+          <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/EP_Received" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="a17838ef-12da-472e-8ff9-ccb85125b20f" name="EP_Received">
+      <successors>
+        <transition Id="426082d1-4356-46f6-a94d-5268f011765d" guard="APMsg==True &amp;&amp; SchrankenSensor == offen" action="SendAck = True" label="APMsg==True &amp;&amp; SchrankenSensor == offen // SendAck = True">
+          <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/AP_Success" />
+        </transition>
+        <transition Id="beeea43b-3a9f-4f55-8b61-040984d38a79" guard="APMsg==True &amp;&amp; SchrankenSensor == offen" action="APMsg = False" label="APMsg==True &amp;&amp; SchrankenSensor == offen // APMsg = False">
+          <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/Idle" />
+        </transition>
+        <transition Id="89f4c64c-5a31-4873-b4f9-d12f6b2de389" guard="APMsg==True &amp;&amp; SchrankenSensor == InTransit" action="APMsg = False &amp;&amp; openTrigger = True" label="APMsg==True &amp;&amp; SchrankenSensor == InTransit // APMsg = False &amp;&amp; openTrigger = True">
+          <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/Idle" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="f4e5c37b-a923-4ad0-af4d-a210ebee189f" name="AP_Success">
+      <successors>
+        <transition Id="2ac47c01-6053-4ee4-a5ec-1eab1f85af41" guard="ZugSensor ==" label="ZugSensor ==">
+          <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/TrainIsPassing" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="d0ce25be-a14c-4f7b-8994-ce8d8aead5e8" name="TrainIsPassing" />
+  </states>
+  <variables>
+    <programGraphHasVariables Id="c2af1d82-fa05-44c4-849c-b4083327ae6a">
+      <variable Id="77a67712-d541-4b3b-ae7c-67145db405e8" name="closeTrigger" range="True, False" />
+    </programGraphHasVariables>
+    <programGraphHasVariables Id="23b28e13-4f8d-4f34-9dd0-ba754d50ace2">
+      <variable Id="df5d79ba-fcd1-4640-8715-e6fc37436e96" name="openTrigger" range="True, False" />
+    </programGraphHasVariables>
+    <programGraphHasVariables Id="18f4f323-8a9b-4c2e-a3bd-4be1f37a6b29">
+      <variable Id="6aab402a-392c-4273-bf6d-f3eec54fc93b" name="sendAck" range="True, False" />
+    </programGraphHasVariables>
+  </variables>
+  <importedVariables>
+    <programGraphHasImportedVariables Id="910ac640-4038-4a76-95d8-7c534affd774">
+      <importedVariable Id="11716685-88f6-474a-b87d-b5c6b8d562c8" name="SchrankenSensor" range="unresolved import" />
+    </programGraphHasImportedVariables>
+  </importedVariables>
+</programGraph>

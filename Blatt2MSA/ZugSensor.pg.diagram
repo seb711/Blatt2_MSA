@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraphDslDiagram dslVersion="1.0.0.0" Id="79195f9d-2069-4c77-b949-116754e17905" absoluteBounds="0, 0, 11, 8.5" name="ProgramGraphDsl1">
+  <programGraphMoniker Id="6b44886e-d51d-48e0-ba4e-7a4480f3d5a2" />
+  <nestedChildShapes>
+    <initialStateShape Id="fb310186-9072-4b24-a720-8e1256f532e8" absoluteBounds="3.875, 4.625, 0.125, 0.125">
+      <initialNodeMoniker name="/6b44886e-d51d-48e0-ba4e-7a4480f3d5a2/InitialNode1" />
+    </initialStateShape>
+    <stateShape Id="8b06432f-ccee-4740-84b7-c2c1260a0c27" absoluteBounds="5.375, 4.375, 1, 0.5">
+      <stateMoniker name="/6b44886e-d51d-48e0-ba4e-7a4480f3d5a2/State1" />
+    </stateShape>
+  </nestedChildShapes>
+</programGraphDslDiagram>
