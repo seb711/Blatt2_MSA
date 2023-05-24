@@ -2,6 +2,13 @@
 <programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="6b44886e-d51d-48e0-ba4e-7a4480f3d5a2" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
   <states>
     <initialNode Id="c7026776-7fb7-4c66-af60-78ede04d611b" name="InitialNode1" />
-    <state Id="770c5c1b-0cc2-4d87-b6c9-fc8920f4a637" name="State1" />
+    <state Id="770c5c1b-0cc2-4d87-b6c9-fc8920f4a637" name="Blocked">
+      <successors>
+        <transition Id="d948a298-79b0-4823-b59d-b186e6334d95" guard="Well, this depends on the length of the train (maybe add it as a macro inside the TrainSteuerung? Don't wanna do it myself to avoid conflicts). Also, Sebastian, you called the passing point of the train BU, wheras in the Blatt its called SP. Not sure if you have a reasoning behind that.." label="Well, this depends on the length of the train (maybe add it as a macro inside the TrainSteuerung? Don't wanna do it myself to avoid conflicts). Also, Sebastian, you called the passing point of the train BU, wheras in the Blatt its called SP. Not sure if you have a reasoning behind that..">
+          <stateMoniker name="/6b44886e-d51d-48e0-ba4e-7a4480f3d5a2/Free" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="467a35c3-3975-4780-a755-0168c19a0215" name="Free" />
   </states>
 </programGraph>

@@ -10,32 +10,45 @@
     </initialNode>
     <state Id="015290ab-e416-4742-8ae3-6af4f7dee7f9" name="Idle">
       <successors>
-        <transition Id="bec7c065-65a8-4905-8a06-f55a137b148d" guard="EPMsg==True" action="EPMsg = False" label="EPMsg==True // EPMsg = False">
+        <transition Id="bec7c065-65a8-4905-8a06-f55a137b148d" guard="BUFunk==EPMsg" action="closeTrigger=True" label="BUFunk==EPMsg // closeTrigger=True">
           <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/EP_Received" />
         </transition>
       </successors>
     </state>
     <state Id="a17838ef-12da-472e-8ff9-ccb85125b20f" name="EP_Received">
       <successors>
-        <transition Id="426082d1-4356-46f6-a94d-5268f011765d" guard="APMsg==True &amp;&amp; SchrankenSensor == offen" action="SendAck = True" label="APMsg==True &amp;&amp; SchrankenSensor == offen // SendAck = True">
+        <transition Id="426082d1-4356-46f6-a94d-5268f011765d" guard="BUFunk == APMsg &amp;&amp; SchrankenSensor == geschlossen" label="BUFunk == APMsg &amp;&amp; SchrankenSensor == geschlossen">
           <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/AP_Success" />
         </transition>
-        <transition Id="beeea43b-3a9f-4f55-8b61-040984d38a79" guard="APMsg==True &amp;&amp; SchrankenSensor == offen" action="APMsg = False" label="APMsg==True &amp;&amp; SchrankenSensor == offen // APMsg = False">
+        <transition Id="beeea43b-3a9f-4f55-8b61-040984d38a79" guard="BUFunk == APMssg &amp;&amp; SchrankenSensor == offen" label="BUFunk == APMssg &amp;&amp; SchrankenSensor == offen">
           <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/Idle" />
         </transition>
-        <transition Id="89f4c64c-5a31-4873-b4f9-d12f6b2de389" guard="APMsg==True &amp;&amp; SchrankenSensor == InTransit" action="APMsg = False &amp;&amp; openTrigger = True" label="APMsg==True &amp;&amp; SchrankenSensor == InTransit // APMsg = False &amp;&amp; openTrigger = True">
+        <transition Id="89f4c64c-5a31-4873-b4f9-d12f6b2de389" guard="BUFunk == APMsg &amp;&amp; SchrankenSensor == InTransit" action="openTrigger = True" label="BUFunk == APMsg &amp;&amp; SchrankenSensor == InTransit // openTrigger = True">
           <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/Idle" />
         </transition>
       </successors>
     </state>
     <state Id="f4e5c37b-a923-4ad0-af4d-a210ebee189f" name="AP_Success">
       <successors>
-        <transition Id="2ac47c01-6053-4ee4-a5ec-1eab1f85af41" guard="ZugSensor ==" label="ZugSensor ==">
+        <transition Id="2ac47c01-6053-4ee4-a5ec-1eab1f85af41" guard="ZugSensor == Blocked" label="ZugSensor == Blocked">
           <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/TrainIsPassing" />
         </transition>
       </successors>
     </state>
-    <state Id="d0ce25be-a14c-4f7b-8994-ce8d8aead5e8" name="TrainIsPassing" />
+    <state Id="d0ce25be-a14c-4f7b-8994-ce8d8aead5e8" name="TrainIsPassing">
+      <successors>
+        <transition Id="87d33ae0-ca5e-45c2-a950-2640bcf72c7e" guard="ZugSensor == Free" action="openTrigger = True" label="ZugSensor == Free // openTrigger = True">
+          <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/OpenSchrankeBack" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="0e582aef-c618-4c41-9c1c-0d439d6885a2" name="OpenSchrankeBack">
+      <successors>
+        <transition Id="fc78cbf2-d7fc-4bfb-bab4-1cd32b637e99" guard="SchrankenSensor == offen" label="SchrankenSensor == offen">
+          <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/Idle" />
+        </transition>
+      </successors>
+    </state>
   </states>
   <variables>
     <programGraphHasVariables Id="c2af1d82-fa05-44c4-849c-b4083327ae6a">
@@ -44,13 +57,68 @@
     <programGraphHasVariables Id="23b28e13-4f8d-4f34-9dd0-ba754d50ace2">
       <variable Id="df5d79ba-fcd1-4640-8715-e6fc37436e96" name="openTrigger" range="True, False" />
     </programGraphHasVariables>
-    <programGraphHasVariables Id="18f4f323-8a9b-4c2e-a3bd-4be1f37a6b29">
-      <variable Id="6aab402a-392c-4273-bf6d-f3eec54fc93b" name="sendAck" range="True, False" />
-    </programGraphHasVariables>
   </variables>
+  <comments>
+    <programGraphHasComments Id="3649783d-9873-4fb5-9337-2cbd2556742d">
+      <comment Id="ae77e1c2-a0a0-4d2d-be39-31eddec6960f" text="What if, for some reason, as soon as we leave the AP_Success state, the train has already passed the SP point. Can we assume that this won't happen? I am kinda confused about what assumptions we are allowed to make. Is the situation that I described considered an Ausfall, a problem in our modeling, a communication delay or what? What is meant by Sollverhalten etc. Cause if we consider all possible scenarios while modeling to avoid such accidents, then no Ausfälle are possible anymore. Not thanks to the model, but to the modeling process itself xD I hope I'm (not) just overthinking it.">
+        <states>
+          <commentReferencesStates Id="b1d22b90-9ab1-4cf8-939c-2f3697f5f968">
+            <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/AP_Success" />
+          </commentReferencesStates>
+        </states>
+      </comment>
+    </programGraphHasComments>
+    <programGraphHasComments Id="f6a67caa-1950-408a-b4b7-6946af04c17a">
+      <comment Id="f474aa36-b096-4132-a03b-ccabfbdcfb79" text="closeTrigger = True is set to true here. But it needs to be set back to false, once the Schranke is done closing, right ?">
+        <states>
+          <commentReferencesStates Id="226c5aaa-fe3b-49f5-8722-5020f0accb5a">
+            <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/EP_Received" />
+          </commentReferencesStates>
+        </states>
+      </comment>
+    </programGraphHasComments>
+    <programGraphHasComments Id="af7d1c75-6045-4d68-937a-8d95d9190173">
+      <comment Id="d4a5d667-c0e5-4e02-aa9a-426b1b3ebcfb" text="What happends if we receive a new EPMsg shile still opening the schranke (OpenSchrankeBack state)">
+        <states>
+          <commentReferencesStates Id="0414ff48-11c6-42f9-b6d8-64947d15ad8a">
+            <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/OpenSchrankeBack" />
+          </commentReferencesStates>
+        </states>
+      </comment>
+    </programGraphHasComments>
+    <programGraphHasComments Id="63f8bca6-5396-437f-955d-dd8b5de6827e">
+      <comment Id="f485e6d3-a6b3-4315-b279-579dc6e581da" text="Also, it might be the case that our AP_Ack came too late to the train, so it decided to &quot;bremsen&quot; even though the schranke is open. There is no way to find out about that, because we will keep waiting for the event ZugSensor == Blocked, which will &quot;never&quot; happen">
+        <states>
+          <commentReferencesStates Id="dcd13e28-ab86-4fc0-9685-c8c32aa89be7">
+            <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/AP_Success" />
+          </commentReferencesStates>
+        </states>
+      </comment>
+    </programGraphHasComments>
+    <programGraphHasComments Id="389f7f26-5337-4571-9679-8e52200735c9">
+      <comment Id="583a1bcb-0f0f-436a-a8dd-05e6c2f2ec71" text="What happens when the Schranke is still open/ InTransition when the APMsg comes? Here I made a transition back to idle. This is not reasonable however right? Because the train will be &quot;stuck&quot; in the BU after bremsing">
+        <states>
+          <commentReferencesStates Id="4e2bf2a1-9f6b-4d94-8d1c-dcb631f66fd8">
+            <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/EP_Received" />
+          </commentReferencesStates>
+        </states>
+      </comment>
+    </programGraphHasComments>
+  </comments>
+  <macros>
+    <programGraphHasMacros Id="8989c4af-1774-434e-ac6b-c1eda96fc7b0">
+      <macro Id="09e17efb-056a-40dd-b602-15381af30cb6" />
+    </programGraphHasMacros>
+  </macros>
   <importedVariables>
     <programGraphHasImportedVariables Id="910ac640-4038-4a76-95d8-7c534affd774">
       <importedVariable Id="11716685-88f6-474a-b87d-b5c6b8d562c8" name="SchrankenSensor" range="unresolved import" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="130960a0-b1cc-4fc2-9adf-b35f9b126ce3">
+      <importedVariable Id="15718954-1cc3-4c31-9d3a-33fd809b2c80" name="BUFunk" range="unresolved import" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="7ccda70e-49fc-42f1-9e65-596f684e2c8c">
+      <importedVariable Id="39d083ba-bfa0-4319-b280-954bf0fa2a23" name="Zugsensor" range="unresolved import" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>

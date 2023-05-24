@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="b287af21-5fc7-4cd3-bb78-5318f0cc9c08" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <initialNode Id="8d73ab5e-7032-4c3f-93b9-691cbf9f01b7" name="InitialNode1">
+      <successors>
+        <transition Id="40687256-7575-47e5-8e35-143ec424c516">
+          <stateMoniker name="/b287af21-5fc7-4cd3-bb78-5318f0cc9c08/Start" />
+        </transition>
+      </successors>
+    </initialNode>
+    <state Id="5f5b4b95-349f-4780-8cd1-b9b9a8779ceb" name="EPMsg">
+      <successors>
+        <transition Id="1e27d09a-62ce-4c35-b037-fcae81efb86c" guard="Zugfunkmodul == AP_SENT" label="Zugfunkmodul == AP_SENT">
+          <stateMoniker name="/b287af21-5fc7-4cd3-bb78-5318f0cc9c08/APMsg" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="6855793f-0a85-47ef-b6ad-6179f03076cd" name="APMsg">
+      <successors>
+        <transition Id="bbd18710-11bf-4e5d-9d56-a66a4e6facbc" guard="Bahnuebergangssteuerung == AP_Success" label="Bahnuebergangssteuerung == AP_Success">
+          <stateMoniker name="/b287af21-5fc7-4cd3-bb78-5318f0cc9c08/DelayAck" />
+        </transition>
+        <transition Id="7483f0eb-154a-478d-be0a-577904b5981b" guard="Bahnuebergangssteuerung == idle" label="Bahnuebergangssteuerung == idle">
+          <stateMoniker name="/b287af21-5fc7-4cd3-bb78-5318f0cc9c08/Start" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="800baed9-4fcb-4fb2-98bb-390d77998a49" name="DelayAck">
+      <successors>
+        <transition Id="96ec14c8-c63e-4e67-879e-4faf1abc3bb7">
+          <stateMoniker name="/b287af21-5fc7-4cd3-bb78-5318f0cc9c08/AckSent" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="b998651e-6ab4-45de-bcda-b330fce6e0d6" name="Start">
+      <successors>
+        <transition Id="5d7b7916-3e87-469e-a50a-3f005544bb33" guard="Zugfunkmodul == EP_SENT" label="Zugfunkmodul == EP_SENT">
+          <stateMoniker name="/b287af21-5fc7-4cd3-bb78-5318f0cc9c08/EPMsg" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="d4a9757d-4012-49e7-84d8-833a2b11e769" name="AckSent">
+      <successors>
+        <transition Id="3df00e99-25a7-4f7e-942a-3ca01b228465" guard="?? How do we know that the Zug already read our Ack so that we can go back to the start position ?  Maybe just connect AckSent to EPMsg directly again?" label="?? How do we know that the Zug already read our Ack so that we can go back to the start position ?  Maybe just connect AckSent to EPMsg directly again?">
+          <stateMoniker name="/b287af21-5fc7-4cd3-bb78-5318f0cc9c08/Start" />
+        </transition>
+      </successors>
+    </state>
+  </states>
+  <importedVariables>
+    <programGraphHasImportedVariables Id="8067ed6c-af16-4399-abb0-2baad9e50aba">
+      <importedVariable Id="44369440-6c2b-40f6-81b8-38748f1ea19e" name="Zugfunkmodul" range="NO_MSG, EP_SENT, EP_DELAY, AP_DELAY, AP_SENT, AP_ACK_WAIT" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="d9b11add-70ee-4574-9947-d73be7aafd15">
+      <importedVariable Id="6b0a024d-35c9-43bf-9201-f4e58677bd60" name="Bahnuebergangssteuerung" range="unresolved import" />
+    </programGraphHasImportedVariables>
+  </importedVariables>
+</programGraph>
