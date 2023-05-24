@@ -4,24 +4,21 @@
     <initialNode Id="cb9b5bfa-185a-4fe7-9df2-3d839a81ae32" name="InitialNode1">
       <successors>
         <transition Id="ca5ee297-c967-46ad-ad24-532dac65c4ad">
-          <stateMoniker name="/bb4e6557-2bc8-416f-977a-3ac2d0439a81/NO_MSG" />
+          <stateMoniker name="/bb4e6557-2bc8-416f-977a-3ac2d0439a81/IDLE" />
         </transition>
       </successors>
     </initialNode>
-    <state Id="68dbf383-25d5-4e14-9c12-6435748851e0" name="NO_MSG">
+    <state Id="68dbf383-25d5-4e14-9c12-6435748851e0" name="IDLE">
       <successors>
         <transition Id="ea922b19-beba-49ab-b83e-7461ae3020a5" guard="ZugFunkSender==EPSenden" label="ZugFunkSender==EPSenden" precondition="auto">
           <stateMoniker name="/bb4e6557-2bc8-416f-977a-3ac2d0439a81/EP_DELAY" />
-        </transition>
-        <transition Id="b3d72b89-348e-4e3a-8695-b3dd4e64dc05" guard="ZugFunkSender==APSenden" action="APAck:=False" label="ZugFunkSender==APSenden // APAck:=False" precondition="auto">
-          <stateMoniker name="/bb4e6557-2bc8-416f-977a-3ac2d0439a81/AP_DELAY" />
         </transition>
       </successors>
     </state>
     <state Id="483543b7-cbf0-451e-8232-3cecbac7503e" name="EP_SENT">
       <successors>
-        <transition Id="7e240a64-51e0-4c3c-9c2d-a32a6384e08c">
-          <stateMoniker name="/bb4e6557-2bc8-416f-977a-3ac2d0439a81/NO_MSG" />
+        <transition Id="65b1a014-2832-46b9-bc9d-f3ff81340c62">
+          <stateMoniker name="/bb4e6557-2bc8-416f-977a-3ac2d0439a81/AP_WAIT" />
         </transition>
       </successors>
     </state>
@@ -41,15 +38,16 @@
     </state>
     <state Id="934688ff-3447-4b0f-a882-1267d4e0be7e" name="AP_SENT">
       <successors>
-        <transition Id="bf020f61-b141-4711-9461-4fd053ace400">
+        <transition Id="bf020f61-b141-4711-9461-4fd053ace400" guard="BUFunk==AckSent" action="APAck:=True" label="BUFunk==AckSent // APAck:=True" precondition="auto">
           <stateMoniker name="/bb4e6557-2bc8-416f-977a-3ac2d0439a81/AP_ACK_WAIT" />
         </transition>
       </successors>
     </state>
-    <state Id="91004ee2-111d-426d-88d0-e264dcf11826" name="AP_ACK_WAIT">
+    <state Id="91004ee2-111d-426d-88d0-e264dcf11826" name="AP_ACK_WAIT" />
+    <state Id="14ae70af-06b5-4b7e-8bf6-14ccf1f90aae" name="AP_WAIT">
       <successors>
-        <transition Id="8a5bf60c-26f0-4010-9337-29ff463ddc1f" guard="BUFunkSender==AP_ACK_SENT" action="APAck:=True" label="BUFunkSender==AP_ACK_SENT // APAck:=True" precondition="auto">
-          <stateMoniker name="/bb4e6557-2bc8-416f-977a-3ac2d0439a81/NO_MSG" />
+        <transition Id="66423551-803c-44f8-b091-e9858c1613cd" guard="ZugFunkSender==APSenden" action="APAck:=False" label="ZugFunkSender==APSenden // APAck:=False" precondition="auto">
+          <stateMoniker name="/bb4e6557-2bc8-416f-977a-3ac2d0439a81/AP_DELAY" />
         </transition>
       </successors>
     </state>
@@ -62,6 +60,9 @@
   <importedVariables>
     <programGraphHasImportedVariables Id="df98e7ed-6838-4b41-951a-ce197c0a50bc">
       <importedVariable Id="4dec7dfd-06fb-4802-91f1-a7ab27a26345" name="Zugsteuerung.ZugFunkSender" range="EPSenden, APSenden" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="08c0bbc0-b1d4-419d-aeb9-ad5794f6154f">
+      <importedVariable Id="4bcedd4b-c5b7-4046-98e4-9be5635d96a2" name="BUFunk" range="EPMsg, APMsg, DelayAck, Start, AckSent" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>

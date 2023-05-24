@@ -1,14 +1,55 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="6b44886e-d51d-48e0-ba4e-7a4480f3d5a2" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="6b44886e-d51d-48e0-ba4e-7a4480f3d5a2" name="ZugSensor" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
   <states>
-    <initialNode Id="c7026776-7fb7-4c66-af60-78ede04d611b" name="InitialNode1" />
-    <state Id="770c5c1b-0cc2-4d87-b6c9-fc8920f4a637" name="Blocked">
+    <initialNode Id="c7026776-7fb7-4c66-af60-78ede04d611b" name="InitialNode1">
       <successors>
-        <transition Id="d948a298-79b0-4823-b59d-b186e6334d95" guard="Well, this depends on the length of the train (maybe add it as a macro inside the TrainSteuerung? Don't wanna do it myself to avoid conflicts). Also, Sebastian, you called the passing point of the train BU, wheras in the Blatt its called SP. Not sure if you have a reasoning behind that.." label="Well, this depends on the length of the train (maybe add it as a macro inside the TrainSteuerung? Don't wanna do it myself to avoid conflicts). Also, Sebastian, you called the passing point of the train BU, wheras in the Blatt its called SP. Not sure if you have a reasoning behind that..">
+        <transition Id="1fe94a84-a199-4253-ac15-0245f632a535">
           <stateMoniker name="/6b44886e-d51d-48e0-ba4e-7a4480f3d5a2/Free" />
         </transition>
       </successors>
+    </initialNode>
+    <state Id="770c5c1b-0cc2-4d87-b6c9-fc8920f4a637" name="Blocked">
+      <successors>
+        <transition Id="4ab05b5d-0131-4d53-8dbb-d2c8ffe5468f" guard="Position + #Zuglaenge &lt; #BU || time &gt; #timeout" label="Position + #Zuglaenge &lt; #BU || time &gt; #timeout">
+          <stateMoniker name="/6b44886e-d51d-48e0-ba4e-7a4480f3d5a2/Free" />
+        </transition>
+        <transition Id="273e505a-2b20-4467-bd8a-df8d508f3e46" action="time := time+1" label="// time := time+1" precondition="auto">
+          <stateMoniker name="/6b44886e-d51d-48e0-ba4e-7a4480f3d5a2/Blocked" />
+        </transition>
+      </successors>
     </state>
-    <state Id="467a35c3-3975-4780-a755-0168c19a0215" name="Free" />
+    <state Id="467a35c3-3975-4780-a755-0168c19a0215" name="Free">
+      <successors>
+        <transition Id="98105893-8992-4293-b87a-27eadabc2e19" guard="Position&lt;#BU" action="time:=0" label="Position&lt;#BU // time:=0" precondition="auto">
+          <stateMoniker name="/6b44886e-d51d-48e0-ba4e-7a4480f3d5a2/Blocked" />
+        </transition>
+      </successors>
+    </state>
   </states>
+  <variables>
+    <programGraphHasVariables Id="1782edf9-043a-4c3d-a43b-b13ee8b930c7">
+      <variable Id="4ecc6021-94c3-4451-9ea1-0a125df0774e" name="time" range="0..60" />
+    </programGraphHasVariables>
+  </variables>
+  <comments>
+    <programGraphHasComments Id="87a88332-3a5d-48c5-9b62-45c15f51c7ea">
+      <comment Id="6af56a0c-03c4-4d57-8633-de6859fff97a" text="Well, this depends on the length of the train (maybe add it as a macro inside the TrainSteuerung? Don't wanna do it myself to avoid conflicts). Also, Sebastian, you called the passing point of the train BU, wheras in the Blatt its called SP. Not sure if you have a reasoning behind that.." />
+    </programGraphHasComments>
+  </comments>
+  <macros>
+    <programGraphHasMacros Id="a9ab3704-829e-4a8f-abcd-c4b3f47beb5f">
+      <macro Id="c8d02d61-d751-4b4c-a36b-458720a38f59" name="#Zuglaenge" body="5" />
+    </programGraphHasMacros>
+    <programGraphHasMacros Id="9c2f850d-533e-403d-b2f8-f9bf8e64b1bd">
+      <macro Id="4c830d40-e29e-42ec-b04c-4713746e4923" name="#BU" body="0" />
+    </programGraphHasMacros>
+    <programGraphHasMacros Id="87daefaf-5409-4897-a04d-7b30c7e7cde3">
+      <macro Id="5e524d60-43da-478e-aabd-42e28a3edce0" name="#timeout" body="20" />
+    </programGraphHasMacros>
+  </macros>
+  <importedVariables>
+    <programGraphHasImportedVariables Id="820f0fdb-f682-40ce-8319-09cc6717d864">
+      <importedVariable Id="1e9b7dac-3e49-4ac5-81be-77677a0f5d11" name="Hodometer.Position" range="0..100" />
+    </programGraphHasImportedVariables>
+  </importedVariables>
 </programGraph>

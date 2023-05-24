@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="cc7582fe-7f42-4b64-8f7a-a2839caf0e87" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="cc7582fe-7f42-4b64-8f7a-a2839caf0e87" name="Bahnuebergangssteuerung" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
   <states>
     <initialNode Id="34761003-a54e-4396-9244-c758495a7cce" name="InitialNode1">
       <successors>
@@ -11,20 +11,14 @@
     <state Id="015290ab-e416-4742-8ae3-6af4f7dee7f9" name="Idle">
       <successors>
         <transition Id="bec7c065-65a8-4905-8a06-f55a137b148d" guard="BUFunk==EPMsg" action="closeTrigger=True" label="BUFunk==EPMsg // closeTrigger=True">
-          <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/EP_Received" />
+          <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/BUSecuring" />
         </transition>
       </successors>
     </state>
-    <state Id="a17838ef-12da-472e-8ff9-ccb85125b20f" name="EP_Received">
+    <state Id="a17838ef-12da-472e-8ff9-ccb85125b20f" name="BUSecuring">
       <successors>
-        <transition Id="426082d1-4356-46f6-a94d-5268f011765d" guard="BUFunk == APMsg &amp;&amp; SchrankenSensor == geschlossen" label="BUFunk == APMsg &amp;&amp; SchrankenSensor == geschlossen">
-          <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/AP_Success" />
-        </transition>
-        <transition Id="beeea43b-3a9f-4f55-8b61-040984d38a79" guard="BUFunk == APMssg &amp;&amp; SchrankenSensor == offen" label="BUFunk == APMssg &amp;&amp; SchrankenSensor == offen">
-          <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/Idle" />
-        </transition>
-        <transition Id="89f4c64c-5a31-4873-b4f9-d12f6b2de389" guard="BUFunk == APMsg &amp;&amp; SchrankenSensor == InTransit" action="openTrigger = True" label="BUFunk == APMsg &amp;&amp; SchrankenSensor == InTransit // openTrigger = True">
-          <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/Idle" />
+        <transition Id="1733dd17-5b45-4bdc-83bf-386a8c5667f8" guard="SchrankenSensor==geschlossen" label="SchrankenSensor==geschlossen">
+          <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/BUSecured" />
         </transition>
       </successors>
     </state>
@@ -46,6 +40,13 @@
       <successors>
         <transition Id="fc78cbf2-d7fc-4bfb-bab4-1cd32b637e99" guard="SchrankenSensor == offen" label="SchrankenSensor == offen">
           <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/Idle" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="1f9bc608-32b9-4bc0-9418-27c474cbcbc2" name="BUSecured">
+      <successors>
+        <transition Id="71df3344-9e5e-4de2-a033-a0f794e096ca" guard="BUFunk==APMsg" label="BUFunk==APMsg">
+          <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/AP_Success" />
         </transition>
       </successors>
     </state>
@@ -72,7 +73,7 @@
       <comment Id="f474aa36-b096-4132-a03b-ccabfbdcfb79" text="closeTrigger = True is set to true here. But it needs to be set back to false, once the Schranke is done closing, right ?">
         <states>
           <commentReferencesStates Id="226c5aaa-fe3b-49f5-8722-5020f0accb5a">
-            <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/EP_Received" />
+            <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/BUSecuring" />
           </commentReferencesStates>
         </states>
       </comment>
@@ -99,7 +100,7 @@
       <comment Id="583a1bcb-0f0f-436a-a8dd-05e6c2f2ec71" text="What happens when the Schranke is still open/ InTransition when the APMsg comes? Here I made a transition back to idle. This is not reasonable however right? Because the train will be &quot;stuck&quot; in the BU after bremsing">
         <states>
           <commentReferencesStates Id="4e2bf2a1-9f6b-4d94-8d1c-dcb631f66fd8">
-            <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/EP_Received" />
+            <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/BUSecuring" />
           </commentReferencesStates>
         </states>
       </comment>
@@ -112,13 +113,13 @@
   </macros>
   <importedVariables>
     <programGraphHasImportedVariables Id="910ac640-4038-4a76-95d8-7c534affd774">
-      <importedVariable Id="11716685-88f6-474a-b87d-b5c6b8d562c8" name="SchrankenSensor" range="unresolved import" />
+      <importedVariable Id="11716685-88f6-474a-b87d-b5c6b8d562c8" name="SchrankenSensor" range="Offen, Geschlossen, InTransit" />
     </programGraphHasImportedVariables>
     <programGraphHasImportedVariables Id="130960a0-b1cc-4fc2-9adf-b35f9b126ce3">
-      <importedVariable Id="15718954-1cc3-4c31-9d3a-33fd809b2c80" name="BUFunk" range="unresolved import" />
+      <importedVariable Id="15718954-1cc3-4c31-9d3a-33fd809b2c80" name="BUFunk" range="EPMsg, APMsg, DelayAck, Start, AckSent" />
     </programGraphHasImportedVariables>
-    <programGraphHasImportedVariables Id="7ccda70e-49fc-42f1-9e65-596f684e2c8c">
-      <importedVariable Id="39d083ba-bfa0-4319-b280-954bf0fa2a23" name="Zugsensor" range="unresolved import" />
+    <programGraphHasImportedVariables Id="1fd6f252-1e78-427a-adfc-8937bf31803f">
+      <importedVariable Id="0ec7e734-747b-4ee7-a2ae-cef5bc401205" name="ZugSensor" range="Blocked, Free" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>

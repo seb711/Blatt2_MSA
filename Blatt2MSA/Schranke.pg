@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="d710ca68-bcd2-4a72-bbd7-ae3fd5bdafc2" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="d710ca68-bcd2-4a72-bbd7-ae3fd5bdafc2" name="Schranke" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
   <states>
     <initialNode Id="1496fbfe-0115-4c32-865f-f6a2efd04c58" name="InitialNode1">
       <successors>
@@ -10,31 +10,31 @@
     </initialNode>
     <state Id="996be05b-3319-464a-a7a1-1c0ae1e166b4" name="Offen">
       <successors>
-        <transition Id="fe97df9e-119e-430b-bb27-a78390234769" guard="closeTrigger==True" action="closeTrigger = False" label="closeTrigger==True // closeTrigger = False">
+        <transition Id="fe97df9e-119e-430b-bb27-a78390234769" guard="closeTrigger==True" action="closeTrigger := False" label="closeTrigger==True // closeTrigger := False" precondition="auto">
           <stateMoniker name="/d710ca68-bcd2-4a72-bbd7-ae3fd5bdafc2/Closing" />
         </transition>
       </successors>
     </state>
     <state Id="dfdc408c-60e1-4513-b686-2a0765a82d0b" name="Geschlossen">
       <successors>
-        <transition Id="10dad271-33aa-432b-9918-d3c292d4d94a" guard="openTrigger==True" action="openTrigger = False" label="openTrigger==True // openTrigger = False">
+        <transition Id="10dad271-33aa-432b-9918-d3c292d4d94a" guard="openTrigger==True" action="openTrigger := False" label="openTrigger==True // openTrigger := False" precondition="auto">
           <stateMoniker name="/d710ca68-bcd2-4a72-bbd7-ae3fd5bdafc2/Opening" />
         </transition>
       </successors>
     </state>
     <state Id="c59560a2-fa12-4c55-9ff7-c003ac97df5b" name="Opening">
       <successors>
-        <transition Id="4d8a80a9-4979-4686-8f4a-2220015cd2c5" guard="pos &gt; openPos" action="pos = pos - 1" label="pos &gt; openPos // pos = pos - 1" precondition="pos &gt; openPos">
+        <transition Id="4d8a80a9-4979-4686-8f4a-2220015cd2c5" guard="pos &gt; openPos" action="pos:=pos - 1" label="pos &gt; openPos // pos:=pos - 1" precondition="pos &gt; openPos">
           <stateMoniker name="/d710ca68-bcd2-4a72-bbd7-ae3fd5bdafc2/Opening" />
         </transition>
-        <transition Id="a79a2a0c-b6fa-4be2-883c-d749d05e7a13" guard="pos = openPos" label="pos = openPos">
+        <transition Id="a79a2a0c-b6fa-4be2-883c-d749d05e7a13" guard="pos == openPos" label="pos == openPos">
           <stateMoniker name="/d710ca68-bcd2-4a72-bbd7-ae3fd5bdafc2/Offen" />
         </transition>
       </successors>
     </state>
     <state Id="c587f035-0459-4e5f-909c-42270f114ccc" name="Closing">
       <successors>
-        <transition Id="89b0ba94-5d5f-43bb-8a96-89bc83045c9d" guard="pos &lt; closedPos" action="pos = pos + 1" label="pos &lt; closedPos // pos = pos + 1" precondition="pos &lt; closedPos">
+        <transition Id="89b0ba94-5d5f-43bb-8a96-89bc83045c9d" guard="pos &lt; closedPos" action="pos:=pos + 1" label="pos &lt; closedPos // pos:=pos + 1" precondition="pos &lt; closedPos">
           <stateMoniker name="/d710ca68-bcd2-4a72-bbd7-ae3fd5bdafc2/Closing" />
         </transition>
         <transition Id="c4075ddc-9f16-490d-9798-027421261450" guard="pos == closedPos" label="pos == closedPos">
@@ -58,10 +58,10 @@
   </macros>
   <importedVariables>
     <programGraphHasImportedVariables Id="d4b0eab0-8563-4548-af30-61ab8ba29dcd">
-      <importedVariable Id="aa59efa3-30f7-478e-83d1-b0a6e0726a02" name="Bahnuebergangssteuerung.openTrigger" range="unresolved import" />
+      <importedVariable Id="aa59efa3-30f7-478e-83d1-b0a6e0726a02" name="Bahnuebergangssteuerung.openTrigger" range="True, False" />
     </programGraphHasImportedVariables>
     <programGraphHasImportedVariables Id="0ce22456-a2fc-40ee-8f36-7267a1e71ac7">
-      <importedVariable Id="5db09d38-4c98-4bb0-ad32-b2ebdd137338" name="Bahnuebergangssteuerung.closeTrigger" range="unresolved import" />
+      <importedVariable Id="5db09d38-4c98-4bb0-ad32-b2ebdd137338" name="Bahnuebergangssteuerung.closeTrigger" range="True, False" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>

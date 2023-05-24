@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="c2f3456e-e84b-41a3-ab3f-dea630182356" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="c2f3456e-e84b-41a3-ab3f-dea630182356" name="SchrankenSensor" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
   <states>
     <initialNode Id="6393b9a7-05ec-48b3-afdf-20d68d3ada3b" name="InitialNode1">
       <successors>
@@ -35,7 +35,7 @@
   </states>
   <importedVariables>
     <programGraphHasImportedVariables Id="b654d422-0a16-4d36-b9cb-514a4498ce42">
-      <importedVariable Id="c41ad764-d5e8-4604-b841-41cc820d6ad3" name="Schranke" range="unresolved import" />
+      <importedVariable Id="c41ad764-d5e8-4604-b841-41cc820d6ad3" name="Schranke" range="Offen, Geschlossen, Opening, Closing" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>
