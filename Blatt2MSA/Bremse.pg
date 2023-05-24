@@ -10,8 +10,11 @@
     </state>
     <state Id="6ff62573-9c01-452e-bee1-277859d90877" name="Geschlossen">
       <successors>
-        <transition Id="d838ced3-3d85-4189-b9f8-19f5ccf27497" guard="BremseFest==False" label="BremseFest==False">
+        <transition Id="d838ced3-3d85-4189-b9f8-19f5ccf27497" guard="BremseFest==False || Geschwindigkeit==0" label="BremseFest==False || Geschwindigkeit==0">
           <stateMoniker name="/4c920a64-a401-460e-8d4a-556e9028566e/Offen" />
+        </transition>
+        <transition Id="86fd8509-bbea-43c1-8dda-ccc405691d53" guard="BremseFest==True" action="Geschwindigkeit:=Geschwindigkeit-Bremsverzoegerung" label="BremseFest==True // Geschwindigkeit:=Geschwindigkeit-Bremsverzoegerung" precondition="auto">
+          <stateMoniker name="/4c920a64-a401-460e-8d4a-556e9028566e/Geschlossen" />
         </transition>
       </successors>
     </state>
@@ -23,6 +26,14 @@
       </successors>
     </initialNode>
   </states>
+  <variables>
+    <programGraphHasVariables Id="6e7f746d-e838-4a4e-8990-24a6bdf39a8b">
+      <variable Id="fe431c37-0dac-407d-a742-16eae3f3a63b" name="Geschwindigkeit" range="0..20" />
+    </programGraphHasVariables>
+    <programGraphHasVariables Id="24ee2b3e-99c2-4c33-aa4d-a46e3465a484">
+      <variable Id="140ae230-310d-49ab-b67b-afc320d956eb" name="Bremsverzoegerung" range="1" />
+    </programGraphHasVariables>
+  </variables>
   <importedVariables>
     <programGraphHasImportedVariables Id="0f839c0f-791f-4abe-b7d4-503315e58cf2">
       <importedVariable Id="a764c2ee-eebd-4188-9020-c937edeffed6" name="Zugsteuerung.BremseFest" range="True, False" />

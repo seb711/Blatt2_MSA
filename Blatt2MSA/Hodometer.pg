@@ -3,33 +3,27 @@
   <states>
     <state Id="1b9715fe-3aa3-412e-a7f1-52f857393fb3" name="Measuring">
       <successors>
-        <transition Id="b694ae69-2414-492e-910e-10b3fa9657d4" guard="BremseFest==False" action="Position:=Position+Geschwindigkeit" label="BremseFest==False // Position:=Position+Geschwindigkeit" precondition="auto">
-          <stateMoniker name="/007c516e-f4af-49ad-b995-70755386315b/Measuring" />
-        </transition>
-        <transition Id="438bdcf6-d593-46fc-bad1-e4430eaa1b3b" guard="BremseFest==True  &amp;&amp; Geschwindigkeit &gt; 0" action="Geschwindigkeit:=Geschwindigkeit-1 | Position:=Position+Geschwindigkeit" label="BremseFest==True  &amp;&amp; Geschwindigkeit &gt; 0 // Geschwindigkeit:=Geschwindigkeit-1 | Position:=Position+Geschwindigkeit" precondition="auto">
+        <transition Id="438bdcf6-d593-46fc-bad1-e4430eaa1b3b" action="Position:=Position+Geschwindigkeit" label="// Position:=Position+Geschwindigkeit" precondition="auto">
           <stateMoniker name="/007c516e-f4af-49ad-b995-70755386315b/Measuring" />
         </transition>
       </successors>
     </state>
     <initialNode Id="6c9ec58e-bd8f-49c4-9dd6-babfd18f238e" name="InitialNode1">
       <successors>
-        <transition Id="b11c28f4-cbfd-430a-91a7-dbe53bfe211a" guard="Geschwindigkeit==50 &amp;&amp; Position==50" label="Geschwindigkeit==50 &amp;&amp; Position==50">
+        <transition Id="b11c28f4-cbfd-430a-91a7-dbe53bfe211a">
           <stateMoniker name="/007c516e-f4af-49ad-b995-70755386315b/Measuring" />
         </transition>
       </successors>
     </initialNode>
   </states>
   <variables>
-    <programGraphHasVariables Id="f098b178-49fb-4db7-9d19-b116034c39b1">
-      <variable Id="2c2177e9-1a98-4e48-a86e-9209aba08821" name="Geschwindigkeit" range="0..100" />
-    </programGraphHasVariables>
     <programGraphHasVariables Id="31aeb55a-a871-4b83-885d-f9049957aad8">
       <variable Id="f2c5a644-2664-4ab3-9ee9-b74414f16eaa" name="Position" range="0..100" />
     </programGraphHasVariables>
   </variables>
   <importedVariables>
-    <programGraphHasImportedVariables Id="01cb12af-8f33-484f-a5b7-60dac62e5140">
-      <importedVariable Id="75a12efe-5720-4819-9124-17c9c4c31c8b" name="Zugsteuerung.BremseFest" range="True, False" />
+    <programGraphHasImportedVariables Id="844d9629-0401-469d-8d19-79d601dae19a">
+      <importedVariable Id="eab5a0d1-41fb-4be2-877a-84dba5f5dae2" name="Bremse.Geschwindigkeit" range="0..20" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>
