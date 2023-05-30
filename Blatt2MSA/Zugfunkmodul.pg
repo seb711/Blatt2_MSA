@@ -39,11 +39,17 @@
     <state Id="934688ff-3447-4b0f-a882-1267d4e0be7e" name="AP_SENT">
       <successors>
         <transition Id="bf020f61-b141-4711-9461-4fd053ace400" guard="BUFunk==AckSent" action="APAck:=True" label="BUFunk==AckSent // APAck:=True" precondition="auto">
-          <stateMoniker name="/bb4e6557-2bc8-416f-977a-3ac2d0439a81/AP_ACK_WAIT" />
+          <stateMoniker name="/bb4e6557-2bc8-416f-977a-3ac2d0439a81/AP_ACK" />
         </transition>
       </successors>
     </state>
-    <state Id="91004ee2-111d-426d-88d0-e264dcf11826" name="AP_ACK_WAIT" />
+    <state Id="91004ee2-111d-426d-88d0-e264dcf11826" name="AP_ACK">
+      <successors>
+        <transition Id="843b7940-279f-4dc3-804b-683fb533d383">
+          <stateMoniker name="/bb4e6557-2bc8-416f-977a-3ac2d0439a81/IDLE" />
+        </transition>
+      </successors>
+    </state>
     <state Id="14ae70af-06b5-4b7e-8bf6-14ccf1f90aae" name="AP_WAIT">
       <successors>
         <transition Id="66423551-803c-44f8-b091-e9858c1613cd" guard="ZugFunkSender==APSenden" action="APAck:=False" label="ZugFunkSender==APSenden // APAck:=False" precondition="auto">
