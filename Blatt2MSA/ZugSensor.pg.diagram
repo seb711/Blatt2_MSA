@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<programGraphDslDiagram dslVersion="1.0.0.0" Id="79195f9d-2069-4c77-b949-116754e17905" absoluteBounds="0, 0, 13.25, 8.5" name="ProgramGraphDsl1">
+<programGraphDslDiagram dslVersion="1.0.0.0" Id="79195f9d-2069-4c77-b949-116754e17905" absoluteBounds="0, 0, 11, 8.5" name="ProgramGraphDsl1">
   <programGraphMoniker Id="6b44886e-d51d-48e0-ba4e-7a4480f3d5a2" />
   <nestedChildShapes>
     <initialStateShape Id="fb310186-9072-4b24-a720-8e1256f532e8" absoluteBounds="6.375, 6.875, 0.125, 0.125">
@@ -11,9 +11,6 @@
     <stateShape Id="5e1185cd-a7ba-4da3-bc19-40cdcf9ab1c7" absoluteBounds="6.125, 5.375, 1, 0.5">
       <stateMoniker name="/6b44886e-d51d-48e0-ba4e-7a4480f3d5a2/Free" />
     </stateShape>
-    <commentBoxShape Id="d1d5c49f-ecd2-48e1-b959-a296be84c241" absoluteBounds="8, 1.375, 5, 1.625">
-      <commentMoniker Id="6af56a0c-03c4-4d57-8633-de6859fff97a" />
-    </commentBoxShape>
     <transitionConnector Id="4f5cae92-a333-4747-bd52-3569b4a51c46" edgePoints="[(6.4375 : 6.875); (6.4375 : 5.875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <transitionMoniker Id="1fe94a84-a199-4253-ac15-0245f632a535" />
       <relativeChildShapes />

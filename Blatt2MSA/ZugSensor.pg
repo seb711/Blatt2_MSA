@@ -31,11 +31,6 @@
       <variable Id="4ecc6021-94c3-4451-9ea1-0a125df0774e" name="time" range="0..60" />
     </programGraphHasVariables>
   </variables>
-  <comments>
-    <programGraphHasComments Id="87a88332-3a5d-48c5-9b62-45c15f51c7ea">
-      <comment Id="6af56a0c-03c4-4d57-8633-de6859fff97a" text="Well, this depends on the length of the train (maybe add it as a macro inside the TrainSteuerung? Don't wanna do it myself to avoid conflicts). Also, Sebastian, you called the passing point of the train BU, wheras in the Blatt its called SP. Not sure if you have a reasoning behind that.." />
-    </programGraphHasComments>
-  </comments>
   <macros>
     <programGraphHasMacros Id="a9ab3704-829e-4a8f-abcd-c4b3f47beb5f">
       <macro Id="c8d02d61-d751-4b4c-a36b-458720a38f59" name="#Zuglaenge" body="5" />

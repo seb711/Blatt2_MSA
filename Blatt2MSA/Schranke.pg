@@ -24,20 +24,20 @@
     </state>
     <state Id="c59560a2-fa12-4c55-9ff7-c003ac97df5b" name="Opening">
       <successors>
-        <transition Id="4d8a80a9-4979-4686-8f4a-2220015cd2c5" guard="pos &gt; openPos" action="pos:=pos - #Geschwindigkeit" label="pos &gt; openPos // pos:=pos - #Geschwindigkeit" precondition="pos &gt; openPos">
+        <transition Id="4d8a80a9-4979-4686-8f4a-2220015cd2c5" guard="pos &gt; #openPos" action="pos:=pos - #Geschwindigkeit" label="pos &gt; #openPos // pos:=pos - #Geschwindigkeit" precondition="pos &gt; #openPos">
           <stateMoniker name="/d710ca68-bcd2-4a72-bbd7-ae3fd5bdafc2/Opening" />
         </transition>
-        <transition Id="a79a2a0c-b6fa-4be2-883c-d749d05e7a13" guard="pos == openPos" label="pos == openPos">
+        <transition Id="a79a2a0c-b6fa-4be2-883c-d749d05e7a13" guard="pos == #openPos" label="pos == #openPos">
           <stateMoniker name="/d710ca68-bcd2-4a72-bbd7-ae3fd5bdafc2/Offen" />
         </transition>
       </successors>
     </state>
     <state Id="c587f035-0459-4e5f-909c-42270f114ccc" name="Closing">
       <successors>
-        <transition Id="89b0ba94-5d5f-43bb-8a96-89bc83045c9d" guard="pos &lt; closedPos" action="pos:=pos + 1" label="pos &lt; closedPos // pos:=pos + 1" precondition="pos &lt; closedPos">
+        <transition Id="89b0ba94-5d5f-43bb-8a96-89bc83045c9d" guard="pos &lt; #closedPos" action="pos:=pos + 1" label="pos &lt; #closedPos // pos:=pos + 1" precondition="pos &lt; #closedPos">
           <stateMoniker name="/d710ca68-bcd2-4a72-bbd7-ae3fd5bdafc2/Closing" />
         </transition>
-        <transition Id="c4075ddc-9f16-490d-9798-027421261450" guard="pos == closedPos" label="pos == closedPos">
+        <transition Id="c4075ddc-9f16-490d-9798-027421261450" guard="pos == #closedPos" label="pos == #closedPos">
           <stateMoniker name="/d710ca68-bcd2-4a72-bbd7-ae3fd5bdafc2/Geschlossen" />
         </transition>
       </successors>
@@ -50,10 +50,10 @@
   </variables>
   <macros>
     <programGraphHasMacros Id="cb268ac8-60a5-4ba9-a681-95b7f9d28627">
-      <macro Id="b09ab69b-9954-440d-8f69-4fcf6624fa21" name="openPos" body="0" />
+      <macro Id="b09ab69b-9954-440d-8f69-4fcf6624fa21" name="#openPos" body="0" />
     </programGraphHasMacros>
     <programGraphHasMacros Id="ea62e19c-00dc-4688-ac49-5dfc643eee8f">
-      <macro Id="3d85356f-fc9e-4302-b1a8-50affc5cd1b0" name="closedPos" body="10" />
+      <macro Id="3d85356f-fc9e-4302-b1a8-50affc5cd1b0" name="#closedPos" body="10" />
     </programGraphHasMacros>
     <programGraphHasMacros Id="aa812bfc-7dc3-4567-80a2-452078b2668d">
       <macro Id="f234c26f-facf-4bdb-bb4e-61c1fd32913d" name="#Geschwindigkeit" body="1" />
