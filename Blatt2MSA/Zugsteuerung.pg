@@ -60,10 +60,10 @@
       <macro Id="89f7401a-2c29-4def-a325-3022dc01296e" name="#BEP " body="#GP - #z - (Geschwindigkeit * Geschwindigkeit) / (2 * Bremsverzoegerung)" />
     </programGraphHasMacros>
     <programGraphHasMacros Id="70ee4ee9-d8aa-45a7-8502-9dd0d909c8b6">
-      <macro Id="5836e486-502d-47bc-9e0e-6ab9bf2ea7fe" name="#BU" body="100" />
+      <macro Id="5836e486-502d-47bc-9e0e-6ab9bf2ea7fe" name="#SP" body="100" />
     </programGraphHasMacros>
     <programGraphHasMacros Id="e43727ac-24f7-4733-90d0-68a235c51734">
-      <macro Id="b40c933e-df26-4759-8226-1cd8b78fda33" name="#GP" body="10" />
+      <macro Id="b40c933e-df26-4759-8226-1cd8b78fda33" name="#GP" body="90" />
     </programGraphHasMacros>
     <programGraphHasMacros Id="4da77108-2055-4c5f-8529-ea74e2e91bad">
       <macro Id="1a1f60fc-df1b-4b1b-bc3c-d84c51affbc5" name="#z" body="1" />
