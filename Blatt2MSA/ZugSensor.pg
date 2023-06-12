@@ -10,7 +10,7 @@
     </initialNode>
     <state Id="770c5c1b-0cc2-4d87-b6c9-fc8920f4a637" name="Blocked">
       <successors>
-        <transition Id="4ab05b5d-0131-4d53-8dbb-d2c8ffe5468f" guard="Position + #Zuglaenge &lt; #BU || time &gt; #timeout" label="Position + #Zuglaenge &lt; #BU || time &gt; #timeout">
+        <transition Id="4ab05b5d-0131-4d53-8dbb-d2c8ffe5468f" guard="GemessenePosition + #Zuglaenge &lt; #BU || time &gt; #timeout" label="GemessenePosition + #Zuglaenge &lt; #BU || time &gt; #timeout">
           <stateMoniker name="/6b44886e-d51d-48e0-ba4e-7a4480f3d5a2/Free" />
         </transition>
         <transition Id="273e505a-2b20-4467-bd8a-df8d508f3e46" action="time := time+1" label="// time := time+1" precondition="auto">
@@ -20,7 +20,7 @@
     </state>
     <state Id="467a35c3-3975-4780-a755-0168c19a0215" name="Free">
       <successors>
-        <transition Id="98105893-8992-4293-b87a-27eadabc2e19" guard="Position&lt;#BU" action="time:=0" label="Position&lt;#BU // time:=0" precondition="auto">
+        <transition Id="98105893-8992-4293-b87a-27eadabc2e19" guard="GemessenePosition&lt;#BU" action="time:=0" label="GemessenePosition&lt;#BU // time:=0" precondition="auto">
           <stateMoniker name="/6b44886e-d51d-48e0-ba4e-7a4480f3d5a2/Blocked" />
         </transition>
       </successors>
@@ -44,7 +44,7 @@
   </macros>
   <importedVariables>
     <programGraphHasImportedVariables Id="820f0fdb-f682-40ce-8319-09cc6717d864">
-      <importedVariable Id="1e9b7dac-3e49-4ac5-81be-77677a0f5d11" name="Hodometer.Position" range="0..100" />
+      <importedVariable Id="1e9b7dac-3e49-4ac5-81be-77677a0f5d11" name="HodometerPosition.GemessenePosition" range="0..105" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>

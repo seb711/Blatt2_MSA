@@ -10,14 +10,14 @@
     </initialNode>
     <state Id="015290ab-e416-4742-8ae3-6af4f7dee7f9" name="Idle">
       <successors>
-        <transition Id="bec7c065-65a8-4905-8a06-f55a137b148d" guard="BUFunk==EPMsg" action="closeTrigger=True" label="BUFunk==EPMsg // closeTrigger=True">
+        <transition Id="bec7c065-65a8-4905-8a06-f55a137b148d" guard="BUFunk==EPMsg" action="closeTrigger:=True" label="BUFunk==EPMsg // closeTrigger:=True" precondition="auto">
           <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/BUSecuring" />
         </transition>
       </successors>
     </state>
     <state Id="a17838ef-12da-472e-8ff9-ccb85125b20f" name="BUSecuring">
       <successors>
-        <transition Id="1733dd17-5b45-4bdc-83bf-386a8c5667f8" guard="SchrankenSensor==geschlossen" label="SchrankenSensor==geschlossen">
+        <transition Id="1733dd17-5b45-4bdc-83bf-386a8c5667f8" guard="SchrankenSensor==Geschlossen" label="SchrankenSensor==Geschlossen">
           <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/BUSecured" />
         </transition>
       </successors>
@@ -31,14 +31,14 @@
     </state>
     <state Id="d0ce25be-a14c-4f7b-8994-ce8d8aead5e8" name="TrainIsPassing">
       <successors>
-        <transition Id="87d33ae0-ca5e-45c2-a950-2640bcf72c7e" guard="ZugSensor == Free" action="openTrigger = True" label="ZugSensor == Free // openTrigger = True">
+        <transition Id="87d33ae0-ca5e-45c2-a950-2640bcf72c7e" guard="ZugSensor == Free" action="openTrigger := True" label="ZugSensor == Free // openTrigger := True" precondition="auto">
           <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/OpenSchrankeBack" />
         </transition>
       </successors>
     </state>
     <state Id="0e582aef-c618-4c41-9c1c-0d439d6885a2" name="OpenSchrankeBack">
       <successors>
-        <transition Id="fc78cbf2-d7fc-4bfb-bab4-1cd32b637e99" guard="SchrankenSensor == offen" label="SchrankenSensor == offen">
+        <transition Id="fc78cbf2-d7fc-4bfb-bab4-1cd32b637e99" guard="SchrankenSensor == Offen" label="SchrankenSensor == Offen">
           <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/Idle" />
         </transition>
       </successors>
@@ -59,11 +59,6 @@
       <variable Id="df5d79ba-fcd1-4640-8715-e6fc37436e96" name="openTrigger" range="True, False" />
     </programGraphHasVariables>
   </variables>
-  <macros>
-    <programGraphHasMacros Id="8989c4af-1774-434e-ac6b-c1eda96fc7b0">
-      <macro Id="09e17efb-056a-40dd-b602-15381af30cb6" />
-    </programGraphHasMacros>
-  </macros>
   <importedVariables>
     <programGraphHasImportedVariables Id="910ac640-4038-4a76-95d8-7c534affd774">
       <importedVariable Id="11716685-88f6-474a-b87d-b5c6b8d562c8" name="SchrankenSensor" range="Offen, Geschlossen, InTransit" />
