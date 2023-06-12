@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="01da3300-3d30-46b6-bd8c-51ba4f982dad" name="HodometerGeschwindigkeit" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <state Id="fdffc2fc-1dd2-44d5-a85f-0376a436aff5" name="Measuring">
+      <successors>
+        <transition Id="c1426e01-ca98-463f-8e96-f1a4bcb00013" guard="GemesseneGeschwindigkeit - Geschwindigkeit &lt; 5" action="GemesseneGeschwindigkeit := GemesseneGeschwindigkeit + 1" label="GemesseneGeschwindigkeit - Geschwindigkeit &lt; 5 // GemesseneGeschwindigkeit := GemesseneGeschwindigkeit + 1" precondition="auto">
+          <stateMoniker name="/01da3300-3d30-46b6-bd8c-51ba4f982dad/Measuring" />
+        </transition>
+        <transition Id="b21dba69-768a-4f87-bbe2-6e8d647db595" guard="GemesseneGeschwindigkeit - Geschwindigkeit &gt; -5 &amp;&amp; GemesseneGeschwindigkeit &gt; 0" action="GemesseneGeschwindigkeit := GemesseneGeschwindigkeit - 1" label="GemesseneGeschwindigkeit - Geschwindigkeit &gt; -5 &amp;&amp; GemesseneGeschwindigkeit &gt; 0 // GemesseneGeschwindigkeit := GemesseneGeschwindigkeit - 1" precondition="auto">
+          <stateMoniker name="/01da3300-3d30-46b6-bd8c-51ba4f982dad/Measuring" />
+        </transition>
+        <transition Id="cab36b5a-743a-4b10-9067-01f9115d805f">
+          <stateMoniker name="/01da3300-3d30-46b6-bd8c-51ba4f982dad/Measuring" />
+        </transition>
+      </successors>
+    </state>
+    <initialNode Id="0d7275e4-e43c-4c33-ba89-371e3fd9a3c8" name="InitialNode1">
+      <successors>
+        <transition Id="73db9e38-ba8e-41e6-bc8d-fe632b438c21" guard="GemesseneGeschwindigkeit == Geschwindigkeit" label="GemesseneGeschwindigkeit == Geschwindigkeit">
+          <stateMoniker name="/01da3300-3d30-46b6-bd8c-51ba4f982dad/Measuring" />
+        </transition>
+      </successors>
+    </initialNode>
+  </states>
+  <variables>
+    <programGraphHasVariables Id="2160d3d2-a89a-4197-9b65-0c6f7fed7838">
+      <variable Id="6e5812ff-6800-48c4-a309-2b013aa741f7" name="GemesseneGeschwindigkeit" range="0..15" />
+    </programGraphHasVariables>
+  </variables>
+  <importedVariables>
+    <programGraphHasImportedVariables Id="d9ae6482-5246-4473-84a8-c487020a0c11">
+      <importedVariable Id="7de6395c-75c0-4c2b-b97c-becbd891bd31" name="UmgebungZug.Geschwindigkeit" range="0..10" />
+    </programGraphHasImportedVariables>
+  </importedVariables>
+</programGraph>

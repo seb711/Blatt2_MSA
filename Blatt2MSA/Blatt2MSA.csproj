@@ -5,4 +5,20 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Update="NuSMV1.smv">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>NuSMV1.tt</DependentUpon>
+    </None>
+    <None Update="NuSMV1.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>NuSMV1.smv</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
 </Project>

@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="007c516e-f4af-49ad-b995-70755386315b" name="HodometerPosition" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <state Id="1b9715fe-3aa3-412e-a7f1-52f857393fb3" name="Measuring">
+      <successors>
+        <transition Id="438bdcf6-d593-46fc-bad1-e4430eaa1b3b" guard="GemessenePosition - Position &lt; 5" action="GemessenePosition := GemessenePosition + 1" label="GemessenePosition - Position &lt; 5 // GemessenePosition := GemessenePosition + 1" precondition="auto">
+          <stateMoniker name="/007c516e-f4af-49ad-b995-70755386315b/Measuring" />
+        </transition>
+        <transition Id="babd479f-c9fd-4f62-80e3-06d2524c941c" guard="GemessenePosition - Position &gt; -5" action="GemessenePosition := GemessenePosition - 1" label="GemessenePosition - Position &gt; -5 // GemessenePosition := GemessenePosition - 1" precondition="auto">
+          <stateMoniker name="/007c516e-f4af-49ad-b995-70755386315b/Measuring" />
+        </transition>
+        <transition Id="46a01cf5-6597-4c91-b0b0-23f975a8c860">
+          <stateMoniker name="/007c516e-f4af-49ad-b995-70755386315b/Measuring" />
+        </transition>
+      </successors>
+    </state>
+    <initialNode Id="6c9ec58e-bd8f-49c4-9dd6-babfd18f238e" name="InitialNode1">
+      <successors>
+        <transition Id="b11c28f4-cbfd-430a-91a7-dbe53bfe211a" guard="Position == GemessenePosition" label="Position == GemessenePosition">
+          <stateMoniker name="/007c516e-f4af-49ad-b995-70755386315b/Measuring" />
+        </transition>
+      </successors>
+    </initialNode>
+  </states>
+  <variables>
+    <programGraphHasVariables Id="972824a9-f0b3-4510-9cd8-8bd6104cd146">
+      <variable Id="b7385354-5eab-4098-b7a1-58d2f72ec248" name="GemessenePosition" range="0..105" />
+    </programGraphHasVariables>
+  </variables>
+  <importedVariables>
+    <programGraphHasImportedVariables Id="08a5e3c8-36a7-4088-a837-176730bdf19d">
+      <importedVariable Id="ff40e933-3658-4aca-8e23-5e608b5772cc" name="UmgebungZug.Position" range="0..100" />
+    </programGraphHasImportedVariables>
+  </importedVariables>
+</programGraph>

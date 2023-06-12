@@ -27,9 +27,6 @@
     </initialNode>
   </states>
   <variables>
-    <programGraphHasVariables Id="6e7f746d-e838-4a4e-8990-24a6bdf39a8b">
-      <variable Id="fe431c37-0dac-407d-a742-16eae3f3a63b" name="Geschwindigkeit" range="0..20" />
-    </programGraphHasVariables>
     <programGraphHasVariables Id="24ee2b3e-99c2-4c33-aa4d-a46e3465a484">
       <variable Id="140ae230-310d-49ab-b67b-afc320d956eb" name="Bremsverzoegerung" range="1" />
     </programGraphHasVariables>
@@ -37,6 +34,9 @@
   <importedVariables>
     <programGraphHasImportedVariables Id="0f839c0f-791f-4abe-b7d4-503315e58cf2">
       <importedVariable Id="a764c2ee-eebd-4188-9020-c937edeffed6" name="Zugsteuerung.BremseFest" range="True, False" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="6cc99c07-caa6-416b-ac13-e31d9737659b">
+      <importedVariable Id="ba70d128-adc0-45f1-ae26-7a57ca9d9d41" name="UmgebungZug.Geschwindigkeit" range="0..10" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>
