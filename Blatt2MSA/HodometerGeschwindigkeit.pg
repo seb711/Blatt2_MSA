@@ -3,13 +3,7 @@
   <states>
     <state Id="fdffc2fc-1dd2-44d5-a85f-0376a436aff5" name="Measuring">
       <successors>
-        <transition Id="c1426e01-ca98-463f-8e96-f1a4bcb00013" guard="GemesseneGeschwindigkeit - Geschwindigkeit &lt; 5" action="GemesseneGeschwindigkeit := GemesseneGeschwindigkeit + 1" label="GemesseneGeschwindigkeit - Geschwindigkeit &lt; 5 // GemesseneGeschwindigkeit := GemesseneGeschwindigkeit + 1" precondition="auto">
-          <stateMoniker name="/01da3300-3d30-46b6-bd8c-51ba4f982dad/Measuring" />
-        </transition>
-        <transition Id="b21dba69-768a-4f87-bbe2-6e8d647db595" guard="GemesseneGeschwindigkeit - Geschwindigkeit &gt; -5 &amp;&amp; GemesseneGeschwindigkeit &gt; 0" action="GemesseneGeschwindigkeit := GemesseneGeschwindigkeit - 1" label="GemesseneGeschwindigkeit - Geschwindigkeit &gt; -5 &amp;&amp; GemesseneGeschwindigkeit &gt; 0 // GemesseneGeschwindigkeit := GemesseneGeschwindigkeit - 1" precondition="auto">
-          <stateMoniker name="/01da3300-3d30-46b6-bd8c-51ba4f982dad/Measuring" />
-        </transition>
-        <transition Id="cab36b5a-743a-4b10-9067-01f9115d805f">
+        <transition Id="cab36b5a-743a-4b10-9067-01f9115d805f" action="GemesseneGeschwindigkeit:=Geschwindigkeit" label="// GemesseneGeschwindigkeit:=Geschwindigkeit" precondition="auto">
           <stateMoniker name="/01da3300-3d30-46b6-bd8c-51ba4f982dad/Measuring" />
         </transition>
       </successors>

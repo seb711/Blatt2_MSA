@@ -2,4 +2,8 @@
 <#@ output encoding="us-ascii" extension=".smv" #>
 <#@ assembly Name="Safety.ProgramGraphDsl.dll" #>
 <#=  TransformToNuSMV() #>
---LTLSPEC G(1==1)
+LTLSPEC (F v.V_Zugsteuerung = L_EMER_STOP ) -> (F v.V_Geschwindigkeit = 0)
+LTLSPEC (F v.V_Zugsteuerung = L_AP_PASSED) -> (F v.V_Schranke = L_Geschlossen)
+LTLSPEC G ((v.V_Zugsteuerung = L_BU_PASSING) -> (v.V_Schranke = L_Geschlossen))
+LTLSPEC G(v.V_ZugSensor = L_Blocked -> v.V_Schranke = L_Geschlossen | v.V_time > 20)
+LTLSPEC G( (v.V_Bremse != L_Geschlossen) U (v.V_Position >= ((55 - 1) - ((v.V_Geschwindigkeit * v.V_Geschwindigkeit) / (2 * v.V_Bremsverzoegerung)))))

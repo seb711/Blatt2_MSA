@@ -3,10 +3,10 @@
   <states>
     <state Id="696d2e8f-9ff7-403e-adb2-7ce909f73470" name="Moving">
       <successors>
-        <transition Id="1f3502c3-964a-4fa5-b11e-5e2a1a047c03" action="Position:=Position+Geschwindigkeit | Geschwindigkeit:=Geschwindigkeit-Bremsverzoegerung" label="// Position:=Position+Geschwindigkeit | Geschwindigkeit:=Geschwindigkeit-Bremsverzoegerung" precondition="auto">
+        <transition Id="1f3502c3-964a-4fa5-b11e-5e2a1a047c03" guard="Bremse == Geschlossen" action="Position:=Position+Geschwindigkeit | Geschwindigkeit:=Geschwindigkeit-Bremsverzoegerung" label="Bremse == Geschlossen // Position:=Position+Geschwindigkeit | Geschwindigkeit:=Geschwindigkeit-Bremsverzoegerung" precondition="auto">
           <stateMoniker name="/ce9293e8-a7ce-4fb8-8ccd-628c598d3de2/Moving" />
         </transition>
-        <transition Id="641bf596-7803-4ef9-a26f-f65822384559" guard="Bremse==Geschlossen" action="Position:=Position+Geschwindigkeit | Geschwindigkeit:=Geschwindigkeit" label="Bremse==Geschlossen // Position:=Position+Geschwindigkeit | Geschwindigkeit:=Geschwindigkeit" precondition="auto">
+        <transition Id="641bf596-7803-4ef9-a26f-f65822384559" guard="Bremse==Offen" action="Position:=Position+Geschwindigkeit | Geschwindigkeit:=Geschwindigkeit" label="Bremse==Offen // Position:=Position+Geschwindigkeit | Geschwindigkeit:=Geschwindigkeit" precondition="auto">
           <stateMoniker name="/ce9293e8-a7ce-4fb8-8ccd-628c598d3de2/Moving" />
         </transition>
       </successors>
@@ -29,7 +29,7 @@
   </variables>
   <importedVariables>
     <programGraphHasImportedVariables Id="e79b6b5a-eee0-4da3-baaf-c1043231c393">
-      <importedVariable Id="42331787-f9a6-4fc7-a7ee-f1f48970d24b" name="Bremse.Bremsverzoegerung" range="1" />
+      <importedVariable Id="42331787-f9a6-4fc7-a7ee-f1f48970d24b" name="Bremse.Bremsverzoegerung" range="5" />
     </programGraphHasImportedVariables>
     <programGraphHasImportedVariables Id="a0eb6216-e2e5-4294-b1b6-7685c107658f">
       <importedVariable Id="cca9ad29-0883-4db7-a543-182171737111" name="Bremse" range="Offen, Geschlossen" />

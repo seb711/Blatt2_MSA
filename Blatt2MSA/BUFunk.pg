@@ -45,7 +45,7 @@
   </comments>
   <importedVariables>
     <programGraphHasImportedVariables Id="8067ed6c-af16-4399-abb0-2baad9e50aba">
-      <importedVariable Id="44369440-6c2b-40f6-81b8-38748f1ea19e" name="Zugfunkmodul" range="IDLE, EP_SENT, EP_DELAY, AP_DELAY, AP_SENT, AP_ACK_WAIT, AP_WAIT" />
+      <importedVariable Id="44369440-6c2b-40f6-81b8-38748f1ea19e" name="Zugfunkmodul" range="IDLE, EP_SENT, EP_DELAY, AP_DELAY, AP_SENT, AP_ACK, AP_WAIT" />
     </programGraphHasImportedVariables>
     <programGraphHasImportedVariables Id="d9b11add-70ee-4574-9947-d73be7aafd15">
       <importedVariable Id="6b0a024d-35c9-43bf-9201-f4e58677bd60" name="Bahnuebergangssteuerung" range="Idle, BUSecuring, AP_Success, TrainIsPassing, OpenSchrankeBack, BUSecured" />

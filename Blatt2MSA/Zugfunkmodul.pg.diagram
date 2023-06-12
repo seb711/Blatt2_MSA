@@ -91,7 +91,7 @@
         <stateShapeMoniker Id="7479d05a-1e33-48b0-acac-d731bdf882de" />
       </nodes>
     </transitionConnector>
-    <transitionConnector Id="c41a7472-213c-4a24-ae15-5cb98b97d650" edgePoints="[(14.3125 : 7.625); (14.3125 : 8.32739361023641); (5.375 : 8.32739361023641); (5.375 : 3.75)]" manuallyRouted="true" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <transitionConnector Id="c41a7472-213c-4a24-ae15-5cb98b97d650" edgePoints="[(14.3125 : 7.625); (14.3125 : 8.32739361023641); (5.375 : 8.32739361023641); (5.375 : 3.75)]" manuallyRouted="true" fixedFrom="NotFixed" fixedTo="NotFixed">
       <transitionMoniker Id="843b7940-279f-4dc3-804b-683fb533d383" />
       <relativeChildShapes />
       <nodes>

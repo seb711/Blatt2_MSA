@@ -3,13 +3,7 @@
   <states>
     <state Id="1b9715fe-3aa3-412e-a7f1-52f857393fb3" name="Measuring">
       <successors>
-        <transition Id="438bdcf6-d593-46fc-bad1-e4430eaa1b3b" guard="GemessenePosition - Position &lt; 5" action="GemessenePosition := GemessenePosition + 1" label="GemessenePosition - Position &lt; 5 // GemessenePosition := GemessenePosition + 1" precondition="auto">
-          <stateMoniker name="/007c516e-f4af-49ad-b995-70755386315b/Measuring" />
-        </transition>
-        <transition Id="babd479f-c9fd-4f62-80e3-06d2524c941c" guard="GemessenePosition - Position &gt; -5" action="GemessenePosition := GemessenePosition - 1" label="GemessenePosition - Position &gt; -5 // GemessenePosition := GemessenePosition - 1" precondition="auto">
-          <stateMoniker name="/007c516e-f4af-49ad-b995-70755386315b/Measuring" />
-        </transition>
-        <transition Id="46a01cf5-6597-4c91-b0b0-23f975a8c860">
+        <transition Id="46a01cf5-6597-4c91-b0b0-23f975a8c860" action="GemessenePosition:=Position" label="// GemessenePosition:=Position" precondition="auto">
           <stateMoniker name="/007c516e-f4af-49ad-b995-70755386315b/Measuring" />
         </transition>
       </successors>

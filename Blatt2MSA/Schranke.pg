@@ -10,14 +10,14 @@
     </initialNode>
     <state Id="996be05b-3319-464a-a7a1-1c0ae1e166b4" name="Offen">
       <successors>
-        <transition Id="fe97df9e-119e-430b-bb27-a78390234769" guard="closeTrigger==True" action="closeTrigger := False" label="closeTrigger==True // closeTrigger := False" precondition="auto">
+        <transition Id="fe97df9e-119e-430b-bb27-a78390234769" guard="closeTrigger==True" label="closeTrigger==True" precondition="auto">
           <stateMoniker name="/d710ca68-bcd2-4a72-bbd7-ae3fd5bdafc2/Closing" />
         </transition>
       </successors>
     </state>
     <state Id="dfdc408c-60e1-4513-b686-2a0765a82d0b" name="Geschlossen">
       <successors>
-        <transition Id="10dad271-33aa-432b-9918-d3c292d4d94a" guard="openTrigger==True" action="openTrigger := False" label="openTrigger==True // openTrigger := False" precondition="auto">
+        <transition Id="10dad271-33aa-432b-9918-d3c292d4d94a" guard="openTrigger==True" label="openTrigger==True" precondition="auto">
           <stateMoniker name="/d710ca68-bcd2-4a72-bbd7-ae3fd5bdafc2/Opening" />
         </transition>
       </successors>
