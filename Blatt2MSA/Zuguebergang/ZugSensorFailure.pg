@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="caca5e5b-cf54-4ff7-ac36-aaaf87315551" name="ZugSensorFailure" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <state Id="da7a66f5-c267-4239-8ef8-643d92820864" name="No">
+      <successors>
+        <transition Id="d39547d0-543f-4b51-b1bf-f935c19ace2a">
+          <stateMoniker name="/caca5e5b-cf54-4ff7-ac36-aaaf87315551/Yes" />
+        </transition>
+        <transition Id="ad015504-b166-452f-bafe-e5615f0001b3">
+          <stateMoniker name="/caca5e5b-cf54-4ff7-ac36-aaaf87315551/No" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="aa7fea85-9611-4133-9c95-8e68939ab913" name="Yes">
+      <successors>
+        <transition Id="03c2759b-b799-4909-9e36-1ba1c832e504">
+          <stateMoniker name="/caca5e5b-cf54-4ff7-ac36-aaaf87315551/Yes" />
+        </transition>
+        <transition Id="80c4f5d3-570f-41f5-85f9-86f91825d8bf">
+          <stateMoniker name="/caca5e5b-cf54-4ff7-ac36-aaaf87315551/No" />
+        </transition>
+      </successors>
+    </state>
+    <initialNode Id="49f3c920-2056-4c32-acfd-697959cf0376" name="InitialNode1">
+      <successors>
+        <transition Id="6446687d-47ec-441b-8e56-89eebc6c6746">
+          <stateMoniker name="/caca5e5b-cf54-4ff7-ac36-aaaf87315551/No" />
+        </transition>
+      </successors>
+    </initialNode>
+  </states>
+</programGraph>

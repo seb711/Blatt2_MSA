@@ -10,11 +10,14 @@
     </initialNode>
     <state Id="770c5c1b-0cc2-4d87-b6c9-fc8920f4a637" name="Blocked">
       <successors>
-        <transition Id="4ab05b5d-0131-4d53-8dbb-d2c8ffe5468f" guard="GemessenePosition + #Zuglaenge &lt; #BU || time &gt; #timeout" label="GemessenePosition + #Zuglaenge &lt; #BU || time &gt; #timeout">
+        <transition Id="4ab05b5d-0131-4d53-8dbb-d2c8ffe5468f" guard="(GemessenePosition + #Zuglaenge &lt; #BU || time &gt; #timeout)  &amp;&amp; ZugSensorFailure==No" label="(GemessenePosition + #Zuglaenge &lt; #BU || time &gt; #timeout)  &amp;&amp; ZugSensorFailure==No">
           <stateMoniker name="/6b44886e-d51d-48e0-ba4e-7a4480f3d5a2/Free" />
         </transition>
-        <transition Id="273e505a-2b20-4467-bd8a-df8d508f3e46" action="time := time+1" label="// time := time+1" precondition="auto">
+        <transition Id="273e505a-2b20-4467-bd8a-df8d508f3e46" guard="ZugSensorFailure==No" action="time := time+1" label="ZugSensorFailure==No // time := time+1" precondition="auto">
           <stateMoniker name="/6b44886e-d51d-48e0-ba4e-7a4480f3d5a2/Blocked" />
+        </transition>
+        <transition Id="768543a7-f557-4de0-aa46-739376b68329" guard="ZugSensorFailure==Yes" label="ZugSensorFailure==Yes">
+          <stateMoniker name="/6b44886e-d51d-48e0-ba4e-7a4480f3d5a2/Free" />
         </transition>
       </successors>
     </state>
@@ -43,8 +46,11 @@
     </programGraphHasMacros>
   </macros>
   <importedVariables>
-    <programGraphHasImportedVariables Id="820f0fdb-f682-40ce-8319-09cc6717d864">
-      <importedVariable Id="1e9b7dac-3e49-4ac5-81be-77677a0f5d11" name="HodometerPosition.GemessenePosition" range="0..105" />
+    <programGraphHasImportedVariables Id="cde670ae-32fd-4b17-8de5-9f14592fef74">
+      <importedVariable Id="596db7ed-9edd-44ea-b309-3bc4a4353a5a" name="ZugSensorFailure" range="No, Yes" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="37dbd2bc-3580-423f-98a4-f1dc4f00a7b7">
+      <importedVariable Id="385cc769-e963-4198-8338-fabae5570971" name="HodometerPosition.GemessenePosition" range="0..175" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>

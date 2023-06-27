@@ -3,7 +3,10 @@
   <states>
     <state Id="fdffc2fc-1dd2-44d5-a85f-0376a436aff5" name="Measuring">
       <successors>
-        <transition Id="cab36b5a-743a-4b10-9067-01f9115d805f" action="GemesseneGeschwindigkeit:=Geschwindigkeit" label="// GemesseneGeschwindigkeit:=Geschwindigkeit" precondition="auto">
+        <transition Id="cab36b5a-743a-4b10-9067-01f9115d805f" guard="HodometerFailure==No" action="GemesseneGeschwindigkeit:=Geschwindigkeit" label="HodometerFailure==No // GemesseneGeschwindigkeit:=Geschwindigkeit" precondition="auto">
+          <stateMoniker name="/01da3300-3d30-46b6-bd8c-51ba4f982dad/Measuring" />
+        </transition>
+        <transition Id="49a7092f-d916-4404-9489-4e8e5fb962e0" guard="HodometerFailure==Yes" label="HodometerFailure==Yes">
           <stateMoniker name="/01da3300-3d30-46b6-bd8c-51ba4f982dad/Measuring" />
         </transition>
       </successors>
@@ -22,8 +25,11 @@
     </programGraphHasVariables>
   </variables>
   <importedVariables>
-    <programGraphHasImportedVariables Id="d9ae6482-5246-4473-84a8-c487020a0c11">
-      <importedVariable Id="7de6395c-75c0-4c2b-b97c-becbd891bd31" name="UmgebungZug.Geschwindigkeit" range="0..10" />
+    <programGraphHasImportedVariables Id="3aa61d1f-77cf-436c-b455-420f5fe1044d">
+      <importedVariable Id="92cb0b53-0300-4aa7-b93e-08d16dad319a" name="HodometerFailure" range="No, Yes" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="4ffca4e0-b043-4942-95a2-12032cf7cf11">
+      <importedVariable Id="2751bdf9-898f-4ce3-a291-5cddefaa92f3" name="UmgebungZug.Geschwindigkeit" range="0..6" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>

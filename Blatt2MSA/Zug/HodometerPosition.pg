@@ -3,7 +3,10 @@
   <states>
     <state Id="1b9715fe-3aa3-412e-a7f1-52f857393fb3" name="Measuring">
       <successors>
-        <transition Id="46a01cf5-6597-4c91-b0b0-23f975a8c860" action="GemessenePosition:=Position" label="// GemessenePosition:=Position" precondition="auto">
+        <transition Id="46a01cf5-6597-4c91-b0b0-23f975a8c860" guard="HodometerFailure==No" action="GemessenePosition:=Position" label="HodometerFailure==No // GemessenePosition:=Position" precondition="auto">
+          <stateMoniker name="/007c516e-f4af-49ad-b995-70755386315b/Measuring" />
+        </transition>
+        <transition Id="f4f04137-fe01-4e69-8835-cf203ded03e8" guard="HodometerFailure==Yes" label="HodometerFailure==Yes">
           <stateMoniker name="/007c516e-f4af-49ad-b995-70755386315b/Measuring" />
         </transition>
       </successors>
@@ -18,12 +21,15 @@
   </states>
   <variables>
     <programGraphHasVariables Id="972824a9-f0b3-4510-9cd8-8bd6104cd146">
-      <variable Id="b7385354-5eab-4098-b7a1-58d2f72ec248" name="GemessenePosition" range="0..105" />
+      <variable Id="b7385354-5eab-4098-b7a1-58d2f72ec248" name="GemessenePosition" range="0..175" />
     </programGraphHasVariables>
   </variables>
   <importedVariables>
-    <programGraphHasImportedVariables Id="08a5e3c8-36a7-4088-a837-176730bdf19d">
-      <importedVariable Id="ff40e933-3658-4aca-8e23-5e608b5772cc" name="UmgebungZug.Position" range="0..100" />
+    <programGraphHasImportedVariables Id="2cb0f14a-e81b-41e2-88c6-04cdc1123a10">
+      <importedVariable Id="d714485d-a833-434d-9602-125a91aa422c" name="HodometerFailure" range="No, Yes" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="b0f56268-4dde-4007-b9b6-3cb563cb4973">
+      <importedVariable Id="4b49dab6-8167-4173-95fd-6c1c5c806224" name="UmgebungZug.Position" range="0..170" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>

@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="3ad80f54-27fc-4224-8d63-8d511533dd69" name="BUFunkFailure" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <state Id="2cb8b890-193b-4949-b7a9-6806188501b0" name="No">
+      <successors>
+        <transition Id="0dbc78ec-546b-4283-b02b-8d11e7728885">
+          <stateMoniker name="/3ad80f54-27fc-4224-8d63-8d511533dd69/Yes" />
+        </transition>
+        <transition Id="2f94b1ff-b1b6-48c9-9def-18d3cb2c5b54">
+          <stateMoniker name="/3ad80f54-27fc-4224-8d63-8d511533dd69/No" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="16c7fa38-afa8-4508-bfb1-de3fe9779b33" name="Yes">
+      <successors>
+        <transition Id="dfd623be-3303-41e5-a2c4-f4c4649463ee">
+          <stateMoniker name="/3ad80f54-27fc-4224-8d63-8d511533dd69/No" />
+        </transition>
+        <transition Id="7dd93bc7-8519-4f60-bc26-063b75ff0cae">
+          <stateMoniker name="/3ad80f54-27fc-4224-8d63-8d511533dd69/Yes" />
+        </transition>
+      </successors>
+    </state>
+    <initialNode Id="ff80ead1-a897-4a49-9fda-67d3264b0ea4" name="InitialNode1">
+      <successors>
+        <transition Id="5a1620cb-9014-410f-91c6-adbf6fff6a86">
+          <stateMoniker name="/3ad80f54-27fc-4224-8d63-8d511533dd69/No" />
+        </transition>
+      </successors>
+    </initialNode>
+  </states>
+</programGraph>

@@ -3,49 +3,49 @@
   <states>
     <initialNode Id="34761003-a54e-4396-9244-c758495a7cce" name="InitialNode1">
       <successors>
-        <transition Id="674c8be8-03a5-433c-a254-a260a7f4f48c">
+        <transition Id="674c8be8-03a5-433c-a254-a260a7f4f48c" guard="closeTrigger == False &amp;&amp; openTrigger == True" label="closeTrigger == False &amp;&amp; openTrigger == True">
           <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/Idle" />
         </transition>
       </successors>
     </initialNode>
     <state Id="015290ab-e416-4742-8ae3-6af4f7dee7f9" name="Idle">
       <successors>
-        <transition Id="bec7c065-65a8-4905-8a06-f55a137b148d" guard="BUFunk==EPMsg" action="openTrigger:=False | closeTrigger:=True" label="BUFunk==EPMsg // openTrigger:=False | closeTrigger:=True" precondition="auto">
+        <transition Id="bec7c065-65a8-4905-8a06-f55a137b148d" guard="BUFunk==EPMsg &amp;&amp; BahnuebergangssteuerungFailure==No" action="openTrigger:=False | closeTrigger:=True" label="BUFunk==EPMsg &amp;&amp; BahnuebergangssteuerungFailure==No // openTrigger:=False | closeTrigger:=True" precondition="auto">
           <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/BUSecuring" />
         </transition>
       </successors>
     </state>
     <state Id="a17838ef-12da-472e-8ff9-ccb85125b20f" name="BUSecuring">
       <successors>
-        <transition Id="1733dd17-5b45-4bdc-83bf-386a8c5667f8" guard="SchrankenSensor==Geschlossen" label="SchrankenSensor==Geschlossen">
+        <transition Id="1733dd17-5b45-4bdc-83bf-386a8c5667f8" guard="SchrankenSensor==Geschlossen &amp;&amp;BahnuebergangssteuerungFailure==No" label="SchrankenSensor==Geschlossen &amp;&amp;BahnuebergangssteuerungFailure==No">
           <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/BUSecured" />
         </transition>
       </successors>
     </state>
     <state Id="f4e5c37b-a923-4ad0-af4d-a210ebee189f" name="AP_Success">
       <successors>
-        <transition Id="2ac47c01-6053-4ee4-a5ec-1eab1f85af41" guard="ZugSensor == Blocked" label="ZugSensor == Blocked">
+        <transition Id="2ac47c01-6053-4ee4-a5ec-1eab1f85af41" guard="ZugSensor == Blocked &amp;&amp; BahnuebergangssteuerungFailure==No" label="ZugSensor == Blocked &amp;&amp; BahnuebergangssteuerungFailure==No">
           <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/TrainIsPassing" />
         </transition>
       </successors>
     </state>
     <state Id="d0ce25be-a14c-4f7b-8994-ce8d8aead5e8" name="TrainIsPassing">
       <successors>
-        <transition Id="87d33ae0-ca5e-45c2-a950-2640bcf72c7e" guard="ZugSensor == Free" action="openTrigger := True | closeTrigger := False" label="ZugSensor == Free // openTrigger := True | closeTrigger := False" precondition="auto">
+        <transition Id="87d33ae0-ca5e-45c2-a950-2640bcf72c7e" guard="ZugSensor == Free &amp;&amp; BahnuebergangssteuerungFailure==No" action="openTrigger := True | closeTrigger := False" label="ZugSensor == Free &amp;&amp; BahnuebergangssteuerungFailure==No // openTrigger := True | closeTrigger := False" precondition="auto">
           <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/OpenSchrankeBack" />
         </transition>
       </successors>
     </state>
     <state Id="0e582aef-c618-4c41-9c1c-0d439d6885a2" name="OpenSchrankeBack">
       <successors>
-        <transition Id="fc78cbf2-d7fc-4bfb-bab4-1cd32b637e99" guard="SchrankenSensor == Offen" label="SchrankenSensor == Offen">
+        <transition Id="fc78cbf2-d7fc-4bfb-bab4-1cd32b637e99" guard="SchrankenSensor == Offen &amp;&amp; BahnuebergangssteuerungFailure==No" label="SchrankenSensor == Offen &amp;&amp; BahnuebergangssteuerungFailure==No">
           <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/Idle" />
         </transition>
       </successors>
     </state>
     <state Id="1f9bc608-32b9-4bc0-9418-27c474cbcbc2" name="BUSecured">
       <successors>
-        <transition Id="71df3344-9e5e-4de2-a033-a0f794e096ca" guard="BUFunk==APMsg" label="BUFunk==APMsg">
+        <transition Id="71df3344-9e5e-4de2-a033-a0f794e096ca" guard="BUFunk==APMsg &amp;&amp;BahnuebergangssteuerungFailure==No" label="BUFunk==APMsg &amp;&amp;BahnuebergangssteuerungFailure==No">
           <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/AP_Success" />
         </transition>
       </successors>
@@ -68,6 +68,9 @@
     </programGraphHasImportedVariables>
     <programGraphHasImportedVariables Id="1fd6f252-1e78-427a-adfc-8937bf31803f">
       <importedVariable Id="0ec7e734-747b-4ee7-a2ae-cef5bc401205" name="ZugSensor" range="Blocked, Free" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="47714174-51f7-45f8-ab72-93d4ff1ae848">
+      <importedVariable Id="e063f366-11d8-427e-b765-04534476f1dd" name="BahnuebergangssteuerungFailure" range="No, Yes" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>

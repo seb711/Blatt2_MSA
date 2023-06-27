@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="1cbb190b-9b46-4f6d-9845-ff77a1fd0afb" name="SchrankensensorFailure" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <state Id="e1fb8309-8e4d-469b-b74e-d7483b98aa3e" name="No">
+      <successors>
+        <transition Id="2134de80-01b3-41c7-ae00-7748387b26ff">
+          <stateMoniker name="/1cbb190b-9b46-4f6d-9845-ff77a1fd0afb/Yes" />
+        </transition>
+        <transition Id="36c40261-5695-4983-a4df-a02c1716ad72">
+          <stateMoniker name="/1cbb190b-9b46-4f6d-9845-ff77a1fd0afb/No" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="0fac731e-8d6d-47e7-a78a-2f90a3aad68f" name="Yes">
+      <successors>
+        <transition Id="abb81030-43d6-45ca-bd02-086e4ac91a12">
+          <stateMoniker name="/1cbb190b-9b46-4f6d-9845-ff77a1fd0afb/Yes" />
+        </transition>
+        <transition Id="42250c98-5d76-45ff-9727-b959bf36bd60">
+          <stateMoniker name="/1cbb190b-9b46-4f6d-9845-ff77a1fd0afb/No" />
+        </transition>
+      </successors>
+    </state>
+    <initialNode Id="2e332267-6745-4367-ab41-b53b5c013aa9" name="InitialNode1">
+      <successors>
+        <transition Id="d0637e58-9c13-476a-8c4f-44bdb90777e5">
+          <stateMoniker name="/1cbb190b-9b46-4f6d-9845-ff77a1fd0afb/No" />
+        </transition>
+      </successors>
+    </initialNode>
+  </states>
+</programGraph>

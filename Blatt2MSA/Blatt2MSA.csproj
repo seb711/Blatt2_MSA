@@ -15,6 +15,15 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>NuSMV1.smv</LastGenOutput>
     </None>
+    <None Update="NuSMV_failure.smv">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>NuSMV_failure.tt</DependentUpon>
+    </None>
+    <None Update="NuSMV_failure.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>NuSMV_failure.smv</LastGenOutput>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

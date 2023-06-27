@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="13366a3e-a7b6-460b-a2b8-e09eb5070dc7" name="BremseFailure" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <state Id="9ba561d3-e7b4-4bf3-9aa2-ce72bbf8714a" name="No">
+      <successors>
+        <transition Id="f4917618-a77f-4af4-8962-c5503fc5dc7c">
+          <stateMoniker name="/13366a3e-a7b6-460b-a2b8-e09eb5070dc7/Yes" />
+        </transition>
+        <transition Id="85ccb289-6b96-4971-9d74-3bfa2df88500">
+          <stateMoniker name="/13366a3e-a7b6-460b-a2b8-e09eb5070dc7/No" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="bb40eca4-d950-48e6-9a60-c1829fe081cb" name="Yes">
+      <successors>
+        <transition Id="568eca53-13d3-4375-b4ce-7783dc1318a4">
+          <stateMoniker name="/13366a3e-a7b6-460b-a2b8-e09eb5070dc7/Yes" />
+        </transition>
+      </successors>
+    </state>
+    <initialNode Id="a9afc83b-88cb-40ba-8bd2-3d6108f68f4e" name="InitialNode1">
+      <successors>
+        <transition Id="85890fcd-48d7-4c4d-87a7-8c6201e0b86d">
+          <stateMoniker name="/13366a3e-a7b6-460b-a2b8-e09eb5070dc7/No" />
+        </transition>
+      </successors>
+    </initialNode>
+  </states>
+</programGraph>

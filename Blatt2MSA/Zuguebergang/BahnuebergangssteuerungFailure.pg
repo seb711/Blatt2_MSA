@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="0a1ca920-0c1e-45e9-b49b-7308d4f631d5" name="BahnuebergangssteuerungFailure" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <state Id="64aa2758-950e-456e-a3c0-98d6e449a2fe" name="No">
+      <successors>
+        <transition Id="4cf1d26a-46db-4d9f-8c35-02607b5b0632">
+          <stateMoniker name="/0a1ca920-0c1e-45e9-b49b-7308d4f631d5/Yes" />
+        </transition>
+        <transition Id="d67b975a-3019-4aa4-b087-1922e0e0b562">
+          <stateMoniker name="/0a1ca920-0c1e-45e9-b49b-7308d4f631d5/No" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="89019984-9739-4bc3-854b-fe5186e295c8" name="Yes">
+      <successors>
+        <transition Id="9c735533-a6fa-4e8f-aaad-9ce5855155e0">
+          <stateMoniker name="/0a1ca920-0c1e-45e9-b49b-7308d4f631d5/No" />
+        </transition>
+        <transition Id="1982e631-4564-4968-bd74-84d66861a13c">
+          <stateMoniker name="/0a1ca920-0c1e-45e9-b49b-7308d4f631d5/Yes" />
+        </transition>
+      </successors>
+    </state>
+    <initialNode Id="c0b6d9cf-7c8c-4542-a825-deb3992619f5" name="InitialNode1">
+      <successors>
+        <transition Id="4c376d55-c1b5-4f2d-b32c-4762df6ef350">
+          <stateMoniker name="/0a1ca920-0c1e-45e9-b49b-7308d4f631d5/No" />
+        </transition>
+      </successors>
+    </initialNode>
+  </states>
+</programGraph>

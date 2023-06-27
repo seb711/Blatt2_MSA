@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="c2f3456e-e84b-41a3-ab3f-dea630182356" name="SchrankenSensor" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <initialNode Id="6393b9a7-05ec-48b3-afdf-20d68d3ada3b" name="InitialNode1">
+      <successors>
+        <transition Id="9b9684ef-465c-4daa-9b48-1fdd3e4e8d73">
+          <stateMoniker name="/c2f3456e-e84b-41a3-ab3f-dea630182356/InTransit" />
+        </transition>
+      </successors>
+    </initialNode>
+    <state Id="ea896fa0-a75e-4724-83d7-97ef798d6b38" name="Offen">
+      <successors>
+        <transition Id="5afa859f-5e3d-48c1-9694-0a2be2f376bd" guard="Schranke == Opening &amp;&amp; SchrankensensorFailure==No" label="Schranke == Opening &amp;&amp; SchrankensensorFailure==No">
+          <stateMoniker name="/c2f3456e-e84b-41a3-ab3f-dea630182356/InTransit" />
+        </transition>
+        <transition Id="bc8b4f32-098e-4265-8da1-9be1715aa1e0" guard="SchrankensensorFailure==Yes" label="SchrankensensorFailure==Yes">
+          <stateMoniker name="/c2f3456e-e84b-41a3-ab3f-dea630182356/Geschlossen" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="58a912ea-122e-4eee-b207-e9545935e852" name="Geschlossen">
+      <successors>
+        <transition Id="864e9776-b986-4eee-9493-498b93b99380" guard="Schranke == Closing &amp;&amp; SchrankensensorFailure==No" label="Schranke == Closing &amp;&amp; SchrankensensorFailure==No">
+          <stateMoniker name="/c2f3456e-e84b-41a3-ab3f-dea630182356/InTransit" />
+        </transition>
+        <transition Id="0f6bb37a-2d12-4df1-a925-2d64062b3a62" guard="SchrankensensorFailure==Yes" label="SchrankensensorFailure==Yes">
+          <stateMoniker name="/c2f3456e-e84b-41a3-ab3f-dea630182356/Geschlossen" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="4f5d012d-a1d4-4028-bcae-27d934e88667" name="InTransit">
+      <successors>
+        <transition Id="607c7e31-0385-4eee-acdd-a47808ef80ad" guard="Schranke == Geschlossen &amp;&amp; SchrankensensorFailure==No" label="Schranke == Geschlossen &amp;&amp; SchrankensensorFailure==No">
+          <stateMoniker name="/c2f3456e-e84b-41a3-ab3f-dea630182356/Geschlossen" />
+        </transition>
+        <transition Id="e3b6cf9e-8a04-47f7-bb90-452a1a380647" guard="Schranke == Offen &amp;&amp; SchrankensensorFailure==No" label="Schranke == Offen &amp;&amp; SchrankensensorFailure==No">
+          <stateMoniker name="/c2f3456e-e84b-41a3-ab3f-dea630182356/Offen" />
+        </transition>
+        <transition Id="e43c6ddc-8053-450b-8c8f-7485b82b41bd" guard="SchrankensensorFailure==Yes" label="SchrankensensorFailure==Yes">
+          <stateMoniker name="/c2f3456e-e84b-41a3-ab3f-dea630182356/Geschlossen" />
+        </transition>
+      </successors>
+    </state>
+  </states>
+  <importedVariables>
+    <programGraphHasImportedVariables Id="b654d422-0a16-4d36-b9cb-514a4498ce42">
+      <importedVariable Id="c41ad764-d5e8-4604-b841-41cc820d6ad3" name="Schranke" range="Offen, Geschlossen, Opening, Closing" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="864fce92-b8d8-4dfb-b248-de828ccd0f3c">
+      <importedVariable Id="602d729e-e2e6-4102-ab08-ed5069d2ebcd" name="SchrankensensorFailure" range="No, Yes" />
+    </programGraphHasImportedVariables>
+  </importedVariables>
+</programGraph>

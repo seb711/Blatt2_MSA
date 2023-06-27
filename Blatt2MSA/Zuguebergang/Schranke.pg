@@ -10,8 +10,11 @@
     </initialNode>
     <state Id="996be05b-3319-464a-a7a1-1c0ae1e166b4" name="Offen">
       <successors>
-        <transition Id="fe97df9e-119e-430b-bb27-a78390234769" guard="closeTrigger==True" label="closeTrigger==True" precondition="auto">
+        <transition Id="fe97df9e-119e-430b-bb27-a78390234769" guard="closeTrigger==True &amp;&amp; SchrankeFailure==No" label="closeTrigger==True &amp;&amp; SchrankeFailure==No" precondition="auto">
           <stateMoniker name="/d710ca68-bcd2-4a72-bbd7-ae3fd5bdafc2/Closing" />
+        </transition>
+        <transition Id="6ef1d030-3dd0-481b-997e-140828832c89" guard="SchrankeFailure==Yes" label="SchrankeFailure==Yes">
+          <stateMoniker name="/d710ca68-bcd2-4a72-bbd7-ae3fd5bdafc2/Offen" />
         </transition>
       </successors>
     </state>
@@ -20,32 +23,41 @@
         <transition Id="10dad271-33aa-432b-9918-d3c292d4d94a" guard="openTrigger==True" label="openTrigger==True" precondition="auto">
           <stateMoniker name="/d710ca68-bcd2-4a72-bbd7-ae3fd5bdafc2/Opening" />
         </transition>
+        <transition Id="c312dbb6-7a0e-44c6-875b-2df3d64e3a05" guard="SchrankeFailure==Yes" label="SchrankeFailure==Yes">
+          <stateMoniker name="/d710ca68-bcd2-4a72-bbd7-ae3fd5bdafc2/Geschlossen" />
+        </transition>
       </successors>
     </state>
     <state Id="c59560a2-fa12-4c55-9ff7-c003ac97df5b" name="Opening">
       <successors>
-        <transition Id="4d8a80a9-4979-4686-8f4a-2220015cd2c5" guard="pos &gt; #openPos" action="pos:=pos - #Geschwindigkeit" label="pos &gt; #openPos // pos:=pos - #Geschwindigkeit" precondition="pos &gt; #openPos">
+        <transition Id="4d8a80a9-4979-4686-8f4a-2220015cd2c5" guard="pos &gt; #openPos &amp;&amp; SchrankeFailure==No" action="pos:=pos - #Geschwindigkeit" label="pos &gt; #openPos &amp;&amp; SchrankeFailure==No // pos:=pos - #Geschwindigkeit" precondition="pos &gt; #openPos">
           <stateMoniker name="/d710ca68-bcd2-4a72-bbd7-ae3fd5bdafc2/Opening" />
         </transition>
         <transition Id="a79a2a0c-b6fa-4be2-883c-d749d05e7a13" guard="pos == #openPos" label="pos == #openPos">
           <stateMoniker name="/d710ca68-bcd2-4a72-bbd7-ae3fd5bdafc2/Offen" />
         </transition>
+        <transition Id="b7aaeec2-ca72-4cc8-84a7-426920bda730" guard="SchrankeFailure==Yes" label="SchrankeFailure==Yes">
+          <stateMoniker name="/d710ca68-bcd2-4a72-bbd7-ae3fd5bdafc2/Opening" />
+        </transition>
       </successors>
     </state>
     <state Id="c587f035-0459-4e5f-909c-42270f114ccc" name="Closing">
       <successors>
-        <transition Id="89b0ba94-5d5f-43bb-8a96-89bc83045c9d" guard="pos &lt; #closedPos" action="pos:=pos + 1" label="pos &lt; #closedPos // pos:=pos + 1" precondition="pos &lt; #closedPos">
+        <transition Id="89b0ba94-5d5f-43bb-8a96-89bc83045c9d" guard="pos &lt; #closedPos &amp;&amp; SchrankeFailure==No" action="pos:=pos + 1" label="pos &lt; #closedPos &amp;&amp; SchrankeFailure==No // pos:=pos + 1" precondition="pos &lt; #closedPos">
           <stateMoniker name="/d710ca68-bcd2-4a72-bbd7-ae3fd5bdafc2/Closing" />
         </transition>
         <transition Id="c4075ddc-9f16-490d-9798-027421261450" guard="pos == #closedPos" label="pos == #closedPos">
           <stateMoniker name="/d710ca68-bcd2-4a72-bbd7-ae3fd5bdafc2/Geschlossen" />
+        </transition>
+        <transition Id="da696109-89a3-4992-bfd0-0caaa04f39f6" guard="SchrankeFailure==Yes" label="SchrankeFailure==Yes">
+          <stateMoniker name="/d710ca68-bcd2-4a72-bbd7-ae3fd5bdafc2/Closing" />
         </transition>
       </successors>
     </state>
   </states>
   <variables>
     <programGraphHasVariables Id="f4b7d93b-82ce-4425-9e9d-f9691c278777">
-      <variable Id="04a9739b-1f8a-467c-b63e-f04f65e43fa1" name="pos" range="0..10" />
+      <variable Id="04a9739b-1f8a-467c-b63e-f04f65e43fa1" name="pos" range="0..3" />
     </programGraphHasVariables>
   </variables>
   <macros>
@@ -53,7 +65,7 @@
       <macro Id="b09ab69b-9954-440d-8f69-4fcf6624fa21" name="#openPos" body="0" />
     </programGraphHasMacros>
     <programGraphHasMacros Id="ea62e19c-00dc-4688-ac49-5dfc643eee8f">
-      <macro Id="3d85356f-fc9e-4302-b1a8-50affc5cd1b0" name="#closedPos" body="10" />
+      <macro Id="3d85356f-fc9e-4302-b1a8-50affc5cd1b0" name="#closedPos" body="3" />
     </programGraphHasMacros>
     <programGraphHasMacros Id="aa812bfc-7dc3-4567-80a2-452078b2668d">
       <macro Id="f234c26f-facf-4bdb-bb4e-61c1fd32913d" name="#Geschwindigkeit" body="1" />
@@ -65,6 +77,9 @@
     </programGraphHasImportedVariables>
     <programGraphHasImportedVariables Id="0ce22456-a2fc-40ee-8f36-7267a1e71ac7">
       <importedVariable Id="5db09d38-4c98-4bb0-ad32-b2ebdd137338" name="Bahnuebergangssteuerung.closeTrigger" range="True, False" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="a8203c5a-21ab-4c51-857c-436c933b928a">
+      <importedVariable Id="e2ae6e50-ac1c-47d0-b197-0a1fd16ff65e" name="SchrankeFailure" range="No, Yes" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>

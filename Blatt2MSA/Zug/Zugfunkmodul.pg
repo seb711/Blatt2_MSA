@@ -10,49 +10,49 @@
     </initialNode>
     <state Id="68dbf383-25d5-4e14-9c12-6435748851e0" name="IDLE">
       <successors>
-        <transition Id="ea922b19-beba-49ab-b83e-7461ae3020a5" guard="ZugFunkSender==EPSenden" label="ZugFunkSender==EPSenden" precondition="auto">
+        <transition Id="ea922b19-beba-49ab-b83e-7461ae3020a5" guard="ZugFunkSender==EPSenden &amp;&amp; ZugfunkmodulFailure==No" label="ZugFunkSender==EPSenden &amp;&amp; ZugfunkmodulFailure==No" precondition="auto">
           <stateMoniker name="/bb4e6557-2bc8-416f-977a-3ac2d0439a81/EP_DELAY" />
         </transition>
       </successors>
     </state>
     <state Id="483543b7-cbf0-451e-8232-3cecbac7503e" name="EP_SENT">
       <successors>
-        <transition Id="65b1a014-2832-46b9-bc9d-f3ff81340c62">
+        <transition Id="65b1a014-2832-46b9-bc9d-f3ff81340c62" guard="ZugfunkmodulFailure==No" label="ZugfunkmodulFailure==No">
           <stateMoniker name="/bb4e6557-2bc8-416f-977a-3ac2d0439a81/AP_WAIT" />
         </transition>
       </successors>
     </state>
     <state Id="fc373251-9070-496a-b591-fb92e08fb548" name="EP_DELAY">
       <successors>
-        <transition Id="62909a53-8002-4fc7-89c6-184e922cd0af">
+        <transition Id="62909a53-8002-4fc7-89c6-184e922cd0af" guard="ZugfunkmodulFailure==No" label="ZugfunkmodulFailure==No">
           <stateMoniker name="/bb4e6557-2bc8-416f-977a-3ac2d0439a81/EP_SENT" />
         </transition>
       </successors>
     </state>
     <state Id="3a2f9ad2-3ce6-4337-8b92-cf780903a1b6" name="AP_DELAY">
       <successors>
-        <transition Id="32e6458d-7831-4dbd-932c-f2cbaf28b234">
+        <transition Id="32e6458d-7831-4dbd-932c-f2cbaf28b234" guard="ZugfunkmodulFailure==No" label="ZugfunkmodulFailure==No">
           <stateMoniker name="/bb4e6557-2bc8-416f-977a-3ac2d0439a81/AP_SENT" />
         </transition>
       </successors>
     </state>
     <state Id="934688ff-3447-4b0f-a882-1267d4e0be7e" name="AP_SENT">
       <successors>
-        <transition Id="bf020f61-b141-4711-9461-4fd053ace400" guard="BUFunk==AckSent" action="APAck:=True" label="BUFunk==AckSent // APAck:=True" precondition="auto">
+        <transition Id="bf020f61-b141-4711-9461-4fd053ace400" guard="BUFunk==AckSent &amp;&amp; ZugfunkmodulFailure==No" action="APAck:=True" label="BUFunk==AckSent &amp;&amp; ZugfunkmodulFailure==No // APAck:=True" precondition="auto">
           <stateMoniker name="/bb4e6557-2bc8-416f-977a-3ac2d0439a81/AP_ACK" />
         </transition>
       </successors>
     </state>
     <state Id="91004ee2-111d-426d-88d0-e264dcf11826" name="AP_ACK">
       <successors>
-        <transition Id="843b7940-279f-4dc3-804b-683fb533d383">
+        <transition Id="843b7940-279f-4dc3-804b-683fb533d383" guard="ZugfunkmodulFailure==No" label="ZugfunkmodulFailure==No">
           <stateMoniker name="/bb4e6557-2bc8-416f-977a-3ac2d0439a81/IDLE" />
         </transition>
       </successors>
     </state>
     <state Id="14ae70af-06b5-4b7e-8bf6-14ccf1f90aae" name="AP_WAIT">
       <successors>
-        <transition Id="66423551-803c-44f8-b091-e9858c1613cd" guard="ZugFunkSender==APSenden" action="APAck:=False" label="ZugFunkSender==APSenden // APAck:=False" precondition="auto">
+        <transition Id="66423551-803c-44f8-b091-e9858c1613cd" guard="ZugFunkSender==APSenden &amp;&amp; ZugfunkmodulFailure==No" action="APAck:=False" label="ZugFunkSender==APSenden &amp;&amp; ZugfunkmodulFailure==No // APAck:=False" precondition="auto">
           <stateMoniker name="/bb4e6557-2bc8-416f-977a-3ac2d0439a81/AP_DELAY" />
         </transition>
       </successors>
@@ -64,11 +64,14 @@
     </programGraphHasVariables>
   </variables>
   <importedVariables>
-    <programGraphHasImportedVariables Id="df98e7ed-6838-4b41-951a-ce197c0a50bc">
-      <importedVariable Id="4dec7dfd-06fb-4802-91f1-a7ab27a26345" name="Zugsteuerung.ZugFunkSender" range="EPSenden, APSenden" />
-    </programGraphHasImportedVariables>
     <programGraphHasImportedVariables Id="08c0bbc0-b1d4-419d-aeb9-ad5794f6154f">
       <importedVariable Id="4bcedd4b-c5b7-4046-98e4-9be5635d96a2" name="BUFunk" range="EPMsg, APMsg, DelayAck, Start, AckSent" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="6f12b4f3-0753-4753-baca-caff9b3e4fd0">
+      <importedVariable Id="e4b11d69-0618-429a-b9fa-fadd7897dec9" name="ZugfunkmodulFailure" range="No, Yes" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="b59f31ba-dc83-4162-835b-96659e4a0195">
+      <importedVariable Id="60cd9daf-4542-4a43-b10a-cd43058854ce" name="Zugsteuerung.ZugFunkSender" range="Null, EPSenden, APSenden" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>

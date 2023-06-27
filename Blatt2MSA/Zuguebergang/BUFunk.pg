@@ -10,15 +10,21 @@
     </initialNode>
     <state Id="5f5b4b95-349f-4780-8cd1-b9b9a8779ceb" name="EPMsg">
       <successors>
-        <transition Id="1e27d09a-62ce-4c35-b037-fcae81efb86c" guard="Zugfunkmodul == AP_SENT" label="Zugfunkmodul == AP_SENT">
+        <transition Id="1e27d09a-62ce-4c35-b037-fcae81efb86c" guard="Zugfunkmodul == AP_SENT &amp;&amp; BUFunkFailure == No" label="Zugfunkmodul == AP_SENT &amp;&amp; BUFunkFailure == No">
           <stateMoniker name="/b287af21-5fc7-4cd3-bb78-5318f0cc9c08/APMsg" />
+        </transition>
+        <transition Id="a2fdbc64-a7a9-431e-8ef2-69d7166769df" guard="BUFunkFailure == Yes" label="BUFunkFailure == Yes">
+          <stateMoniker name="/b287af21-5fc7-4cd3-bb78-5318f0cc9c08/AckSent" />
         </transition>
       </successors>
     </state>
     <state Id="6855793f-0a85-47ef-b6ad-6179f03076cd" name="APMsg">
       <successors>
-        <transition Id="bbd18710-11bf-4e5d-9d56-a66a4e6facbc" guard="Bahnuebergangssteuerung == AP_Success" label="Bahnuebergangssteuerung == AP_Success">
+        <transition Id="bbd18710-11bf-4e5d-9d56-a66a4e6facbc" guard="Bahnuebergangssteuerung == AP_Success &amp;&amp; BUFunkFailure == No" label="Bahnuebergangssteuerung == AP_Success &amp;&amp; BUFunkFailure == No">
           <stateMoniker name="/b287af21-5fc7-4cd3-bb78-5318f0cc9c08/DelayAck" />
+        </transition>
+        <transition Id="f8a9793b-b300-42eb-bfb3-02a66c89d804" guard="BUFunkFailure == Yes" label="BUFunkFailure == Yes">
+          <stateMoniker name="/b287af21-5fc7-4cd3-bb78-5318f0cc9c08/AckSent" />
         </transition>
       </successors>
     </state>
@@ -31,8 +37,11 @@
     </state>
     <state Id="b998651e-6ab4-45de-bcda-b330fce6e0d6" name="Start">
       <successors>
-        <transition Id="5d7b7916-3e87-469e-a50a-3f005544bb33" guard="Zugfunkmodul == EP_SENT" label="Zugfunkmodul == EP_SENT">
+        <transition Id="5d7b7916-3e87-469e-a50a-3f005544bb33" guard="Zugfunkmodul == EP_SENT &amp;&amp; BUFunkFailure == No" label="Zugfunkmodul == EP_SENT &amp;&amp; BUFunkFailure == No">
           <stateMoniker name="/b287af21-5fc7-4cd3-bb78-5318f0cc9c08/EPMsg" />
+        </transition>
+        <transition Id="82682edd-b295-4525-9713-0ed5c668c148" guard="BUFunkFailure == Yes" label="BUFunkFailure == Yes">
+          <stateMoniker name="/b287af21-5fc7-4cd3-bb78-5318f0cc9c08/AckSent" />
         </transition>
       </successors>
     </state>
@@ -49,6 +58,9 @@
     </programGraphHasImportedVariables>
     <programGraphHasImportedVariables Id="d9b11add-70ee-4574-9947-d73be7aafd15">
       <importedVariable Id="6b0a024d-35c9-43bf-9201-f4e58677bd60" name="Bahnuebergangssteuerung" range="Idle, BUSecuring, AP_Success, TrainIsPassing, OpenSchrankeBack, BUSecured" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="c98d05c7-898b-47a8-89a0-55c91dd0d115">
+      <importedVariable Id="00fd646f-9115-48f4-87f6-52a03b68af0f" name="BUFunkFailure" range="No, Yes" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>

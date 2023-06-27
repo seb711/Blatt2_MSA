@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="08277c1d-125b-4152-827a-a8d3855469c9" name="ZugsteuerungFailure" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <state Id="1ee3ed5b-ad9c-44bf-850e-e3eb0b235f38" name="No">
+      <successors>
+        <transition Id="2d538525-60ca-4414-ac95-33ddb401b21b">
+          <stateMoniker name="/08277c1d-125b-4152-827a-a8d3855469c9/Yes" />
+        </transition>
+        <transition Id="8873e7c3-3775-4cce-bbd9-fd94a38ce53a">
+          <stateMoniker name="/08277c1d-125b-4152-827a-a8d3855469c9/No" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="e1ca7168-65c2-4482-ab01-4c1ff1b5026f" name="Yes">
+      <successors>
+        <transition Id="cc1521d5-98c5-4dcd-a330-8ef62c5ba413">
+          <stateMoniker name="/08277c1d-125b-4152-827a-a8d3855469c9/Yes" />
+        </transition>
+        <transition Id="cad0f90b-fccd-4818-8384-1f1997a51aad">
+          <stateMoniker name="/08277c1d-125b-4152-827a-a8d3855469c9/No" />
+        </transition>
+      </successors>
+    </state>
+    <initialNode Id="46b50282-b935-4952-b59d-c28f7df4d978" name="InitialNode1">
+      <successors>
+        <transition Id="4e1cfade-9b00-4c37-87ca-a08fdceb8513">
+          <stateMoniker name="/08277c1d-125b-4152-827a-a8d3855469c9/No" />
+        </transition>
+      </successors>
+    </initialNode>
+  </states>
+</programGraph>
