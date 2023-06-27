@@ -20,6 +20,9 @@
         <transition Id="bbd18710-11bf-4e5d-9d56-a66a4e6facbc" guard="Bahnuebergangssteuerung == AP_Success" label="Bahnuebergangssteuerung == AP_Success">
           <stateMoniker name="/b287af21-5fc7-4cd3-bb78-5318f0cc9c08/DelayAck" />
         </transition>
+        <transition Id="8fb6ab50-0454-4038-a775-c8848a429239">
+          <stateMoniker name="/b287af21-5fc7-4cd3-bb78-5318f0cc9c08/DelayAck" />
+        </transition>
       </successors>
     </state>
     <state Id="800baed9-4fcb-4fb2-98bb-390d77998a49" name="DelayAck">
@@ -39,8 +42,14 @@
     <state Id="d4a9757d-4012-49e7-84d8-833a2b11e769" name="AckSent" />
   </states>
   <comments>
-    <programGraphHasComments Id="d0288c43-52a4-44d2-8d0e-68d1e0f06781">
-      <comment Id="4c9792fa-7abf-46a1-abfc-70e63060d36d" text="?? How do we know that the Zug already read our Ack so that we can go back to the start position ?  Maybe just connect AckSent to EPMsg directly again?" />
+    <programGraphHasComments Id="32db27c1-eb25-473f-ae06-bde591892fa2">
+      <comment Id="1fc90f5f-428c-4abd-a570-f689d0312fd8" text="Spontaneous guardless transition from APMsg to DelayAck to model the FailureSecured error">
+        <states>
+          <commentReferencesStates Id="62aae964-9ae4-4550-b1dc-f301303db921">
+            <stateMoniker name="/b287af21-5fc7-4cd3-bb78-5318f0cc9c08/DelayAck" />
+          </commentReferencesStates>
+        </states>
+      </comment>
     </programGraphHasComments>
   </comments>
   <importedVariables>

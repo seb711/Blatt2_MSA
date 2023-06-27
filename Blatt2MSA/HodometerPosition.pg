@@ -3,7 +3,7 @@
   <states>
     <state Id="1b9715fe-3aa3-412e-a7f1-52f857393fb3" name="Measuring">
       <successors>
-        <transition Id="46a01cf5-6597-4c91-b0b0-23f975a8c860" action="GemessenePosition:=Position" label="// GemessenePosition:=Position" precondition="auto">
+        <transition Id="46a01cf5-6597-4c91-b0b0-23f975a8c860" action="GemessenePosition:=Position + pAbweichung" label="// GemessenePosition:=Position + pAbweichung" precondition="auto">
           <stateMoniker name="/007c516e-f4af-49ad-b995-70755386315b/Measuring" />
         </transition>
       </successors>
@@ -24,6 +24,9 @@
   <importedVariables>
     <programGraphHasImportedVariables Id="08a5e3c8-36a7-4088-a837-176730bdf19d">
       <importedVariable Id="ff40e933-3658-4aca-8e23-5e608b5772cc" name="UmgebungZug.Position" range="0..100" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="a068d181-8e2f-45d4-9b52-1ed55bc5c245">
+      <importedVariable Id="3a153ee5-e0b7-42f4-95f2-7057d0e25e29" name="HodometerPositionsAbweichung.pAbweichung" range="-5..5" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>

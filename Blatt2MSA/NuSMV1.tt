@@ -17,3 +17,6 @@ LTLSPEC G((v.V_Bremse = L_Geschlossen) -> (F (v.V_Position <= 100 & v.V_Geschwin
 LTLSPEC  G((v.V_BUFunk = L_AckSent) -> (X v.V_APAck = L_True))
 LTLSPEC  F (  F v.V_Position >= (((55 - 1) - ((v.V_Geschwindigkeit * v.V_Geschwindigkeit) / (2 * v.V_Bremsverzoegerung))) - (2 * (2 * v.V_Geschwindigkeit))) & v.V_Schranke != L_Geschlossen )
 LTLSPEC  (((((55 - 1) - ((v.V_Geschwindigkeit * v.V_Geschwindigkeit) / (2 * v.V_Bremsverzoegerung))) - (2 * (2 * v.V_Geschwindigkeit))) - ((((55 - 1) - ((v.V_Geschwindigkeit * v.V_Geschwindigkeit) / (2 * v.V_Bremsverzoegerung))) - (2 * (2 * v.V_Geschwindigkeit))) - (v.V_Geschwindigkeit * (5 + 2)))) * 1 < (10 -0) * v.V_Geschwindigkeit)
+LTLSPEC (G v.V_Zugsteuerung != L_BU_PASSING )
+LTLSPEC (F v.V_Zugsteuerung = L_BU_PASSING )
+LTLSPEC G 1 = 2

@@ -83,10 +83,10 @@
       <importedVariable Id="5cca4007-0692-4c4f-b473-efc2695d12db" name="Zugfunkmodul.APAck" range="True, False" />
     </programGraphHasImportedVariables>
     <programGraphHasImportedVariables Id="b42c7203-cea0-4b91-a9ed-74ec708846f8">
-      <importedVariable Id="93c2debc-a5a9-441a-b471-2acb0ec71ad9" name="UmgebungZug.Geschwindigkeit" range="0..10" />
+      <importedVariable Id="93c2debc-a5a9-441a-b471-2acb0ec71ad9" name="UmgebungZug.Geschwindigkeit" range="0..5" />
     </programGraphHasImportedVariables>
-    <programGraphHasImportedVariables Id="58c69772-e0f4-463e-b2a4-558c71c4380e">
-      <importedVariable Id="01860c9e-b8e5-4231-a503-e219fa5bf812" name="Bremse.Bremsverzoegerung" range="5" />
+    <programGraphHasImportedVariables Id="4e9c80f8-1435-4a25-ae45-bb1f352c4cb6">
+      <importedVariable Id="fe106df9-3557-4bc8-921c-e5800afdabe2" name="Bremse.Bremsverzoegerung" range="1" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>

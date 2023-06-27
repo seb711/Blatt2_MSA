@@ -52,5 +52,21 @@
         <stateShapeMoniker Id="8b06432f-ccee-4740-84b7-c2c1260a0c27" />
       </nodes>
     </transitionConnector>
+    <transitionConnector Id="43a46421-1fa1-4573-b0aa-faa0627f1d94" edgePoints="[(6.625 : 5.375); (6.625 : 4.125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <transitionMoniker Id="f4b3f5a5-087e-4afd-b742-f5d00cf309cd" />
+      <relativeChildShapes />
+      <nodes>
+        <stateShapeMoniker Id="5e1185cd-a7ba-4da3-bc19-40cdcf9ab1c7" />
+        <stateShapeMoniker Id="8b06432f-ccee-4740-84b7-c2c1260a0c27" />
+      </nodes>
+    </transitionConnector>
+    <transitionConnector Id="83e6899b-a36a-49ce-8c11-5d5b0f2f969f" edgePoints="[(6.9375 : 4.125); (6.9375 : 5.375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <transitionMoniker Id="97d8833e-25c8-4d77-b9e7-245933868995" />
+      <relativeChildShapes />
+      <nodes>
+        <stateShapeMoniker Id="8b06432f-ccee-4740-84b7-c2c1260a0c27" />
+        <stateShapeMoniker Id="5e1185cd-a7ba-4da3-bc19-40cdcf9ab1c7" />
+      </nodes>
+    </transitionConnector>
   </nestedChildShapes>
 </programGraphDslDiagram>

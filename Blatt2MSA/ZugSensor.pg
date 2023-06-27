@@ -16,11 +16,17 @@
         <transition Id="273e505a-2b20-4467-bd8a-df8d508f3e46" action="time := time+1" label="// time := time+1" precondition="auto">
           <stateMoniker name="/6b44886e-d51d-48e0-ba4e-7a4480f3d5a2/Blocked" />
         </transition>
+        <transition Id="97d8833e-25c8-4d77-b9e7-245933868995">
+          <stateMoniker name="/6b44886e-d51d-48e0-ba4e-7a4480f3d5a2/Free" />
+        </transition>
       </successors>
     </state>
     <state Id="467a35c3-3975-4780-a755-0168c19a0215" name="Free">
       <successors>
         <transition Id="98105893-8992-4293-b87a-27eadabc2e19" guard="GemessenePosition&lt;#BU" action="time:=0" label="GemessenePosition&lt;#BU // time:=0" precondition="auto">
+          <stateMoniker name="/6b44886e-d51d-48e0-ba4e-7a4480f3d5a2/Blocked" />
+        </transition>
+        <transition Id="f4b3f5a5-087e-4afd-b742-f5d00cf309cd">
           <stateMoniker name="/6b44886e-d51d-48e0-ba4e-7a4480f3d5a2/Blocked" />
         </transition>
       </successors>

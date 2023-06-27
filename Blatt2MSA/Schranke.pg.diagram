@@ -74,7 +74,7 @@
         <stateShapeMoniker Id="cf36c7ed-e07b-4a4c-a7cc-ba17b1e80b1e" />
       </nodes>
     </transitionConnector>
-    <transitionConnector Id="c6daff41-2bc0-41b1-af6a-3717acdbed27" edgePoints="[(5.01701673076923 : 6.5); (5.01701673076923 : 4.625); (4.25 : 4.625)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <transitionConnector Id="c6daff41-2bc0-41b1-af6a-3717acdbed27" edgePoints="[(5.01701673076923 : 6.5); (5.01701673076923 : 4.625); (4.25 : 4.625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <transitionMoniker Id="a79a2a0c-b6fa-4be2-883c-d749d05e7a13" />
       <relativeChildShapes />
       <moveableDecoratorHostShapes>
@@ -82,6 +82,24 @@
       </moveableDecoratorHostShapes>
       <nodes>
         <stateShapeMoniker Id="cf36c7ed-e07b-4a4c-a7cc-ba17b1e80b1e" />
+        <stateShapeMoniker Id="6fdaf44b-f962-4154-920c-fd4ffd740b01" />
+      </nodes>
+    </transitionConnector>
+    <commentBoxShape Id="a259d71d-116c-46ab-9d50-039d9466454b" absoluteBounds="5.25, 3.5, 1.5, 0.75">
+      <commentMoniker Id="4e458b4a-78dc-4de5-9962-b3be3a633cce" />
+    </commentBoxShape>
+    <commentLink Id="e1b0cc69-2224-4531-be4f-74ce1f03a720" edgePoints="[(5.25 : 4.25); (4.25 : 4.375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <commentReferencesStatesMoniker Id="d7d69de5-6c18-43dc-8b52-6663512c5320" />
+      <nodes>
+        <commentBoxShapeMoniker Id="a259d71d-116c-46ab-9d50-039d9466454b" />
+        <stateShapeMoniker Id="6fdaf44b-f962-4154-920c-fd4ffd740b01" />
+      </nodes>
+    </commentLink>
+    <transitionConnector Id="8e259233-27c7-434d-9c72-d6050b5e49f3" edgePoints="[(3.59653846153846 : 4.875); (3.59653846153846 : 5.125); (3.66666666666667 : 5.125 : JumpStart); (3.83333333333333 : 5.125 : JumpEnd); (3.91076923076923 : 5.125); (3.91076923076923 : 4.875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <transitionMoniker Id="747cd781-4942-428e-a2fc-0c99ac84abed" />
+      <relativeChildShapes />
+      <nodes>
+        <stateShapeMoniker Id="6fdaf44b-f962-4154-920c-fd4ffd740b01" />
         <stateShapeMoniker Id="6fdaf44b-f962-4154-920c-fd4ffd740b01" />
       </nodes>
     </transitionConnector>

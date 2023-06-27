@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="a9caf5ba-3e33-4b88-b1d4-484a0094bfa3" name="HodometerPositionsAbweichung" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <state Id="a2b55b80-0f03-4e97-924d-693b3599c7d5" name="State1">
+      <successors>
+        <transition Id="9ca8b4a8-c5e2-4ea5-ab4a-3a9940e59e72" guard="pAbweichung &lt;= 4" action="pAbweichung := pAbweichung + 1" label="pAbweichung &lt;= 4 // pAbweichung := pAbweichung + 1" precondition="auto">
+          <stateMoniker name="/a9caf5ba-3e33-4b88-b1d4-484a0094bfa3/State1" />
+        </transition>
+        <transition Id="d9ff455b-8145-4a64-8f19-5e56a28e912c" guard="pAbweichung &gt;= -4" action="pAbweichung := pAbweichung - 1" label="pAbweichung &gt;= -4 // pAbweichung := pAbweichung - 1" precondition="auto">
+          <stateMoniker name="/a9caf5ba-3e33-4b88-b1d4-484a0094bfa3/State1" />
+        </transition>
+        <transition Id="2ab0884d-c8eb-4038-b117-de7df0ee79a9">
+          <stateMoniker name="/a9caf5ba-3e33-4b88-b1d4-484a0094bfa3/State1" />
+        </transition>
+      </successors>
+    </state>
+    <initialNode Id="407a0bec-778a-4aea-b484-dd04e42cb0a6" name="InitialNode1">
+      <successors>
+        <transition Id="2de31d14-d15d-43c7-9bdf-6f2f484e5916">
+          <stateMoniker name="/a9caf5ba-3e33-4b88-b1d4-484a0094bfa3/State1" />
+        </transition>
+      </successors>
+    </initialNode>
+  </states>
+  <variables>
+    <programGraphHasVariables Id="7bf36e48-dbe9-44b9-b175-e5f41d258650">
+      <variable Id="4f1e1648-6395-43e3-92ef-8abbfbd3b63d" name="pAbweichung" range="-5..5" />
+    </programGraphHasVariables>
+  </variables>
+</programGraph>

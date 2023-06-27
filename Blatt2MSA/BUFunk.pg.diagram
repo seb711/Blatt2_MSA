@@ -25,7 +25,7 @@
     <stateShape Id="4a3473d2-90ce-4653-a2e4-de978a062fd3" absoluteBounds="10.375, 4, 1, 0.5">
       <stateMoniker name="/b287af21-5fc7-4cd3-bb78-5318f0cc9c08/DelayAck" />
     </stateShape>
-    <transitionConnector Id="611c0867-58b6-4b0c-a487-3a488f83ea0f" edgePoints="[(8.25 : 3.625); (10.875 : 3.625); (10.875 : 4)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <transitionConnector Id="611c0867-58b6-4b0c-a487-3a488f83ea0f" edgePoints="[(8.25 : 3.625); (10.875 : 3.625); (10.875 : 4)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <transitionMoniker Id="bbd18710-11bf-4e5d-9d56-a66a4e6facbc" />
       <relativeChildShapes />
       <moveableDecoratorHostShapes>
@@ -69,8 +69,23 @@
         <stateShapeMoniker Id="e43983bb-093a-4a9d-aafc-89d26a2e32a8" />
       </nodes>
     </transitionConnector>
-    <commentBoxShape Id="4746df15-d745-4f18-9c21-fa881e57d0c5" absoluteBounds="5.25, 6.375, 2.875, 1.25">
-      <commentMoniker Id="4c9792fa-7abf-46a1-abfc-70e63060d36d" />
+    <transitionConnector Id="39c55356-544a-4d55-a733-babde0ed06c9" edgePoints="[(8.25 : 3.7812525); (10.5937475 : 3.7812525); (10.5937475 : 4)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <transitionMoniker Id="8fb6ab50-0454-4038-a775-c8848a429239" />
+      <relativeChildShapes />
+      <nodes>
+        <stateShapeMoniker Id="65f320cc-d84d-483a-b468-5a8a3748cd84" />
+        <stateShapeMoniker Id="4a3473d2-90ce-4653-a2e4-de978a062fd3" />
+      </nodes>
+    </transitionConnector>
+    <commentBoxShape Id="3e610768-cab4-4706-b3eb-74668b341a77" absoluteBounds="8.125, 4.375, 1.875, 0.875">
+      <commentMoniker Id="1fc90f5f-428c-4abd-a570-f689d0312fd8" />
     </commentBoxShape>
+    <commentLink Id="d5c9dfbd-755f-4ded-b271-cd66674ce716" edgePoints="[(10 : 4.8125); (10.375 : 4.25)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <commentReferencesStatesMoniker Id="62aae964-9ae4-4550-b1dc-f301303db921" />
+      <nodes>
+        <commentBoxShapeMoniker Id="3e610768-cab4-4706-b3eb-74668b341a77" />
+        <stateShapeMoniker Id="4a3473d2-90ce-4653-a2e4-de978a062fd3" />
+      </nodes>
+    </commentLink>
   </nestedChildShapes>
 </programGraphDslDiagram>

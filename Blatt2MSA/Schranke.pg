@@ -13,6 +13,9 @@
         <transition Id="fe97df9e-119e-430b-bb27-a78390234769" guard="closeTrigger==True" label="closeTrigger==True" precondition="auto">
           <stateMoniker name="/d710ca68-bcd2-4a72-bbd7-ae3fd5bdafc2/Closing" />
         </transition>
+        <transition Id="747cd781-4942-428e-a2fc-0c99ac84abed">
+          <stateMoniker name="/d710ca68-bcd2-4a72-bbd7-ae3fd5bdafc2/Offen" />
+        </transition>
       </successors>
     </state>
     <state Id="dfdc408c-60e1-4513-b686-2a0765a82d0b" name="Geschlossen">
@@ -48,6 +51,17 @@
       <variable Id="04a9739b-1f8a-467c-b63e-f04f65e43fa1" name="pos" range="0..10" />
     </programGraphHasVariables>
   </variables>
+  <comments>
+    <programGraphHasComments Id="c5278d3c-1e6e-4b54-8dc6-a6b8bdced6ec">
+      <comment Id="4e458b4a-78dc-4de5-9962-b3be3a633cce" text="Guardless transition to model broken Schranke (doesn't close)">
+        <states>
+          <commentReferencesStates Id="d7d69de5-6c18-43dc-8b52-6663512c5320">
+            <stateMoniker name="/d710ca68-bcd2-4a72-bbd7-ae3fd5bdafc2/Offen" />
+          </commentReferencesStates>
+        </states>
+      </comment>
+    </programGraphHasComments>
+  </comments>
   <macros>
     <programGraphHasMacros Id="cb268ac8-60a5-4ba9-a681-95b7f9d28627">
       <macro Id="b09ab69b-9954-440d-8f69-4fcf6624fa21" name="#openPos" body="0" />
