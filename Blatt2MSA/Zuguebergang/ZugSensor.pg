@@ -4,45 +4,31 @@
     <initialNode Id="c7026776-7fb7-4c66-af60-78ede04d611b" name="InitialNode1">
       <successors>
         <transition Id="1fe94a84-a199-4253-ac15-0245f632a535">
-          <stateMoniker name="/6b44886e-d51d-48e0-ba4e-7a4480f3d5a2/Free" />
+          <stateMoniker name="/6b44886e-d51d-48e0-ba4e-7a4480f3d5a2/NoSignal" />
         </transition>
       </successors>
     </initialNode>
-    <state Id="770c5c1b-0cc2-4d87-b6c9-fc8920f4a637" name="Blocked">
+    <state Id="770c5c1b-0cc2-4d87-b6c9-fc8920f4a637" name="Triggered">
       <successors>
-        <transition Id="4ab05b5d-0131-4d53-8dbb-d2c8ffe5468f" guard="(GemessenePosition + #Zuglaenge &lt; #BU || time &gt; #timeout)  &amp;&amp; ZugSensorFailure==No" label="(GemessenePosition + #Zuglaenge &lt; #BU || time &gt; #timeout)  &amp;&amp; ZugSensorFailure==No">
-          <stateMoniker name="/6b44886e-d51d-48e0-ba4e-7a4480f3d5a2/Free" />
-        </transition>
-        <transition Id="273e505a-2b20-4467-bd8a-df8d508f3e46" guard="ZugSensorFailure==No" action="time := time+1" label="ZugSensorFailure==No // time := time+1" precondition="auto">
-          <stateMoniker name="/6b44886e-d51d-48e0-ba4e-7a4480f3d5a2/Blocked" />
-        </transition>
-        <transition Id="768543a7-f557-4de0-aa46-739376b68329" guard="ZugSensorFailure==Yes" label="ZugSensorFailure==Yes">
-          <stateMoniker name="/6b44886e-d51d-48e0-ba4e-7a4480f3d5a2/Free" />
+        <transition Id="4ab05b5d-0131-4d53-8dbb-d2c8ffe5468f" guard="Position - #Zuglaenge &gt; #BU" label="Position - #Zuglaenge &gt; #BU">
+          <stateMoniker name="/6b44886e-d51d-48e0-ba4e-7a4480f3d5a2/NoSignal" />
         </transition>
       </successors>
     </state>
-    <state Id="467a35c3-3975-4780-a755-0168c19a0215" name="Free">
+    <state Id="467a35c3-3975-4780-a755-0168c19a0215" name="NoSignal">
       <successors>
-        <transition Id="98105893-8992-4293-b87a-27eadabc2e19" guard="GemessenePosition&lt;#BU" action="time:=0" label="GemessenePosition&lt;#BU // time:=0" precondition="auto">
-          <stateMoniker name="/6b44886e-d51d-48e0-ba4e-7a4480f3d5a2/Blocked" />
+        <transition Id="98105893-8992-4293-b87a-27eadabc2e19" guard="Position &gt;#BU || ZugSensorFailure == Yes" label="Position &gt;#BU || ZugSensorFailure == Yes" precondition="auto">
+          <stateMoniker name="/6b44886e-d51d-48e0-ba4e-7a4480f3d5a2/Triggered" />
         </transition>
       </successors>
     </state>
   </states>
-  <variables>
-    <programGraphHasVariables Id="1782edf9-043a-4c3d-a43b-b13ee8b930c7">
-      <variable Id="4ecc6021-94c3-4451-9ea1-0a125df0774e" name="time" range="0..60" />
-    </programGraphHasVariables>
-  </variables>
   <macros>
     <programGraphHasMacros Id="a9ab3704-829e-4a8f-abcd-c4b3f47beb5f">
       <macro Id="c8d02d61-d751-4b4c-a36b-458720a38f59" name="#Zuglaenge" body="5" />
     </programGraphHasMacros>
     <programGraphHasMacros Id="9c2f850d-533e-403d-b2f8-f9bf8e64b1bd">
-      <macro Id="4c830d40-e29e-42ec-b04c-4713746e4923" name="#BU" body="0" />
-    </programGraphHasMacros>
-    <programGraphHasMacros Id="87daefaf-5409-4897-a04d-7b30c7e7cde3">
-      <macro Id="5e524d60-43da-478e-aabd-42e28a3edce0" name="#timeout" body="20" />
+      <macro Id="4c830d40-e29e-42ec-b04c-4713746e4923" name="#BU" body="170" />
     </programGraphHasMacros>
   </macros>
   <importedVariables>
@@ -50,7 +36,7 @@
       <importedVariable Id="596db7ed-9edd-44ea-b309-3bc4a4353a5a" name="ZugSensorFailure" range="No, Yes" />
     </programGraphHasImportedVariables>
     <programGraphHasImportedVariables Id="37dbd2bc-3580-423f-98a4-f1dc4f00a7b7">
-      <importedVariable Id="385cc769-e963-4198-8338-fabae5570971" name="HodometerPosition.GemessenePosition" range="0..175" />
+      <importedVariable Id="385cc769-e963-4198-8338-fabae5570971" name="UmgebungZug.Position" range="0..200" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>

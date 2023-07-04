@@ -11,24 +11,38 @@ DEFINE NoFailures := (
 	v.V_BahnuebergangssteuerungFailure = L_No &
 	v.V_BUFunkFailure = L_No &
 	v.V_SchrankeFailure = L_No &
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No &
 	v.V_ZugSensorFailure = L_No
 );
 
+DEFINE PASSING_TIMEOUT := 5;
+
+DEFINE CONSTANT_Z := 1;
+DEFINE CONSTANT_T := 5;
+DEFINE CONSTANT_C := 2;
+
+DEFINE BU_POINT := 170;
+DEFINE GP_POINT := 150;
+
+DEFINE BEP_POINT := GP_POINT - CONSTANT_Z - (v.V_Geschwindigkeit * v.V_Geschwindigkeit) / (2 * v.V_Bremsverzoegerung) - 30;
+DEFINE AP_POINT := BEP_POINT - 4 * (CONSTANT_C * v.V_Geschwindigkeit);
+DEFINE EP_POINT := AP_POINT - v.V_Geschwindigkeit*(CONSTANT_T + CONSTANT_C);
+
+
+
 LTLSPEC (G NoFailures) -> ((F v.V_Zugsteuerung = L_EMER_STOP ) -> (F v.V_Geschwindigkeit = 0))
-LTLSPEC (G NoFailures) -> ((F v.V_Zugsteuerung = L_AP_PASSED) -> (F v.V_Schranke = L_Geschlossen))
-LTLSPEC (G NoFailures) -> (G ((v.V_Zugsteuerung = L_BU_PASSING) -> (v.V_Schranke = L_Geschlossen)))
-LTLSPEC (G NoFailures) -> (G ((v.V_Zugfunkmodul = L_AP_ACK) -> (v.V_Schranke = L_Geschlossen)))
-LTLSPEC (G NoFailures) -> (G ((v.V_pos = 10) -> F ( v.V_Schranke = L_Geschlossen )))
-LTLSPEC (G NoFailures) -> (G(v.V_ZugSensor = L_Blocked -> v.V_Schranke = L_Geschlossen | v.V_time > 20))
-LTLSPEC (G NoFailures) -> (G((v.V_Position <= ((70 - 1) - ((v.V_Geschwindigkeit * v.V_Geschwindigkeit) / (2 * v.V_Bremsverzoegerung)))) & v.V_Schranke != L_Geschlossen -> F (v.V_Bremse = L_Geschlossen)))
+LTLSPEC (G NoFailures) -> ((F v.V_Zugsteuerung = L_AP_PASSED) -> (F v.V_SchrankeClosedSensor = L_Triggered))
+LTLSPEC (G NoFailures) -> (G ((v.V_Zugsteuerung = L_BU_PASSING) -> (F v.V_SchrankeOpenSensor = L_Triggered)))
+LTLSPEC (G NoFailures) -> (G ((v.V_Zugfunkmodul = L_AP_ACK) -> (F v.V_SchrankeClosedSensor = L_Triggered)))
+LTLSPEC (G NoFailures) -> (G ((v.V_pos = EP_POINT) -> F (F v.V_Schranke = L_Closing)))
+LTLSPEC (G NoFailures) -> (G(v.V_ZugSensor = L_Triggered -> F (v.V_ZugSensor = L_NoSignal | v.V_time >= PASSING_TIMEOUT)))
+LTLSPEC (G NoFailures) -> (G((v.V_Position >= BEP_POINT & v.V_Position < BU_POINT & v.V_SchrankeClosedSensor != L_Triggered -> F (v.V_Bremse = L_Geschlossen))))
 LTLSPEC (G NoFailures) -> (G ( (v.V_Zugsteuerung = L_BU_PASSING) -> (F v.V_Schranke = L_Opening) ))
-LTLSPEC (G NoFailures) -> ( G ( (v.V_BUFunk = L_AckSent) -> (F v.V_Position > 70 ) ))
-LTLSPEC (G NoFailures) -> (G (v.V_BUFunk != L_AckSent U v.V_Schranke = L_Geschlossen))
-LTLSPEC (G NoFailures) -> (G((v.V_Position > ((70 - 1) - ((v.V_Geschwindigkeit * v.V_Geschwindigkeit) / (2 * v.V_Bremsverzoegerung)))) & v.V_APAck = L_False) -> (F v.V_Bremse = L_Geschlossen))
-LTLSPEC (G NoFailures) -> (G((v.V_Bremse = L_Geschlossen) -> (F (v.V_Position <= 100 & v.V_Geschwindigkeit = 0))))
+LTLSPEC (G NoFailures) -> ( G ( (v.V_BUFunk = L_AckSent) -> (F v.V_Position > AP_POINT ) ))
+LTLSPEC (G NoFailures) -> (G((v.V_Position >= BEP_POINT) & v.V_APAck = L_False) -> (F v.V_Bremse = L_Geschlossen))
+LTLSPEC (G NoFailures) -> (G((v.V_Bremse = L_Geschlossen) -> (F (v.V_Position <= GP_POINT & v.V_Geschwindigkeit = 0))))
 LTLSPEC (G NoFailures) -> ( G((v.V_BUFunk = L_AckSent) -> (X v.V_APAck = L_True)))
-LTLSPEC (G NoFailures) -> ( F (  F v.V_Position >= (((70 - 1) - ((v.V_Geschwindigkeit * v.V_Geschwindigkeit) / (2 * v.V_Bremsverzoegerung))) - (2 * (2 * v.V_Geschwindigkeit))) & v.V_Schranke != L_Geschlossen ))
-LTLSPEC (G NoFailures) -> ( (((((70 - 1) - ((v.V_Geschwindigkeit * v.V_Geschwindigkeit) / (2 * v.V_Bremsverzoegerung))) - (2 * (2 * v.V_Geschwindigkeit))) - ((((70 - 1) - ((v.V_Geschwindigkeit * v.V_Geschwindigkeit) / (2 * v.V_Bremsverzoegerung))) - (2 * (2 * v.V_Geschwindigkeit))) - (v.V_Geschwindigkeit * (5 + 2)))) * 1 < (10 -0) * v.V_Geschwindigkeit))
 
 --- PLAUSIBILITÄT
 
@@ -39,6 +53,8 @@ DEFINE BrakeFailure := (
 	v.V_ZugfunkmodulFailure = L_No &
 	v.V_ZugsteuerungFailure = L_No &
 	v.V_BahnuebergangssteuerungFailure = L_No &
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No &
 	v.V_BUFunkFailure = L_No &
 	v.V_SchrankeFailure = L_No &
 	v.V_ZugSensorFailure = L_No
@@ -52,6 +68,8 @@ DEFINE HodometerFailure := (
 	v.V_ZugfunkmodulFailure = L_Yes &
 	v.V_ZugsteuerungFailure = L_No &
 	v.V_BahnuebergangssteuerungFailure = L_No &
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No &
 	v.V_BUFunkFailure = L_No &
 	v.V_SchrankeFailure = L_No &
 	v.V_ZugSensorFailure = L_No
@@ -65,6 +83,8 @@ DEFINE ZugsteuerungFailure := (
 	v.V_ZugfunkmodulFailure = L_No &
 	v.V_ZugsteuerungFailure = L_Yes &
 	v.V_BahnuebergangssteuerungFailure = L_No &
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No &
 	v.V_BUFunkFailure = L_No &
 	v.V_SchrankeFailure = L_No &
 	v.V_ZugSensorFailure = L_No
@@ -79,6 +99,8 @@ DEFINE SteuerungFailure := (
 	v.V_ZugfunkmodulFailure = L_No &
 	v.V_ZugsteuerungFailure = L_Yes &
 	v.V_BahnuebergangssteuerungFailure = L_No &
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No &
 	v.V_BUFunkFailure = L_No &
 	v.V_SchrankeFailure = L_No &
 	v.V_ZugSensorFailure = L_No
@@ -92,6 +114,8 @@ DEFINE BahnuebergangssteuerungFailure := (
 	v.V_ZugfunkmodulFailure = L_No &
 	v.V_ZugsteuerungFailure = L_No &
 	v.V_BahnuebergangssteuerungFailure = L_Yes &
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No &
 	v.V_BUFunkFailure = L_No &
 	v.V_SchrankeFailure = L_No &
 	v.V_ZugSensorFailure = L_No
@@ -105,6 +129,8 @@ DEFINE BUFunkFailure := (
 	v.V_ZugfunkmodulFailure = L_No &
 	v.V_ZugsteuerungFailure = L_No &
 	v.V_BahnuebergangssteuerungFailure = L_No &
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No &
 	v.V_BUFunkFailure = L_Yes &
 	v.V_SchrankeFailure = L_No &
 	v.V_ZugSensorFailure = L_No
@@ -118,6 +144,8 @@ DEFINE SchrankeFailure := (
 	v.V_ZugfunkmodulFailure = L_No &
 	v.V_ZugsteuerungFailure = L_No &
 	v.V_BahnuebergangssteuerungFailure = L_No &
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No &
 	v.V_BUFunkFailure = L_No &
 	v.V_SchrankeFailure = L_Yes &
 	v.V_ZugSensorFailure = L_No
@@ -131,6 +159,8 @@ DEFINE ZugSensorFailure := (
 	v.V_ZugfunkmodulFailure = L_No &
 	v.V_ZugsteuerungFailure = L_No &
 	v.V_BahnuebergangssteuerungFailure = L_No &
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No &
 	v.V_BUFunkFailure = L_No &
 	v.V_SchrankeFailure = L_No &
 	v.V_ZugSensorFailure = L_Yes

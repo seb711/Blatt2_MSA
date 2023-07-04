@@ -32,13 +32,7 @@
         </transition>
       </successors>
     </state>
-    <state Id="4f4f46f7-ff52-4d43-919d-aeedac103513" name="BU_PASSING">
-      <successors>
-        <transition Id="d5cd93cc-2114-4d85-b66e-934ab4e5a50a" guard="GemessenePosition &gt; #BU &amp;&amp; ZugsteuerungFailure==No" label="GemessenePosition &gt; #BU &amp;&amp; ZugsteuerungFailure==No">
-          <stateMoniker name="/6d1fe965-7fde-4ce2-8203-447f4f93abae/NO_INTERUPT" />
-        </transition>
-      </successors>
-    </state>
+    <state Id="4f4f46f7-ff52-4d43-919d-aeedac103513" name="BU_PASSING" />
     <state Id="f68da3c0-754f-420e-8a88-d4cc8fe8fff3" name="EMER_STOP" />
   </states>
   <variables>
@@ -54,13 +48,13 @@
       <macro Id="65a8f152-5850-442b-9b63-11027e28516f" name="#EP" body="#AP-Geschwindigkeit*(#t + #c)" />
     </programGraphHasMacros>
     <programGraphHasMacros Id="f3db9c3a-843f-4302-b60b-b2a43e7af809">
-      <macro Id="c971e685-464f-4425-885a-5d39a39b2325" name="#AP" body="#BEP - 2 * (#c * Geschwindigkeit)" />
+      <macro Id="c971e685-464f-4425-885a-5d39a39b2325" name="#AP" body="#BEP - 4 * (#c * Geschwindigkeit)" />
     </programGraphHasMacros>
     <programGraphHasMacros Id="c7e41ad7-d765-4312-80eb-fd390b583fc8">
-      <macro Id="89f7401a-2c29-4def-a325-3022dc01296e" name="#BEP " body="#GP - #z - (Geschwindigkeit * Geschwindigkeit) / (2 * Bremsverzoegerung)" />
+      <macro Id="89f7401a-2c29-4def-a325-3022dc01296e" name="#BEP " body="#GP - #z - (Geschwindigkeit * Geschwindigkeit) / (2 * Bremsverzoegerung) - 30" />
     </programGraphHasMacros>
     <programGraphHasMacros Id="e43727ac-24f7-4733-90d0-68a235c51734">
-      <macro Id="b40c933e-df26-4759-8226-1cd8b78fda33" name="#GP" body="70" />
+      <macro Id="b40c933e-df26-4759-8226-1cd8b78fda33" name="#GP" body="150" />
     </programGraphHasMacros>
     <programGraphHasMacros Id="4da77108-2055-4c5f-8529-ea74e2e91bad">
       <macro Id="1a1f60fc-df1b-4b1b-bc3c-d84c51affbc5" name="#z" body="1" />
@@ -72,7 +66,7 @@
       <macro Id="1281b688-7c14-4941-9e90-3b7f3210552d" name="#c" body="2" />
     </programGraphHasMacros>
     <programGraphHasMacros Id="70ee4ee9-d8aa-45a7-8502-9dd0d909c8b6">
-      <macro Id="5836e486-502d-47bc-9e0e-6ab9bf2ea7fe" name="#BU" body="150" />
+      <macro Id="5836e486-502d-47bc-9e0e-6ab9bf2ea7fe" name="#BU" body="170" />
     </programGraphHasMacros>
   </macros>
   <importedVariables>
@@ -83,13 +77,13 @@
       <importedVariable Id="02c07058-52f9-48ac-ab7e-761ef814b670" name="UmgebungZug.Geschwindigkeit" range="0..6" />
     </programGraphHasImportedVariables>
     <programGraphHasImportedVariables Id="23443b0c-2cf7-4629-a9b3-bdecad3ccb27">
-      <importedVariable Id="830eee00-18ea-4895-8ad8-fe8143cfe726" name="HodometerPosition.GemessenePosition" range="0..175" />
-    </programGraphHasImportedVariables>
-    <programGraphHasImportedVariables Id="00b34d2b-b4d3-4e8f-994f-74c07588d36e">
-      <importedVariable Id="5cd2f19a-37af-4e75-8a97-e230f0a4c0f8" name="Bremse.Bremsverzoegerung" range="2" />
+      <importedVariable Id="830eee00-18ea-4895-8ad8-fe8143cfe726" name="HodometerPosition.GemessenePosition" range="0..200" />
     </programGraphHasImportedVariables>
     <programGraphHasImportedVariables Id="625f2f3d-a8e1-4037-a960-3daab28335b8">
       <importedVariable Id="618c2f56-6fa9-47b4-8255-8f0d243899eb" name="ZugsteuerungFailure" range="No, Yes" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="7265b183-2381-4425-8c75-6ad27ef44071">
+      <importedVariable Id="35a6171f-9db1-4145-a258-d99db4bd3482" name="Bremse.Bremsverzoegerung" range="3" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>

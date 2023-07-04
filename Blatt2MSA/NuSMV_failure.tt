@@ -4,9 +4,17 @@
 
 <#=  TransformToNuSMV() #>
 
+--- only gamma until H
+---! (O_FS U hazard)
+
+DEFINE BU_POINT := 170;
+DEFINE GP_POINT := 150;
+DEFINE ZUGLAENGE := 5;
+
 DEFINE Hazard := (
-	v.V_Position = 100 &
-	! (v.V_Schranke = L_Geschlossen) &
+	v.V_Position > GP_POINT &
+	v.V_Position < BU_POINT + ZUGLAENGE &
+	! (v.V_pos = 3) &
 	v.V_Geschwindigkeit > 0
 );
 
@@ -20,11 +28,15 @@ DEFINE NoFailures := (
 	v.V_BUFunkFailure = L_No &
 	v.V_SchrankeFailure = L_No &
 	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No
 );
 
+LTLSPEC ! (NoFailures U Hazard)
 
---- BrakeFailure is MinimalCutSet
+
+
+-- BRAKE SHIT
 DEFINE BrakeFailure := (
 	v.V_HodometerFailure = L_No &
 	v.V_ZugfunkmodulFailure = L_No &
@@ -33,10 +45,11 @@ DEFINE BrakeFailure := (
 	v.V_BUFunkFailure = L_No &
 	v.V_SchrankeFailure = L_No &
 	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No
 );
 
-LTLSPEC (G BrakeFailure) -> (G ! Hazard)
+LTLSPEC ! (BrakeFailure U Hazard)
 
 DEFINE BrakeSchrankeFailure := (
 	v.V_HodometerFailure = L_No &
@@ -45,14 +58,15 @@ DEFINE BrakeSchrankeFailure := (
 	v.V_BahnuebergangssteuerungFailure = L_No &
 	v.V_BUFunkFailure = L_No &
 	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No
 );
 
---- LTLSPEC (G BrakeSchrankeFailure) -> (G ! Hazard)
---- -> Brake fails and Schranke fails
+--- LTLSPEC !(BrakeSchrankeFailure U Hazard)
 
---- HodometerFailure is MinimalCutSet
-DEFINE HodometerFailure := (
+--- HodometerFailure
+
+DEFINE HodometerFailures := (
 	v.V_BremseFailure = L_No &
 	v.V_ZugfunkmodulFailure = L_No &
 	v.V_ZugsteuerungFailure = L_No &
@@ -60,26 +74,16 @@ DEFINE HodometerFailure := (
 	v.V_BUFunkFailure = L_No &
 	v.V_SchrankeFailure = L_No &
 	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No
 );
 
-LTLSPEC (G HodometerFailure) -> (G ! Hazard)
+--- LTLSPEC ! (HodometerFailures U Hazard)
 
-DEFINE HodometerSchrankeFailure := (
-	v.V_BremseFailure = L_No &
-	v.V_ZugfunkmodulFailure = L_No &
-	v.V_ZugsteuerungFailure = L_No &
-	v.V_BahnuebergangssteuerungFailure = L_No &
-	v.V_BUFunkFailure = L_No &
-	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
-);
+--- ZugFunkModul
 
---- LTLSPEC (G HodometerSchrankeFailure) -> (G ! Hazard)
---- -> Hodometer fails and Schranke fails
 
---- ZugFunkFailure is MinimalCutSet
-DEFINE ZugFunkFailure := (
+DEFINE ZugFunkModulFailures := (
 	v.V_BremseFailure = L_No &
 	v.V_HodometerFailure = L_No &
 	v.V_ZugsteuerungFailure = L_No &
@@ -87,51 +91,16 @@ DEFINE ZugFunkFailure := (
 	v.V_BUFunkFailure = L_No &
 	v.V_SchrankeFailure = L_No &
 	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No
 );
 
-LTLSPEC (G ZugFunkFailure) -> (G ! Hazard)
+--- LTLSPEC ! (ZugFunkModulFailures U Hazard)
 
-DEFINE ZugFunkHodometerFailure := (
-	v.V_BremseFailure = L_No &
-	v.V_ZugsteuerungFailure = L_No &
-	v.V_BahnuebergangssteuerungFailure = L_No &
-	v.V_BUFunkFailure = L_No &
-	v.V_SchrankeFailure = L_No &
-	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
-);
 
---- LTLSPEC (G ZugFunkHodometerFailure) -> (G ! Hazard)
---- -> Hodometer fails and ZugFunkmodul fails -> only funkmodul is recognized by steuerung
+--- ZugSteuerung
 
-DEFINE BahnuebergangsFailure := (
-	v.V_BremseFailure = L_No &
-	v.V_HodometerFailure = L_No &
-	v.V_ZugfunkmodulFailure = L_No &
-	v.V_ZugsteuerungFailure = L_No &
-	v.V_BUFunkFailure = L_No &
-	v.V_SchrankeFailure = L_No &
-	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
-);
-
-LTLSPEC (G BahnuebergangsFailure) -> (G ! Hazard)
-
-DEFINE BahnuebergangsBrakeFailure := (
-	v.V_HodometerFailure = L_No &
-	v.V_ZugfunkmodulFailure = L_No &
-	v.V_ZugsteuerungFailure = L_No &
-	v.V_BUFunkFailure = L_No &
-	v.V_SchrankeFailure = L_No &
-	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
-);
-
---- LTLSPEC (G BahnuebergangsBrakeFailure) -> (G ! Hazard)
---- -> Hodometer fails and ZugFunkmodul fails -> only funkmodul is recognized by steuerung
-
-DEFINE SteuerungFailure := (
+DEFINE ZugSteuerungFailures := (
 	v.V_BremseFailure = L_No &
 	v.V_HodometerFailure = L_No &
 	v.V_ZugfunkmodulFailure = L_No &
@@ -139,76 +108,32 @@ DEFINE SteuerungFailure := (
 	v.V_BUFunkFailure = L_No &
 	v.V_SchrankeFailure = L_No &
 	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No
 );
 
-LTLSPEC (G SteuerungFailure) -> (G ! Hazard)
+--- LTLSPEC ! (ZugSteuerungFailures U Hazard)
 
---- BUFUNK 
-DEFINE BUFunkFailure := (
+
+--- Bahnuebergangssteuerung
+
+DEFINE BahnuebergangssteuerungFailures := (
 	v.V_BremseFailure = L_No &
 	v.V_HodometerFailure = L_No &
 	v.V_ZugfunkmodulFailure = L_No &
 	v.V_ZugsteuerungFailure = L_No &
-	v.V_BahnuebergangssteuerungFailure = L_No &
+	v.V_BUFunkFailure = L_No &
 	v.V_SchrankeFailure = L_No &
 	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No
 );
 
-LTLSPEC (G BUFunkFailure) -> (G ! Hazard)
+--- LTLSPEC ! (BahnuebergangssteuerungFailures U Hazard)
 
-DEFINE BUFunkBrakeFailure := (
-	v.V_HodometerFailure = L_No &
-	v.V_ZugfunkmodulFailure = L_No &
-	v.V_ZugsteuerungFailure = L_No &
-	v.V_BahnuebergangssteuerungFailure = L_No &
-	v.V_SchrankeFailure = L_No &
-	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
-);
+--- BUFunk
 
-LTLSPEC (G BUFunkBrakeFailure) -> (G ! Hazard)
-
-DEFINE BUFunkBrakeSchrankeFailure := (
-	v.V_HodometerFailure = L_No &
-	v.V_ZugfunkmodulFailure = L_No &
-	v.V_ZugsteuerungFailure = L_No &
-	v.V_BahnuebergangssteuerungFailure = L_No &
-	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
-);
-
---- LTLSPEC (G BUFunkBrakeSchrankeFailure) -> (G ! Hazard)
-
---- Schranke
-DEFINE SchrankeFailure := (
-	v.V_BremseFailure = L_No &
-	v.V_HodometerFailure = L_No &
-	v.V_ZugfunkmodulFailure = L_No &
-	v.V_ZugsteuerungFailure = L_No &
-	v.V_BahnuebergangssteuerungFailure = L_No &
-	v.V_BUFunkFailure = L_No &
-	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
-);
-
-LTLSPEC (G SchrankeFailure) -> (G ! Hazard)
-
-DEFINE SchrankeBrakeFailure := (
-	v.V_HodometerFailure = L_No &
-	v.V_ZugfunkmodulFailure = L_No &
-	v.V_ZugsteuerungFailure = L_No &
-	v.V_BahnuebergangssteuerungFailure = L_No &
-	v.V_BUFunkFailure = L_No &
-	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
-);
-
---- LTLSPEC (G SchrankeBrakeFailure) -> (G ! Hazard)
-
---- Schrankensensor
-DEFINE SchrankensensorFailure := (
+DEFINE BUFunkFailures := (
 	v.V_BremseFailure = L_No &
 	v.V_HodometerFailure = L_No &
 	v.V_ZugfunkmodulFailure = L_No &
@@ -216,25 +141,67 @@ DEFINE SchrankensensorFailure := (
 	v.V_BahnuebergangssteuerungFailure = L_No &
 	v.V_BUFunkFailure = L_No &
 	v.V_SchrankeFailure = L_No &
-	v.V_ZugSensorFailure = L_No
+	v.V_ZugSensorFailure = L_No &
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No
 );
 
-LTLSPEC (G SchrankensensorFailure) -> (G ! Hazard)
+--- LTLSPEC ! (BUFunkFailures U Hazard)
 
-DEFINE SchrankensensorSchrankeHodometerFailure := (
+
+DEFINE SchrankeFailures := (
 	v.V_BremseFailure = L_No &
+	v.V_HodometerFailure = L_No &
 	v.V_ZugfunkmodulFailure = L_No &
 	v.V_ZugsteuerungFailure = L_No &
 	v.V_BahnuebergangssteuerungFailure = L_No &
 	v.V_BUFunkFailure = L_No &
-	v.V_ZugSensorFailure = L_No
+	v.V_ZugSensorFailure = L_No &
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No
 );
 
---- LTLSPEC (G SchrankensensorSchrankeHodometerFailure) -> (G ! Hazard)
+LTLSPEC ! (SchrankeFailures U Hazard)
+
+--- Schranke + Bremse see above
+
+--- SchrankeClosedSensor
+
+DEFINE SchrankeClosedSensorFailures := (
+	v.V_BremseFailure = L_No &
+	v.V_HodometerFailure = L_No &
+	v.V_ZugfunkmodulFailure = L_No &
+	v.V_ZugsteuerungFailure = L_No &
+	v.V_BahnuebergangssteuerungFailure = L_No &
+	v.V_BUFunkFailure = L_No &
+	v.V_SchrankeFailure = L_No &
+	v.V_ZugSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No
+);
+
+--- LTLSPEC ! (SchrankeClosedSensorFailures U Hazard)
+
+
+--- SchrankeOpenSensor
+
+DEFINE SchrankeOpenSensorFailures := (
+	v.V_BremseFailure = L_No &
+	v.V_HodometerFailure = L_No &
+	v.V_ZugfunkmodulFailure = L_No &
+	v.V_ZugsteuerungFailure = L_No &
+	v.V_BahnuebergangssteuerungFailure = L_No &
+	v.V_BUFunkFailure = L_No &
+	v.V_SchrankeFailure = L_No &
+	v.V_ZugSensorFailure = L_No &
+	v.V_SchrankeClosedSensorFailure = L_No
+);
+
+--- LTLSPEC ! (SchrankeOpenSensorFailures U Hazard)
+
 
 --- ZugSensorFailure
 
-DEFINE ZugSensorFailure := (
+DEFINE ZugSensorFailures := (
 	v.V_BremseFailure = L_No &
 	v.V_HodometerFailure = L_No &
 	v.V_ZugfunkmodulFailure = L_No &
@@ -242,9 +209,8 @@ DEFINE ZugSensorFailure := (
 	v.V_BahnuebergangssteuerungFailure = L_No &
 	v.V_BUFunkFailure = L_No &
 	v.V_SchrankeFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No
 );
 
-LTLSPEC (G ZugSensorFailure) -> (G ! Hazard)
-
---- -> Zugsensor kann nicht failen 
+--- LTLSPEC ! (ZugSensorFailures U Hazard)

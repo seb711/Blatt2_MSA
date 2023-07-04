@@ -24,7 +24,7 @@
       <variable Id="d766dec8-e644-47ff-b308-a171b4959051" name="Geschwindigkeit" range="0..6" />
     </programGraphHasVariables>
     <programGraphHasVariables Id="e0dfe81b-9950-4ae7-a9ff-11b9937a1def">
-      <variable Id="6c42e76b-597e-4d90-b393-175b0009f1f0" name="Position" range="0..170" />
+      <variable Id="6c42e76b-597e-4d90-b393-175b0009f1f0" name="Position" range="0..200" />
     </programGraphHasVariables>
   </variables>
   <importedVariables>
@@ -32,7 +32,7 @@
       <importedVariable Id="cca9ad29-0883-4db7-a543-182171737111" name="Bremse" range="Offen, Geschlossen" />
     </programGraphHasImportedVariables>
     <programGraphHasImportedVariables Id="4e6487b2-928d-4ac3-9387-4d8e0423f77a">
-      <importedVariable Id="5e145d73-f758-463f-997a-a9ac39691e7d" name="Bremse.Bremsverzoegerung" range="2" />
+      <importedVariable Id="5e145d73-f758-463f-997a-a9ac39691e7d" name="Bremse.Bremsverzoegerung" range="3" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>

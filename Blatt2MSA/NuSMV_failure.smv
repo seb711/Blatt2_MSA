@@ -2,16 +2,16 @@
 MODULE _VARS
 	VAR
 		V_Bremse : {L_Offen, L_Geschlossen};
-		V_Bremsverzoegerung : {2};
+		V_Bremsverzoegerung : {3};
 		V_BremseFest : {L_True, L_False};
 		V_BremseFailure : {L_No, L_Yes};
 		V_Geschwindigkeit : 0..6;
 		V_HodometerFailure : {L_No, L_Yes};
 		V_HodometerGeschwindigkeit : {L_Measuring};
-		V_GemesseneGeschwindigkeit : 0..15;
+		V_GemesseneGeschwindigkeit : 0..6;
 		V_HodometerPosition : {L_Measuring};
-		V_GemessenePosition : 0..175;
-		V_Position : 0..170;
+		V_GemessenePosition : 0..200;
+		V_Position : 0..200;
 		V_UmgebungZug : {L_Moving};
 		V_Zugfunkmodul : {L_IDLE, L_EP_SENT, L_EP_DELAY, L_AP_DELAY, L_AP_SENT, L_AP_ACK, L_AP_WAIT};
 		V_APAck : {L_True, L_False};
@@ -23,15 +23,17 @@ MODULE _VARS
 		V_Bahnuebergangssteuerung : {L_Idle, L_BUSecuring, L_AP_Success, L_TrainIsPassing, L_OpenSchrankeBack, L_BUSecured};
 		V_closeTrigger : {L_True, L_False};
 		V_openTrigger : {L_True, L_False};
-		V_SchrankenSensor : {L_Offen, L_Geschlossen, L_InTransit};
-		V_ZugSensor : {L_Blocked, L_Free};
+		V_time : 0..10;
+		V_SchrankeOpenSensor : {L_Triggered, L_NoSignal};
+		V_ZugSensor : {L_Triggered, L_NoSignal};
 		V_BahnuebergangssteuerungFailure : {L_No, L_Yes};
+		V_SchrankeClosedSensor : {L_Triggered, L_NoSignal};
 		V_BUFunkFailure : {L_No, L_Yes};
-		V_Schranke : {L_Offen, L_Geschlossen, L_Opening, L_Closing};
+		V_Schranke : {L_NotMoving, L_Opening, L_Closing};
 		V_pos : 0..3;
 		V_SchrankeFailure : {L_No, L_Yes};
-		V_SchrankensensorFailure : {L_No, L_Yes};
-		V_time : 0..60;
+		V_SchrankeClosedSensorFailure : {L_No, L_Yes};
+		V_SchrankeOpenSensorFailure : {L_No, L_Yes};
 		V_ZugSensorFailure : {L_No, L_Yes};
 	TRANS
 		next(V_Bremsverzoegerung) = V_Bremsverzoegerung;
@@ -40,10 +42,10 @@ MODULE _P_Bremse(v)
 		(v.V_Bremse = L_Offen) & (TRUE)
 	TRANS
 		 ( v.V_Bremse = L_Offen & next(v.V_Bremse) = L_Geschlossen & ((v.V_BremseFest = L_True) & (v.V_BremseFailure = L_No)) & (TRUE))  |
-		 ( v.V_Bremse = L_Geschlossen & next(v.V_Bremse) = L_Offen & (((v.V_BremseFest = L_False) | (v.V_BremseFailure = L_Yes)) | (v.V_Geschwindigkeit = 0)) & (TRUE))  |
+		 ( v.V_Bremse = L_Geschlossen & next(v.V_Bremse) = L_Offen & ((v.V_BremseFest = L_False) | (v.V_BremseFailure = L_Yes)) & (TRUE))  |
 		 ( v.V_Bremse = L_Geschlossen & next(v.V_Bremse) = L_Geschlossen & ((v.V_BremseFest = L_True) & (v.V_BremseFailure = L_No)) & (TRUE))  |
 		 ( v.V_Bremse = L_Offen & next(v.V_Bremse) = L_Offen & !((v.V_BremseFest = L_True) & (v.V_BremseFailure = L_No)) & (TRUE))  |
-		 ( v.V_Bremse = L_Geschlossen & next(v.V_Bremse) = L_Geschlossen & (!(((v.V_BremseFest = L_False) | (v.V_BremseFailure = L_Yes)) | (v.V_Geschwindigkeit = 0)) & !((v.V_BremseFest = L_True) & (v.V_BremseFailure = L_No))) & (TRUE));
+		 ( v.V_Bremse = L_Geschlossen & next(v.V_Bremse) = L_Geschlossen & (!((v.V_BremseFest = L_False) | (v.V_BremseFailure = L_Yes)) & !((v.V_BremseFest = L_True) & (v.V_BremseFailure = L_No))) & (TRUE));
 MODULE _P_BremseFailure(v)
 	INIT
 		(v.V_BremseFailure = L_No) & (TRUE)
@@ -63,23 +65,23 @@ MODULE _P_HodometerGeschwindigkeit(v)
 	INIT
 		(v.V_HodometerGeschwindigkeit = L_Measuring) & ((v.V_GemesseneGeschwindigkeit = v.V_Geschwindigkeit))
 	TRANS
-		 ( v.V_HodometerGeschwindigkeit = L_Measuring & next(v.V_HodometerGeschwindigkeit) = L_Measuring & ((v.V_HodometerFailure = L_No) & ((v.V_Geschwindigkeit >= 0) & (v.V_Geschwindigkeit <= 15))) & (next(v.V_GemesseneGeschwindigkeit) = v.V_Geschwindigkeit))  |
+		 ( v.V_HodometerGeschwindigkeit = L_Measuring & next(v.V_HodometerGeschwindigkeit) = L_Measuring & ((v.V_HodometerFailure = L_No) & ((v.V_Geschwindigkeit >= 0) & (v.V_Geschwindigkeit <= 6))) & (next(v.V_GemesseneGeschwindigkeit) = v.V_Geschwindigkeit))  |
 		 ( v.V_HodometerGeschwindigkeit = L_Measuring & next(v.V_HodometerGeschwindigkeit) = L_Measuring & (v.V_HodometerFailure = L_Yes) & (next(v.V_GemesseneGeschwindigkeit) = v.V_GemesseneGeschwindigkeit))  |
-		 ( v.V_HodometerGeschwindigkeit = L_Measuring & next(v.V_HodometerGeschwindigkeit) = L_Measuring & (!((v.V_HodometerFailure = L_No) & ((v.V_Geschwindigkeit >= 0) & (v.V_Geschwindigkeit <= 15))) & !(v.V_HodometerFailure = L_Yes)) & (next(v.V_GemesseneGeschwindigkeit) = v.V_GemesseneGeschwindigkeit));
+		 ( v.V_HodometerGeschwindigkeit = L_Measuring & next(v.V_HodometerGeschwindigkeit) = L_Measuring & (!((v.V_HodometerFailure = L_No) & ((v.V_Geschwindigkeit >= 0) & (v.V_Geschwindigkeit <= 6))) & !(v.V_HodometerFailure = L_Yes)) & (next(v.V_GemesseneGeschwindigkeit) = v.V_GemesseneGeschwindigkeit));
 MODULE _P_HodometerPosition(v)
 	INIT
 		(v.V_HodometerPosition = L_Measuring) & ((v.V_Position = v.V_GemessenePosition))
 	TRANS
-		 ( v.V_HodometerPosition = L_Measuring & next(v.V_HodometerPosition) = L_Measuring & ((v.V_HodometerFailure = L_No) & ((v.V_Position >= 0) & (v.V_Position <= 175))) & (next(v.V_GemessenePosition) = v.V_Position))  |
+		 ( v.V_HodometerPosition = L_Measuring & next(v.V_HodometerPosition) = L_Measuring & ((v.V_HodometerFailure = L_No) & ((v.V_Position >= 0) & (v.V_Position <= 200))) & (next(v.V_GemessenePosition) = v.V_Position))  |
 		 ( v.V_HodometerPosition = L_Measuring & next(v.V_HodometerPosition) = L_Measuring & (v.V_HodometerFailure = L_Yes) & (next(v.V_GemessenePosition) = v.V_GemessenePosition))  |
-		 ( v.V_HodometerPosition = L_Measuring & next(v.V_HodometerPosition) = L_Measuring & (!((v.V_HodometerFailure = L_No) & ((v.V_Position >= 0) & (v.V_Position <= 175))) & !(v.V_HodometerFailure = L_Yes)) & (next(v.V_GemessenePosition) = v.V_GemessenePosition));
+		 ( v.V_HodometerPosition = L_Measuring & next(v.V_HodometerPosition) = L_Measuring & (!((v.V_HodometerFailure = L_No) & ((v.V_Position >= 0) & (v.V_Position <= 200))) & !(v.V_HodometerFailure = L_Yes)) & (next(v.V_GemessenePosition) = v.V_GemessenePosition));
 MODULE _P_UmgebungZug(v)
 	INIT
 		(v.V_UmgebungZug = L_Moving) & (((v.V_Position = 0) & (v.V_Geschwindigkeit = 6)))
 	TRANS
-		 ( v.V_UmgebungZug = L_Moving & next(v.V_UmgebungZug) = L_Moving & ((v.V_Bremse = L_Geschlossen) & ((((v.V_Position + v.V_Geschwindigkeit) >= 0) & ((v.V_Position + v.V_Geschwindigkeit) <= 170)) & (((v.V_Geschwindigkeit - v.V_Bremsverzoegerung) >= 0) & ((v.V_Geschwindigkeit - v.V_Bremsverzoegerung) <= 6)))) & (next(v.V_Geschwindigkeit) = (v.V_Geschwindigkeit - v.V_Bremsverzoegerung) & next(v.V_Position) = (v.V_Position + v.V_Geschwindigkeit)))  |
-		 ( v.V_UmgebungZug = L_Moving & next(v.V_UmgebungZug) = L_Moving & ((v.V_Bremse = L_Offen) & ((((v.V_Position + v.V_Geschwindigkeit) >= 0) & ((v.V_Position + v.V_Geschwindigkeit) <= 170)) & ((v.V_Geschwindigkeit >= 0) & (v.V_Geschwindigkeit <= 6)))) & (next(v.V_Geschwindigkeit) = v.V_Geschwindigkeit & next(v.V_Position) = (v.V_Position + v.V_Geschwindigkeit)))  |
-		 ( v.V_UmgebungZug = L_Moving & next(v.V_UmgebungZug) = L_Moving & (!((v.V_Bremse = L_Geschlossen) & ((((v.V_Position + v.V_Geschwindigkeit) >= 0) & ((v.V_Position + v.V_Geschwindigkeit) <= 170)) & (((v.V_Geschwindigkeit - v.V_Bremsverzoegerung) >= 0) & ((v.V_Geschwindigkeit - v.V_Bremsverzoegerung) <= 6)))) & !((v.V_Bremse = L_Offen) & ((((v.V_Position + v.V_Geschwindigkeit) >= 0) & ((v.V_Position + v.V_Geschwindigkeit) <= 170)) & ((v.V_Geschwindigkeit >= 0) & (v.V_Geschwindigkeit <= 6))))) & (next(v.V_Geschwindigkeit) = v.V_Geschwindigkeit & next(v.V_Position) = v.V_Position));
+		 ( v.V_UmgebungZug = L_Moving & next(v.V_UmgebungZug) = L_Moving & ((v.V_Bremse = L_Geschlossen) & ((((v.V_Position + v.V_Geschwindigkeit) >= 0) & ((v.V_Position + v.V_Geschwindigkeit) <= 200)) & (((v.V_Geschwindigkeit - v.V_Bremsverzoegerung) >= 0) & ((v.V_Geschwindigkeit - v.V_Bremsverzoegerung) <= 6)))) & (next(v.V_Geschwindigkeit) = (v.V_Geschwindigkeit - v.V_Bremsverzoegerung) & next(v.V_Position) = (v.V_Position + v.V_Geschwindigkeit)))  |
+		 ( v.V_UmgebungZug = L_Moving & next(v.V_UmgebungZug) = L_Moving & ((v.V_Bremse = L_Offen) & ((((v.V_Position + v.V_Geschwindigkeit) >= 0) & ((v.V_Position + v.V_Geschwindigkeit) <= 200)) & ((v.V_Geschwindigkeit >= 0) & (v.V_Geschwindigkeit <= 6)))) & (next(v.V_Geschwindigkeit) = v.V_Geschwindigkeit & next(v.V_Position) = (v.V_Position + v.V_Geschwindigkeit)))  |
+		 ( v.V_UmgebungZug = L_Moving & next(v.V_UmgebungZug) = L_Moving & (!((v.V_Bremse = L_Geschlossen) & ((((v.V_Position + v.V_Geschwindigkeit) >= 0) & ((v.V_Position + v.V_Geschwindigkeit) <= 200)) & (((v.V_Geschwindigkeit - v.V_Bremsverzoegerung) >= 0) & ((v.V_Geschwindigkeit - v.V_Bremsverzoegerung) <= 6)))) & !((v.V_Bremse = L_Offen) & ((((v.V_Position + v.V_Geschwindigkeit) >= 0) & ((v.V_Position + v.V_Geschwindigkeit) <= 200)) & ((v.V_Geschwindigkeit >= 0) & (v.V_Geschwindigkeit <= 6))))) & (next(v.V_Geschwindigkeit) = v.V_Geschwindigkeit & next(v.V_Position) = v.V_Position));
 MODULE _P_Zugfunkmodul(v)
 	INIT
 		(v.V_Zugfunkmodul = L_IDLE) & (TRUE)
@@ -110,15 +112,14 @@ MODULE _P_Zugsteuerung(v)
 	INIT
 		(v.V_Zugsteuerung = L_NO_INTERUPT) & (((v.V_ZugFunkSender = L_Null) & (v.V_BremseFest = L_False)))
 	TRANS
-		 ( v.V_Zugsteuerung = L_NO_INTERUPT & next(v.V_Zugsteuerung) = L_EP_PASSED & ((v.V_GemessenePosition > ((((70 - 1) - ((v.V_Geschwindigkeit * v.V_Geschwindigkeit) / (2 * v.V_Bremsverzoegerung))) - (2 * (2 * v.V_Geschwindigkeit))) - (v.V_Geschwindigkeit * (5 + 2)))) & (v.V_ZugsteuerungFailure = L_No)) & (next(v.V_ZugFunkSender) = L_EPSenden & next(v.V_BremseFest) = v.V_BremseFest))  |
-		 ( v.V_Zugsteuerung = L_EP_PASSED & next(v.V_Zugsteuerung) = L_AP_PASSED & ((v.V_GemessenePosition > (((70 - 1) - ((v.V_Geschwindigkeit * v.V_Geschwindigkeit) / (2 * v.V_Bremsverzoegerung))) - (2 * (2 * v.V_Geschwindigkeit)))) & (v.V_ZugsteuerungFailure = L_No)) & (next(v.V_ZugFunkSender) = L_APSenden & next(v.V_BremseFest) = v.V_BremseFest))  |
-		 ( v.V_Zugsteuerung = L_AP_PASSED & next(v.V_Zugsteuerung) = L_EMER_STOP & (((v.V_GemessenePosition > ((70 - 1) - ((v.V_Geschwindigkeit * v.V_Geschwindigkeit) / (2 * v.V_Bremsverzoegerung)))) & (v.V_APAck = L_False)) & (v.V_ZugsteuerungFailure = L_No)) & (next(v.V_BremseFest) = L_True & next(v.V_ZugFunkSender) = v.V_ZugFunkSender))  |
-		 ( v.V_Zugsteuerung = L_AP_PASSED & next(v.V_Zugsteuerung) = L_BU_PASSING & (((v.V_GemessenePosition > ((70 - 1) - ((v.V_Geschwindigkeit * v.V_Geschwindigkeit) / (2 * v.V_Bremsverzoegerung)))) & (v.V_APAck = L_True)) & (v.V_ZugsteuerungFailure = L_No)) & (next(v.V_BremseFest) = v.V_BremseFest & next(v.V_ZugFunkSender) = v.V_ZugFunkSender))  |
-		 ( v.V_Zugsteuerung = L_BU_PASSING & next(v.V_Zugsteuerung) = L_NO_INTERUPT & ((v.V_GemessenePosition > 150) & (v.V_ZugsteuerungFailure = L_No)) & (next(v.V_BremseFest) = v.V_BremseFest & next(v.V_ZugFunkSender) = v.V_ZugFunkSender))  |
-		 ( v.V_Zugsteuerung = L_NO_INTERUPT & next(v.V_Zugsteuerung) = L_NO_INTERUPT & !((v.V_GemessenePosition > ((((70 - 1) - ((v.V_Geschwindigkeit * v.V_Geschwindigkeit) / (2 * v.V_Bremsverzoegerung))) - (2 * (2 * v.V_Geschwindigkeit))) - (v.V_Geschwindigkeit * (5 + 2)))) & (v.V_ZugsteuerungFailure = L_No)) & (next(v.V_BremseFest) = v.V_BremseFest & next(v.V_ZugFunkSender) = v.V_ZugFunkSender))  |
-		 ( v.V_Zugsteuerung = L_EP_PASSED & next(v.V_Zugsteuerung) = L_EP_PASSED & !((v.V_GemessenePosition > (((70 - 1) - ((v.V_Geschwindigkeit * v.V_Geschwindigkeit) / (2 * v.V_Bremsverzoegerung))) - (2 * (2 * v.V_Geschwindigkeit)))) & (v.V_ZugsteuerungFailure = L_No)) & (next(v.V_BremseFest) = v.V_BremseFest & next(v.V_ZugFunkSender) = v.V_ZugFunkSender))  |
-		 ( v.V_Zugsteuerung = L_AP_PASSED & next(v.V_Zugsteuerung) = L_AP_PASSED & (!(((v.V_GemessenePosition > ((70 - 1) - ((v.V_Geschwindigkeit * v.V_Geschwindigkeit) / (2 * v.V_Bremsverzoegerung)))) & (v.V_APAck = L_False)) & (v.V_ZugsteuerungFailure = L_No)) & !(((v.V_GemessenePosition > ((70 - 1) - ((v.V_Geschwindigkeit * v.V_Geschwindigkeit) / (2 * v.V_Bremsverzoegerung)))) & (v.V_APAck = L_True)) & (v.V_ZugsteuerungFailure = L_No))) & (next(v.V_BremseFest) = v.V_BremseFest & next(v.V_ZugFunkSender) = v.V_ZugFunkSender))  |
-		 ( v.V_Zugsteuerung = L_BU_PASSING & next(v.V_Zugsteuerung) = L_BU_PASSING & !((v.V_GemessenePosition > 150) & (v.V_ZugsteuerungFailure = L_No)) & (next(v.V_BremseFest) = v.V_BremseFest & next(v.V_ZugFunkSender) = v.V_ZugFunkSender))  |
+		 ( v.V_Zugsteuerung = L_NO_INTERUPT & next(v.V_Zugsteuerung) = L_EP_PASSED & ((v.V_GemessenePosition > (((((150 - 1) - ((v.V_Geschwindigkeit * v.V_Geschwindigkeit) / (2 * v.V_Bremsverzoegerung))) - 30) - (4 * (2 * v.V_Geschwindigkeit))) - (v.V_Geschwindigkeit * (5 + 2)))) & (v.V_ZugsteuerungFailure = L_No)) & (next(v.V_ZugFunkSender) = L_EPSenden & next(v.V_BremseFest) = v.V_BremseFest))  |
+		 ( v.V_Zugsteuerung = L_EP_PASSED & next(v.V_Zugsteuerung) = L_AP_PASSED & ((v.V_GemessenePosition > ((((150 - 1) - ((v.V_Geschwindigkeit * v.V_Geschwindigkeit) / (2 * v.V_Bremsverzoegerung))) - 30) - (4 * (2 * v.V_Geschwindigkeit)))) & (v.V_ZugsteuerungFailure = L_No)) & (next(v.V_ZugFunkSender) = L_APSenden & next(v.V_BremseFest) = v.V_BremseFest))  |
+		 ( v.V_Zugsteuerung = L_AP_PASSED & next(v.V_Zugsteuerung) = L_EMER_STOP & (((v.V_GemessenePosition > (((150 - 1) - ((v.V_Geschwindigkeit * v.V_Geschwindigkeit) / (2 * v.V_Bremsverzoegerung))) - 30)) & (v.V_APAck = L_False)) & (v.V_ZugsteuerungFailure = L_No)) & (next(v.V_BremseFest) = L_True & next(v.V_ZugFunkSender) = v.V_ZugFunkSender))  |
+		 ( v.V_Zugsteuerung = L_AP_PASSED & next(v.V_Zugsteuerung) = L_BU_PASSING & (((v.V_GemessenePosition > (((150 - 1) - ((v.V_Geschwindigkeit * v.V_Geschwindigkeit) / (2 * v.V_Bremsverzoegerung))) - 30)) & (v.V_APAck = L_True)) & (v.V_ZugsteuerungFailure = L_No)) & (next(v.V_BremseFest) = v.V_BremseFest & next(v.V_ZugFunkSender) = v.V_ZugFunkSender))  |
+		 ( v.V_Zugsteuerung = L_NO_INTERUPT & next(v.V_Zugsteuerung) = L_NO_INTERUPT & !((v.V_GemessenePosition > (((((150 - 1) - ((v.V_Geschwindigkeit * v.V_Geschwindigkeit) / (2 * v.V_Bremsverzoegerung))) - 30) - (4 * (2 * v.V_Geschwindigkeit))) - (v.V_Geschwindigkeit * (5 + 2)))) & (v.V_ZugsteuerungFailure = L_No)) & (next(v.V_BremseFest) = v.V_BremseFest & next(v.V_ZugFunkSender) = v.V_ZugFunkSender))  |
+		 ( v.V_Zugsteuerung = L_EP_PASSED & next(v.V_Zugsteuerung) = L_EP_PASSED & !((v.V_GemessenePosition > ((((150 - 1) - ((v.V_Geschwindigkeit * v.V_Geschwindigkeit) / (2 * v.V_Bremsverzoegerung))) - 30) - (4 * (2 * v.V_Geschwindigkeit)))) & (v.V_ZugsteuerungFailure = L_No)) & (next(v.V_BremseFest) = v.V_BremseFest & next(v.V_ZugFunkSender) = v.V_ZugFunkSender))  |
+		 ( v.V_Zugsteuerung = L_AP_PASSED & next(v.V_Zugsteuerung) = L_AP_PASSED & (!(((v.V_GemessenePosition > (((150 - 1) - ((v.V_Geschwindigkeit * v.V_Geschwindigkeit) / (2 * v.V_Bremsverzoegerung))) - 30)) & (v.V_APAck = L_False)) & (v.V_ZugsteuerungFailure = L_No)) & !(((v.V_GemessenePosition > (((150 - 1) - ((v.V_Geschwindigkeit * v.V_Geschwindigkeit) / (2 * v.V_Bremsverzoegerung))) - 30)) & (v.V_APAck = L_True)) & (v.V_ZugsteuerungFailure = L_No))) & (next(v.V_BremseFest) = v.V_BremseFest & next(v.V_ZugFunkSender) = v.V_ZugFunkSender))  |
+		 ( v.V_Zugsteuerung = L_BU_PASSING & next(v.V_Zugsteuerung) = L_BU_PASSING & TRUE & (next(v.V_BremseFest) = v.V_BremseFest & next(v.V_ZugFunkSender) = v.V_ZugFunkSender))  |
 		 ( v.V_Zugsteuerung = L_EMER_STOP & next(v.V_Zugsteuerung) = L_EMER_STOP & TRUE & (next(v.V_BremseFest) = v.V_BremseFest & next(v.V_ZugFunkSender) = v.V_ZugFunkSender));
 MODULE _P_ZugsteuerungFailure(v)
 	INIT
@@ -130,20 +131,21 @@ MODULE _P_ZugsteuerungFailure(v)
 		 ( v.V_ZugsteuerungFailure = L_Yes & next(v.V_ZugsteuerungFailure) = L_No & TRUE & (TRUE));
 MODULE _P_Bahnuebergangssteuerung(v)
 	INIT
-		(v.V_Bahnuebergangssteuerung = L_Idle) & (((v.V_closeTrigger = L_False) & (v.V_openTrigger = L_True)))
+		(v.V_Bahnuebergangssteuerung = L_Idle) & (((v.V_closeTrigger = L_False) & (v.V_openTrigger = L_False)))
 	TRANS
-		 ( v.V_Bahnuebergangssteuerung = L_Idle & next(v.V_Bahnuebergangssteuerung) = L_BUSecuring & ((v.V_BUFunk = L_EPMsg) & (v.V_BahnuebergangssteuerungFailure = L_No)) & (next(v.V_closeTrigger) = L_True & next(v.V_openTrigger) = L_False))  |
-		 ( v.V_Bahnuebergangssteuerung = L_BUSecuring & next(v.V_Bahnuebergangssteuerung) = L_BUSecured & ((v.V_SchrankenSensor = L_Geschlossen) & (v.V_BahnuebergangssteuerungFailure = L_No)) & (next(v.V_closeTrigger) = v.V_closeTrigger & next(v.V_openTrigger) = v.V_openTrigger))  |
-		 ( v.V_Bahnuebergangssteuerung = L_AP_Success & next(v.V_Bahnuebergangssteuerung) = L_TrainIsPassing & ((v.V_ZugSensor = L_Blocked) & (v.V_BahnuebergangssteuerungFailure = L_No)) & (next(v.V_closeTrigger) = v.V_closeTrigger & next(v.V_openTrigger) = v.V_openTrigger))  |
-		 ( v.V_Bahnuebergangssteuerung = L_TrainIsPassing & next(v.V_Bahnuebergangssteuerung) = L_OpenSchrankeBack & ((v.V_ZugSensor = L_Free) & (v.V_BahnuebergangssteuerungFailure = L_No)) & (next(v.V_closeTrigger) = L_False & next(v.V_openTrigger) = L_True))  |
-		 ( v.V_Bahnuebergangssteuerung = L_OpenSchrankeBack & next(v.V_Bahnuebergangssteuerung) = L_Idle & ((v.V_SchrankenSensor = L_Offen) & (v.V_BahnuebergangssteuerungFailure = L_No)) & (next(v.V_closeTrigger) = v.V_closeTrigger & next(v.V_openTrigger) = v.V_openTrigger))  |
-		 ( v.V_Bahnuebergangssteuerung = L_BUSecured & next(v.V_Bahnuebergangssteuerung) = L_AP_Success & ((v.V_BUFunk = L_APMsg) & (v.V_BahnuebergangssteuerungFailure = L_No)) & (next(v.V_closeTrigger) = v.V_closeTrigger & next(v.V_openTrigger) = v.V_openTrigger))  |
-		 ( v.V_Bahnuebergangssteuerung = L_Idle & next(v.V_Bahnuebergangssteuerung) = L_Idle & !((v.V_BUFunk = L_EPMsg) & (v.V_BahnuebergangssteuerungFailure = L_No)) & (next(v.V_closeTrigger) = v.V_closeTrigger & next(v.V_openTrigger) = v.V_openTrigger))  |
-		 ( v.V_Bahnuebergangssteuerung = L_BUSecuring & next(v.V_Bahnuebergangssteuerung) = L_BUSecuring & !((v.V_SchrankenSensor = L_Geschlossen) & (v.V_BahnuebergangssteuerungFailure = L_No)) & (next(v.V_closeTrigger) = v.V_closeTrigger & next(v.V_openTrigger) = v.V_openTrigger))  |
-		 ( v.V_Bahnuebergangssteuerung = L_AP_Success & next(v.V_Bahnuebergangssteuerung) = L_AP_Success & !((v.V_ZugSensor = L_Blocked) & (v.V_BahnuebergangssteuerungFailure = L_No)) & (next(v.V_closeTrigger) = v.V_closeTrigger & next(v.V_openTrigger) = v.V_openTrigger))  |
-		 ( v.V_Bahnuebergangssteuerung = L_TrainIsPassing & next(v.V_Bahnuebergangssteuerung) = L_TrainIsPassing & !((v.V_ZugSensor = L_Free) & (v.V_BahnuebergangssteuerungFailure = L_No)) & (next(v.V_closeTrigger) = v.V_closeTrigger & next(v.V_openTrigger) = v.V_openTrigger))  |
-		 ( v.V_Bahnuebergangssteuerung = L_OpenSchrankeBack & next(v.V_Bahnuebergangssteuerung) = L_OpenSchrankeBack & !((v.V_SchrankenSensor = L_Offen) & (v.V_BahnuebergangssteuerungFailure = L_No)) & (next(v.V_closeTrigger) = v.V_closeTrigger & next(v.V_openTrigger) = v.V_openTrigger))  |
-		 ( v.V_Bahnuebergangssteuerung = L_BUSecured & next(v.V_Bahnuebergangssteuerung) = L_BUSecured & !((v.V_BUFunk = L_APMsg) & (v.V_BahnuebergangssteuerungFailure = L_No)) & (next(v.V_closeTrigger) = v.V_closeTrigger & next(v.V_openTrigger) = v.V_openTrigger));
+		 ( v.V_Bahnuebergangssteuerung = L_Idle & next(v.V_Bahnuebergangssteuerung) = L_BUSecuring & ((v.V_BUFunk = L_EPMsg) & (v.V_BahnuebergangssteuerungFailure = L_No)) & (next(v.V_closeTrigger) = L_True & next(v.V_openTrigger) = L_False & next(v.V_time) = v.V_time))  |
+		 ( v.V_Bahnuebergangssteuerung = L_BUSecuring & next(v.V_Bahnuebergangssteuerung) = L_BUSecured & ((v.V_SchrankeClosedSensor = L_Triggered) & (v.V_BahnuebergangssteuerungFailure = L_No)) & (next(v.V_closeTrigger) = L_False & next(v.V_openTrigger) = v.V_openTrigger & next(v.V_time) = v.V_time))  |
+		 ( v.V_Bahnuebergangssteuerung = L_AP_Success & next(v.V_Bahnuebergangssteuerung) = L_TrainIsPassing & (((v.V_ZugSensor = L_Triggered) & (v.V_BahnuebergangssteuerungFailure = L_No)) & ((0 >= 0) & (0 <= 10))) & (next(v.V_time) = 0 & next(v.V_closeTrigger) = v.V_closeTrigger & next(v.V_openTrigger) = v.V_openTrigger))  |
+		 ( v.V_Bahnuebergangssteuerung = L_TrainIsPassing & next(v.V_Bahnuebergangssteuerung) = L_OpenSchrankeBack & (((v.V_ZugSensor = L_NoSignal) | (v.V_time >= 5)) & (v.V_BahnuebergangssteuerungFailure = L_No)) & (next(v.V_openTrigger) = L_True & next(v.V_closeTrigger) = v.V_closeTrigger & next(v.V_time) = v.V_time))  |
+		 ( v.V_Bahnuebergangssteuerung = L_TrainIsPassing & next(v.V_Bahnuebergangssteuerung) = L_TrainIsPassing & (((v.V_ZugSensor = L_Triggered) & (v.V_time < 5)) & (((v.V_time + 1) >= 0) & ((v.V_time + 1) <= 10))) & (next(v.V_time) = (v.V_time + 1) & next(v.V_closeTrigger) = v.V_closeTrigger & next(v.V_openTrigger) = v.V_openTrigger))  |
+		 ( v.V_Bahnuebergangssteuerung = L_OpenSchrankeBack & next(v.V_Bahnuebergangssteuerung) = L_Idle & ((v.V_SchrankeOpenSensor = L_Triggered) & (v.V_BahnuebergangssteuerungFailure = L_No)) & (next(v.V_openTrigger) = L_False & next(v.V_closeTrigger) = v.V_closeTrigger & next(v.V_time) = v.V_time))  |
+		 ( v.V_Bahnuebergangssteuerung = L_BUSecured & next(v.V_Bahnuebergangssteuerung) = L_AP_Success & ((v.V_BUFunk = L_APMsg) & (v.V_BahnuebergangssteuerungFailure = L_No)) & (next(v.V_closeTrigger) = v.V_closeTrigger & next(v.V_openTrigger) = v.V_openTrigger & next(v.V_time) = v.V_time))  |
+		 ( v.V_Bahnuebergangssteuerung = L_Idle & next(v.V_Bahnuebergangssteuerung) = L_Idle & !((v.V_BUFunk = L_EPMsg) & (v.V_BahnuebergangssteuerungFailure = L_No)) & (next(v.V_closeTrigger) = v.V_closeTrigger & next(v.V_openTrigger) = v.V_openTrigger & next(v.V_time) = v.V_time))  |
+		 ( v.V_Bahnuebergangssteuerung = L_BUSecuring & next(v.V_Bahnuebergangssteuerung) = L_BUSecuring & !((v.V_SchrankeClosedSensor = L_Triggered) & (v.V_BahnuebergangssteuerungFailure = L_No)) & (next(v.V_closeTrigger) = v.V_closeTrigger & next(v.V_openTrigger) = v.V_openTrigger & next(v.V_time) = v.V_time))  |
+		 ( v.V_Bahnuebergangssteuerung = L_AP_Success & next(v.V_Bahnuebergangssteuerung) = L_AP_Success & !(((v.V_ZugSensor = L_Triggered) & (v.V_BahnuebergangssteuerungFailure = L_No)) & ((0 >= 0) & (0 <= 10))) & (next(v.V_closeTrigger) = v.V_closeTrigger & next(v.V_openTrigger) = v.V_openTrigger & next(v.V_time) = v.V_time))  |
+		 ( v.V_Bahnuebergangssteuerung = L_TrainIsPassing & next(v.V_Bahnuebergangssteuerung) = L_TrainIsPassing & (!(((v.V_ZugSensor = L_NoSignal) | (v.V_time >= 5)) & (v.V_BahnuebergangssteuerungFailure = L_No)) & !(((v.V_ZugSensor = L_Triggered) & (v.V_time < 5)) & (((v.V_time + 1) >= 0) & ((v.V_time + 1) <= 10)))) & (next(v.V_closeTrigger) = v.V_closeTrigger & next(v.V_openTrigger) = v.V_openTrigger & next(v.V_time) = v.V_time))  |
+		 ( v.V_Bahnuebergangssteuerung = L_OpenSchrankeBack & next(v.V_Bahnuebergangssteuerung) = L_OpenSchrankeBack & !((v.V_SchrankeOpenSensor = L_Triggered) & (v.V_BahnuebergangssteuerungFailure = L_No)) & (next(v.V_closeTrigger) = v.V_closeTrigger & next(v.V_openTrigger) = v.V_openTrigger & next(v.V_time) = v.V_time))  |
+		 ( v.V_Bahnuebergangssteuerung = L_BUSecured & next(v.V_Bahnuebergangssteuerung) = L_BUSecured & !((v.V_BUFunk = L_APMsg) & (v.V_BahnuebergangssteuerungFailure = L_No)) & (next(v.V_closeTrigger) = v.V_closeTrigger & next(v.V_openTrigger) = v.V_openTrigger & next(v.V_time) = v.V_time));
 MODULE _P_BahnuebergangssteuerungFailure(v)
 	INIT
 		(v.V_BahnuebergangssteuerungFailure = L_No) & (TRUE)
@@ -173,26 +175,36 @@ MODULE _P_BUFunkFailure(v)
 	TRANS
 		 ( v.V_BUFunkFailure = L_No & next(v.V_BUFunkFailure) = L_Yes & TRUE & (TRUE))  |
 		 ( v.V_BUFunkFailure = L_No & next(v.V_BUFunkFailure) = L_No & TRUE & (TRUE))  |
-		 ( v.V_BUFunkFailure = L_Yes & next(v.V_BUFunkFailure) = L_No & TRUE & (TRUE))  |
 		 ( v.V_BUFunkFailure = L_Yes & next(v.V_BUFunkFailure) = L_Yes & TRUE & (TRUE));
 MODULE _P_Schranke(v)
 	INIT
-		(v.V_Schranke = L_Offen) & (TRUE)
+		(v.V_Schranke = L_NotMoving) & (TRUE)
 	TRANS
-		 ( v.V_Schranke = L_Offen & next(v.V_Schranke) = L_Closing & ((v.V_closeTrigger = L_True) & (v.V_SchrankeFailure = L_No)) & (next(v.V_pos) = v.V_pos))  |
-		 ( v.V_Schranke = L_Offen & next(v.V_Schranke) = L_Offen & (v.V_SchrankeFailure = L_Yes) & (next(v.V_pos) = v.V_pos))  |
-		 ( v.V_Schranke = L_Geschlossen & next(v.V_Schranke) = L_Opening & (v.V_openTrigger = L_True) & (next(v.V_pos) = v.V_pos))  |
-		 ( v.V_Schranke = L_Geschlossen & next(v.V_Schranke) = L_Geschlossen & (v.V_SchrankeFailure = L_Yes) & (next(v.V_pos) = v.V_pos))  |
-		 ( v.V_Schranke = L_Opening & next(v.V_Schranke) = L_Opening & (((v.V_pos > 0) & (v.V_SchrankeFailure = L_No)) & (v.V_pos > 0)) & (next(v.V_pos) = (v.V_pos - 1)))  |
-		 ( v.V_Schranke = L_Opening & next(v.V_Schranke) = L_Offen & (v.V_pos = 0) & (next(v.V_pos) = v.V_pos))  |
-		 ( v.V_Schranke = L_Opening & next(v.V_Schranke) = L_Opening & (v.V_SchrankeFailure = L_Yes) & (next(v.V_pos) = v.V_pos))  |
-		 ( v.V_Schranke = L_Closing & next(v.V_Schranke) = L_Closing & (((v.V_pos < 3) & (v.V_SchrankeFailure = L_No)) & (v.V_pos < 3)) & (next(v.V_pos) = (v.V_pos + 1)))  |
-		 ( v.V_Schranke = L_Closing & next(v.V_Schranke) = L_Geschlossen & (v.V_pos = 3) & (next(v.V_pos) = v.V_pos))  |
-		 ( v.V_Schranke = L_Closing & next(v.V_Schranke) = L_Closing & (v.V_SchrankeFailure = L_Yes) & (next(v.V_pos) = v.V_pos))  |
-		 ( v.V_Schranke = L_Offen & next(v.V_Schranke) = L_Offen & (!((v.V_closeTrigger = L_True) & (v.V_SchrankeFailure = L_No)) & !(v.V_SchrankeFailure = L_Yes)) & (next(v.V_pos) = v.V_pos))  |
-		 ( v.V_Schranke = L_Geschlossen & next(v.V_Schranke) = L_Geschlossen & (!(v.V_openTrigger = L_True) & !(v.V_SchrankeFailure = L_Yes)) & (next(v.V_pos) = v.V_pos))  |
-		 ( v.V_Schranke = L_Opening & next(v.V_Schranke) = L_Opening & (!(((v.V_pos > 0) & (v.V_SchrankeFailure = L_No)) & (v.V_pos > 0)) & (!(v.V_pos = 0) & !(v.V_SchrankeFailure = L_Yes))) & (next(v.V_pos) = v.V_pos))  |
-		 ( v.V_Schranke = L_Closing & next(v.V_Schranke) = L_Closing & (!(((v.V_pos < 3) & (v.V_SchrankeFailure = L_No)) & (v.V_pos < 3)) & (!(v.V_pos = 3) & !(v.V_SchrankeFailure = L_Yes))) & (next(v.V_pos) = v.V_pos));
+		 ( v.V_Schranke = L_NotMoving & next(v.V_Schranke) = L_Closing & ((v.V_closeTrigger = L_True) & (v.V_SchrankeFailure = L_No)) & (next(v.V_pos) = v.V_pos))  |
+		 ( v.V_Schranke = L_NotMoving & next(v.V_Schranke) = L_Opening & ((v.V_openTrigger = L_True) & (v.V_SchrankeFailure = L_No)) & (next(v.V_pos) = v.V_pos))  |
+		 ( v.V_Schranke = L_Opening & next(v.V_Schranke) = L_Opening & ((((v.V_openTrigger = L_True) & (v.V_SchrankeFailure = L_No)) & ((v.V_pos - 1) >= 0)) & (((v.V_pos - 1) >= 0) & ((v.V_pos - 1) <= 3))) & (next(v.V_pos) = (v.V_pos - 1)))  |
+		 ( v.V_Schranke = L_Opening & next(v.V_Schranke) = L_NotMoving & (v.V_SchrankeFailure = L_Yes) & (next(v.V_pos) = v.V_pos))  |
+		 ( v.V_Schranke = L_Closing & next(v.V_Schranke) = L_Closing & ((((v.V_closeTrigger = L_True) & (v.V_SchrankeFailure = L_No)) & ((v.V_pos + 1) <= 3)) & (((v.V_pos + 1) >= 0) & ((v.V_pos + 1) <= 3))) & (next(v.V_pos) = (v.V_pos + 1)))  |
+		 ( v.V_Schranke = L_Closing & next(v.V_Schranke) = L_NotMoving & ((v.V_SchrankeFailure = L_Yes) | (v.V_closeTrigger = L_False)) & (next(v.V_pos) = v.V_pos))  |
+		 ( v.V_Schranke = L_NotMoving & next(v.V_Schranke) = L_NotMoving & (!((v.V_closeTrigger = L_True) & (v.V_SchrankeFailure = L_No)) & !((v.V_openTrigger = L_True) & (v.V_SchrankeFailure = L_No))) & (next(v.V_pos) = v.V_pos))  |
+		 ( v.V_Schranke = L_Opening & next(v.V_Schranke) = L_Opening & (!((((v.V_openTrigger = L_True) & (v.V_SchrankeFailure = L_No)) & ((v.V_pos - 1) >= 0)) & (((v.V_pos - 1) >= 0) & ((v.V_pos - 1) <= 3))) & !(v.V_SchrankeFailure = L_Yes)) & (next(v.V_pos) = v.V_pos))  |
+		 ( v.V_Schranke = L_Closing & next(v.V_Schranke) = L_Closing & (!((((v.V_closeTrigger = L_True) & (v.V_SchrankeFailure = L_No)) & ((v.V_pos + 1) <= 3)) & (((v.V_pos + 1) >= 0) & ((v.V_pos + 1) <= 3))) & !((v.V_SchrankeFailure = L_Yes) | (v.V_closeTrigger = L_False))) & (next(v.V_pos) = v.V_pos));
+MODULE _P_SchrankeClosedSensor(v)
+	INIT
+		(v.V_SchrankeClosedSensor = L_NoSignal) & (TRUE)
+	TRANS
+		 ( v.V_SchrankeClosedSensor = L_Triggered & next(v.V_SchrankeClosedSensor) = L_NoSignal & (v.V_pos < 3) & (TRUE))  |
+		 ( v.V_SchrankeClosedSensor = L_NoSignal & next(v.V_SchrankeClosedSensor) = L_Triggered & ((v.V_pos >= 3) | (v.V_SchrankeClosedSensorFailure = L_Yes)) & (TRUE))  |
+		 ( v.V_SchrankeClosedSensor = L_Triggered & next(v.V_SchrankeClosedSensor) = L_Triggered & !(v.V_pos < 3) & (TRUE))  |
+		 ( v.V_SchrankeClosedSensor = L_NoSignal & next(v.V_SchrankeClosedSensor) = L_NoSignal & !((v.V_pos >= 3) | (v.V_SchrankeClosedSensorFailure = L_Yes)) & (TRUE));
+MODULE _P_SchrankeClosedSensorFailure(v)
+	INIT
+		(v.V_SchrankeClosedSensorFailure = L_No) & (TRUE)
+	TRANS
+		 ( v.V_SchrankeClosedSensorFailure = L_No & next(v.V_SchrankeClosedSensorFailure) = L_Yes & TRUE & (TRUE))  |
+		 ( v.V_SchrankeClosedSensorFailure = L_No & next(v.V_SchrankeClosedSensorFailure) = L_No & TRUE & (TRUE))  |
+		 ( v.V_SchrankeClosedSensorFailure = L_Yes & next(v.V_SchrankeClosedSensorFailure) = L_Yes & TRUE & (TRUE))  |
+		 ( v.V_SchrankeClosedSensorFailure = L_Yes & next(v.V_SchrankeClosedSensorFailure) = L_No & TRUE & (TRUE));
 MODULE _P_SchrankeFailure(v)
 	INIT
 		(v.V_SchrankeFailure = L_No) & (TRUE)
@@ -200,38 +212,30 @@ MODULE _P_SchrankeFailure(v)
 		 ( v.V_SchrankeFailure = L_No & next(v.V_SchrankeFailure) = L_Yes & TRUE & (TRUE))  |
 		 ( v.V_SchrankeFailure = L_No & next(v.V_SchrankeFailure) = L_No & TRUE & (TRUE))  |
 		 ( v.V_SchrankeFailure = L_Yes & next(v.V_SchrankeFailure) = L_Yes & TRUE & (TRUE));
-MODULE _P_SchrankenSensor(v)
+MODULE _P_SchrankeOpenSensor(v)
 	INIT
-		(v.V_SchrankenSensor = L_InTransit) & (TRUE)
+		(v.V_SchrankeOpenSensor = L_NoSignal) & (TRUE)
 	TRANS
-		 ( v.V_SchrankenSensor = L_Offen & next(v.V_SchrankenSensor) = L_InTransit & ((v.V_Schranke = L_Opening) & (v.V_SchrankensensorFailure = L_No)) & (TRUE))  |
-		 ( v.V_SchrankenSensor = L_Offen & next(v.V_SchrankenSensor) = L_Geschlossen & (v.V_SchrankensensorFailure = L_Yes) & (TRUE))  |
-		 ( v.V_SchrankenSensor = L_Geschlossen & next(v.V_SchrankenSensor) = L_InTransit & ((v.V_Schranke = L_Closing) & (v.V_SchrankensensorFailure = L_No)) & (TRUE))  |
-		 ( v.V_SchrankenSensor = L_Geschlossen & next(v.V_SchrankenSensor) = L_Geschlossen & (v.V_SchrankensensorFailure = L_Yes) & (TRUE))  |
-		 ( v.V_SchrankenSensor = L_InTransit & next(v.V_SchrankenSensor) = L_Geschlossen & ((v.V_Schranke = L_Geschlossen) & (v.V_SchrankensensorFailure = L_No)) & (TRUE))  |
-		 ( v.V_SchrankenSensor = L_InTransit & next(v.V_SchrankenSensor) = L_Offen & ((v.V_Schranke = L_Offen) & (v.V_SchrankensensorFailure = L_No)) & (TRUE))  |
-		 ( v.V_SchrankenSensor = L_InTransit & next(v.V_SchrankenSensor) = L_Geschlossen & (v.V_SchrankensensorFailure = L_Yes) & (TRUE))  |
-		 ( v.V_SchrankenSensor = L_Offen & next(v.V_SchrankenSensor) = L_Offen & (!((v.V_Schranke = L_Opening) & (v.V_SchrankensensorFailure = L_No)) & !(v.V_SchrankensensorFailure = L_Yes)) & (TRUE))  |
-		 ( v.V_SchrankenSensor = L_Geschlossen & next(v.V_SchrankenSensor) = L_Geschlossen & (!((v.V_Schranke = L_Closing) & (v.V_SchrankensensorFailure = L_No)) & !(v.V_SchrankensensorFailure = L_Yes)) & (TRUE))  |
-		 ( v.V_SchrankenSensor = L_InTransit & next(v.V_SchrankenSensor) = L_InTransit & (!((v.V_Schranke = L_Geschlossen) & (v.V_SchrankensensorFailure = L_No)) & (!((v.V_Schranke = L_Offen) & (v.V_SchrankensensorFailure = L_No)) & !(v.V_SchrankensensorFailure = L_Yes))) & (TRUE));
-MODULE _P_SchrankensensorFailure(v)
+		 ( v.V_SchrankeOpenSensor = L_Triggered & next(v.V_SchrankeOpenSensor) = L_NoSignal & ((v.V_pos > 0) | (v.V_SchrankeOpenSensorFailure = L_Yes)) & (TRUE))  |
+		 ( v.V_SchrankeOpenSensor = L_NoSignal & next(v.V_SchrankeOpenSensor) = L_Triggered & ((v.V_pos = 0) & (v.V_SchrankeOpenSensorFailure = L_No)) & (TRUE))  |
+		 ( v.V_SchrankeOpenSensor = L_Triggered & next(v.V_SchrankeOpenSensor) = L_Triggered & !((v.V_pos > 0) | (v.V_SchrankeOpenSensorFailure = L_Yes)) & (TRUE))  |
+		 ( v.V_SchrankeOpenSensor = L_NoSignal & next(v.V_SchrankeOpenSensor) = L_NoSignal & !((v.V_pos = 0) & (v.V_SchrankeOpenSensorFailure = L_No)) & (TRUE));
+MODULE _P_SchrankeOpenSensorFailure(v)
 	INIT
-		(v.V_SchrankensensorFailure = L_No) & (TRUE)
+		(v.V_SchrankeOpenSensorFailure = L_No) & (TRUE)
 	TRANS
-		 ( v.V_SchrankensensorFailure = L_No & next(v.V_SchrankensensorFailure) = L_Yes & TRUE & (TRUE))  |
-		 ( v.V_SchrankensensorFailure = L_No & next(v.V_SchrankensensorFailure) = L_No & TRUE & (TRUE))  |
-		 ( v.V_SchrankensensorFailure = L_Yes & next(v.V_SchrankensensorFailure) = L_Yes & TRUE & (TRUE))  |
-		 ( v.V_SchrankensensorFailure = L_Yes & next(v.V_SchrankensensorFailure) = L_No & TRUE & (TRUE));
+		 ( v.V_SchrankeOpenSensorFailure = L_No & next(v.V_SchrankeOpenSensorFailure) = L_Yes & TRUE & (TRUE))  |
+		 ( v.V_SchrankeOpenSensorFailure = L_No & next(v.V_SchrankeOpenSensorFailure) = L_No & TRUE & (TRUE))  |
+		 ( v.V_SchrankeOpenSensorFailure = L_Yes & next(v.V_SchrankeOpenSensorFailure) = L_Yes & TRUE & (TRUE))  |
+		 ( v.V_SchrankeOpenSensorFailure = L_Yes & next(v.V_SchrankeOpenSensorFailure) = L_No & TRUE & (TRUE));
 MODULE _P_ZugSensor(v)
 	INIT
-		(v.V_ZugSensor = L_Free) & (TRUE)
+		(v.V_ZugSensor = L_NoSignal) & (TRUE)
 	TRANS
-		 ( v.V_ZugSensor = L_Blocked & next(v.V_ZugSensor) = L_Free & ((((v.V_GemessenePosition + 5) < 0) | (v.V_time > 20)) & (v.V_ZugSensorFailure = L_No)) & (next(v.V_time) = v.V_time))  |
-		 ( v.V_ZugSensor = L_Blocked & next(v.V_ZugSensor) = L_Blocked & ((v.V_ZugSensorFailure = L_No) & (((v.V_time + 1) >= 0) & ((v.V_time + 1) <= 60))) & (next(v.V_time) = (v.V_time + 1)))  |
-		 ( v.V_ZugSensor = L_Blocked & next(v.V_ZugSensor) = L_Free & (v.V_ZugSensorFailure = L_Yes) & (next(v.V_time) = v.V_time))  |
-		 ( v.V_ZugSensor = L_Free & next(v.V_ZugSensor) = L_Blocked & ((v.V_GemessenePosition < 0) & ((0 >= 0) & (0 <= 60))) & (next(v.V_time) = 0))  |
-		 ( v.V_ZugSensor = L_Blocked & next(v.V_ZugSensor) = L_Blocked & (!((((v.V_GemessenePosition + 5) < 0) | (v.V_time > 20)) & (v.V_ZugSensorFailure = L_No)) & (!((v.V_ZugSensorFailure = L_No) & (((v.V_time + 1) >= 0) & ((v.V_time + 1) <= 60))) & !(v.V_ZugSensorFailure = L_Yes))) & (next(v.V_time) = v.V_time))  |
-		 ( v.V_ZugSensor = L_Free & next(v.V_ZugSensor) = L_Free & !((v.V_GemessenePosition < 0) & ((0 >= 0) & (0 <= 60))) & (next(v.V_time) = v.V_time));
+		 ( v.V_ZugSensor = L_Triggered & next(v.V_ZugSensor) = L_NoSignal & ((v.V_Position - 5) > 170) & (TRUE))  |
+		 ( v.V_ZugSensor = L_NoSignal & next(v.V_ZugSensor) = L_Triggered & ((v.V_Position > 170) | (v.V_ZugSensorFailure = L_Yes)) & (TRUE))  |
+		 ( v.V_ZugSensor = L_Triggered & next(v.V_ZugSensor) = L_Triggered & !((v.V_Position - 5) > 170) & (TRUE))  |
+		 ( v.V_ZugSensor = L_NoSignal & next(v.V_ZugSensor) = L_NoSignal & !((v.V_Position > 170) | (v.V_ZugSensorFailure = L_Yes)) & (TRUE));
 MODULE _P_ZugSensorFailure(v)
 	INIT
 		(v.V_ZugSensorFailure = L_No) & (TRUE)
@@ -258,18 +262,28 @@ MODULE main
 		p_BUFunk : _P_BUFunk(v);
 		p_BUFunkFailure : _P_BUFunkFailure(v);
 		p_Schranke : _P_Schranke(v);
+		p_SchrankeClosedSensor : _P_SchrankeClosedSensor(v);
+		p_SchrankeClosedSensorFailure : _P_SchrankeClosedSensorFailure(v);
 		p_SchrankeFailure : _P_SchrankeFailure(v);
-		p_SchrankenSensor : _P_SchrankenSensor(v);
-		p_SchrankensensorFailure : _P_SchrankensensorFailure(v);
+		p_SchrankeOpenSensor : _P_SchrankeOpenSensor(v);
+		p_SchrankeOpenSensorFailure : _P_SchrankeOpenSensorFailure(v);
 		p_ZugSensor : _P_ZugSensor(v);
 		p_ZugSensorFailure : _P_ZugSensorFailure(v);
 
 
 
 
+--- only gamma until H
+---! (O_FS U hazard)
+
+DEFINE BU_POINT := 170;
+DEFINE GP_POINT := 150;
+DEFINE ZUGLAENGE := 5;
+
 DEFINE Hazard := (
-	v.V_Position = 100 &
-	! (v.V_Schranke = L_Geschlossen) &
+	v.V_Position > GP_POINT &
+	v.V_Position < BU_POINT + ZUGLAENGE &
+	! (v.V_pos = 3) &
 	v.V_Geschwindigkeit > 0
 );
 
@@ -283,11 +297,15 @@ DEFINE NoFailures := (
 	v.V_BUFunkFailure = L_No &
 	v.V_SchrankeFailure = L_No &
 	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No
 );
 
+LTLSPEC ! (NoFailures U Hazard)
 
---- BrakeFailure is MinimalCutSet
+
+
+-- BRAKE SHIT
 DEFINE BrakeFailure := (
 	v.V_HodometerFailure = L_No &
 	v.V_ZugfunkmodulFailure = L_No &
@@ -296,10 +314,11 @@ DEFINE BrakeFailure := (
 	v.V_BUFunkFailure = L_No &
 	v.V_SchrankeFailure = L_No &
 	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No
 );
 
-LTLSPEC (G BrakeFailure) -> (G ! Hazard)
+LTLSPEC ! (BrakeFailure U Hazard)
 
 DEFINE BrakeSchrankeFailure := (
 	v.V_HodometerFailure = L_No &
@@ -308,14 +327,15 @@ DEFINE BrakeSchrankeFailure := (
 	v.V_BahnuebergangssteuerungFailure = L_No &
 	v.V_BUFunkFailure = L_No &
 	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No
 );
 
---- LTLSPEC (G BrakeSchrankeFailure) -> (G ! Hazard)
---- -> Brake fails and Schranke fails
+--- LTLSPEC !(BrakeSchrankeFailure U Hazard)
 
---- HodometerFailure is MinimalCutSet
-DEFINE HodometerFailure := (
+--- HodometerFailure
+
+DEFINE HodometerFailures := (
 	v.V_BremseFailure = L_No &
 	v.V_ZugfunkmodulFailure = L_No &
 	v.V_ZugsteuerungFailure = L_No &
@@ -323,26 +343,16 @@ DEFINE HodometerFailure := (
 	v.V_BUFunkFailure = L_No &
 	v.V_SchrankeFailure = L_No &
 	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No
 );
 
-LTLSPEC (G HodometerFailure) -> (G ! Hazard)
+--- LTLSPEC ! (HodometerFailures U Hazard)
 
-DEFINE HodometerSchrankeFailure := (
-	v.V_BremseFailure = L_No &
-	v.V_ZugfunkmodulFailure = L_No &
-	v.V_ZugsteuerungFailure = L_No &
-	v.V_BahnuebergangssteuerungFailure = L_No &
-	v.V_BUFunkFailure = L_No &
-	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
-);
+--- ZugFunkModul
 
---- LTLSPEC (G HodometerSchrankeFailure) -> (G ! Hazard)
---- -> Hodometer fails and Schranke fails
 
---- ZugFunkFailure is MinimalCutSet
-DEFINE ZugFunkFailure := (
+DEFINE ZugFunkModulFailures := (
 	v.V_BremseFailure = L_No &
 	v.V_HodometerFailure = L_No &
 	v.V_ZugsteuerungFailure = L_No &
@@ -350,51 +360,16 @@ DEFINE ZugFunkFailure := (
 	v.V_BUFunkFailure = L_No &
 	v.V_SchrankeFailure = L_No &
 	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No
 );
 
-LTLSPEC (G ZugFunkFailure) -> (G ! Hazard)
+--- LTLSPEC ! (ZugFunkModulFailures U Hazard)
 
-DEFINE ZugFunkHodometerFailure := (
-	v.V_BremseFailure = L_No &
-	v.V_ZugsteuerungFailure = L_No &
-	v.V_BahnuebergangssteuerungFailure = L_No &
-	v.V_BUFunkFailure = L_No &
-	v.V_SchrankeFailure = L_No &
-	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
-);
 
---- LTLSPEC (G ZugFunkHodometerFailure) -> (G ! Hazard)
---- -> Hodometer fails and ZugFunkmodul fails -> only funkmodul is recognized by steuerung
+--- ZugSteuerung
 
-DEFINE BahnuebergangsFailure := (
-	v.V_BremseFailure = L_No &
-	v.V_HodometerFailure = L_No &
-	v.V_ZugfunkmodulFailure = L_No &
-	v.V_ZugsteuerungFailure = L_No &
-	v.V_BUFunkFailure = L_No &
-	v.V_SchrankeFailure = L_No &
-	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
-);
-
-LTLSPEC (G BahnuebergangsFailure) -> (G ! Hazard)
-
-DEFINE BahnuebergangsBrakeFailure := (
-	v.V_HodometerFailure = L_No &
-	v.V_ZugfunkmodulFailure = L_No &
-	v.V_ZugsteuerungFailure = L_No &
-	v.V_BUFunkFailure = L_No &
-	v.V_SchrankeFailure = L_No &
-	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
-);
-
---- LTLSPEC (G BahnuebergangsBrakeFailure) -> (G ! Hazard)
---- -> Hodometer fails and ZugFunkmodul fails -> only funkmodul is recognized by steuerung
-
-DEFINE SteuerungFailure := (
+DEFINE ZugSteuerungFailures := (
 	v.V_BremseFailure = L_No &
 	v.V_HodometerFailure = L_No &
 	v.V_ZugfunkmodulFailure = L_No &
@@ -402,76 +377,32 @@ DEFINE SteuerungFailure := (
 	v.V_BUFunkFailure = L_No &
 	v.V_SchrankeFailure = L_No &
 	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No
 );
 
-LTLSPEC (G SteuerungFailure) -> (G ! Hazard)
+--- LTLSPEC ! (ZugSteuerungFailures U Hazard)
 
---- BUFUNK 
-DEFINE BUFunkFailure := (
+
+--- Bahnuebergangssteuerung
+
+DEFINE BahnuebergangssteuerungFailures := (
 	v.V_BremseFailure = L_No &
 	v.V_HodometerFailure = L_No &
 	v.V_ZugfunkmodulFailure = L_No &
 	v.V_ZugsteuerungFailure = L_No &
-	v.V_BahnuebergangssteuerungFailure = L_No &
+	v.V_BUFunkFailure = L_No &
 	v.V_SchrankeFailure = L_No &
 	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No
 );
 
-LTLSPEC (G BUFunkFailure) -> (G ! Hazard)
+--- LTLSPEC ! (BahnuebergangssteuerungFailures U Hazard)
 
-DEFINE BUFunkBrakeFailure := (
-	v.V_HodometerFailure = L_No &
-	v.V_ZugfunkmodulFailure = L_No &
-	v.V_ZugsteuerungFailure = L_No &
-	v.V_BahnuebergangssteuerungFailure = L_No &
-	v.V_SchrankeFailure = L_No &
-	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
-);
+--- BUFunk
 
-LTLSPEC (G BUFunkBrakeFailure) -> (G ! Hazard)
-
-DEFINE BUFunkBrakeSchrankeFailure := (
-	v.V_HodometerFailure = L_No &
-	v.V_ZugfunkmodulFailure = L_No &
-	v.V_ZugsteuerungFailure = L_No &
-	v.V_BahnuebergangssteuerungFailure = L_No &
-	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
-);
-
---- LTLSPEC (G BUFunkBrakeSchrankeFailure) -> (G ! Hazard)
-
---- Schranke
-DEFINE SchrankeFailure := (
-	v.V_BremseFailure = L_No &
-	v.V_HodometerFailure = L_No &
-	v.V_ZugfunkmodulFailure = L_No &
-	v.V_ZugsteuerungFailure = L_No &
-	v.V_BahnuebergangssteuerungFailure = L_No &
-	v.V_BUFunkFailure = L_No &
-	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
-);
-
-LTLSPEC (G SchrankeFailure) -> (G ! Hazard)
-
-DEFINE SchrankeBrakeFailure := (
-	v.V_HodometerFailure = L_No &
-	v.V_ZugfunkmodulFailure = L_No &
-	v.V_ZugsteuerungFailure = L_No &
-	v.V_BahnuebergangssteuerungFailure = L_No &
-	v.V_BUFunkFailure = L_No &
-	v.V_ZugSensorFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
-);
-
---- LTLSPEC (G SchrankeBrakeFailure) -> (G ! Hazard)
-
---- Schrankensensor
-DEFINE SchrankensensorFailure := (
+DEFINE BUFunkFailures := (
 	v.V_BremseFailure = L_No &
 	v.V_HodometerFailure = L_No &
 	v.V_ZugfunkmodulFailure = L_No &
@@ -479,25 +410,67 @@ DEFINE SchrankensensorFailure := (
 	v.V_BahnuebergangssteuerungFailure = L_No &
 	v.V_BUFunkFailure = L_No &
 	v.V_SchrankeFailure = L_No &
-	v.V_ZugSensorFailure = L_No
+	v.V_ZugSensorFailure = L_No &
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No
 );
 
-LTLSPEC (G SchrankensensorFailure) -> (G ! Hazard)
+--- LTLSPEC ! (BUFunkFailures U Hazard)
 
-DEFINE SchrankensensorSchrankeHodometerFailure := (
+
+DEFINE SchrankeFailures := (
 	v.V_BremseFailure = L_No &
+	v.V_HodometerFailure = L_No &
 	v.V_ZugfunkmodulFailure = L_No &
 	v.V_ZugsteuerungFailure = L_No &
 	v.V_BahnuebergangssteuerungFailure = L_No &
 	v.V_BUFunkFailure = L_No &
-	v.V_ZugSensorFailure = L_No
+	v.V_ZugSensorFailure = L_No &
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No
 );
 
---- LTLSPEC (G SchrankensensorSchrankeHodometerFailure) -> (G ! Hazard)
+LTLSPEC ! (SchrankeFailures U Hazard)
+
+--- Schranke + Bremse see above
+
+--- SchrankeClosedSensor
+
+DEFINE SchrankeClosedSensorFailures := (
+	v.V_BremseFailure = L_No &
+	v.V_HodometerFailure = L_No &
+	v.V_ZugfunkmodulFailure = L_No &
+	v.V_ZugsteuerungFailure = L_No &
+	v.V_BahnuebergangssteuerungFailure = L_No &
+	v.V_BUFunkFailure = L_No &
+	v.V_SchrankeFailure = L_No &
+	v.V_ZugSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No
+);
+
+--- LTLSPEC ! (SchrankeClosedSensorFailures U Hazard)
+
+
+--- SchrankeOpenSensor
+
+DEFINE SchrankeOpenSensorFailures := (
+	v.V_BremseFailure = L_No &
+	v.V_HodometerFailure = L_No &
+	v.V_ZugfunkmodulFailure = L_No &
+	v.V_ZugsteuerungFailure = L_No &
+	v.V_BahnuebergangssteuerungFailure = L_No &
+	v.V_BUFunkFailure = L_No &
+	v.V_SchrankeFailure = L_No &
+	v.V_ZugSensorFailure = L_No &
+	v.V_SchrankeClosedSensorFailure = L_No
+);
+
+--- LTLSPEC ! (SchrankeOpenSensorFailures U Hazard)
+
 
 --- ZugSensorFailure
 
-DEFINE ZugSensorFailure := (
+DEFINE ZugSensorFailures := (
 	v.V_BremseFailure = L_No &
 	v.V_HodometerFailure = L_No &
 	v.V_ZugfunkmodulFailure = L_No &
@@ -505,9 +478,8 @@ DEFINE ZugSensorFailure := (
 	v.V_BahnuebergangssteuerungFailure = L_No &
 	v.V_BUFunkFailure = L_No &
 	v.V_SchrankeFailure = L_No &
-	v.V_SchrankensensorFailure = L_No
+	v.V_SchrankeClosedSensorFailure = L_No &
+	v.V_SchrankeOpenSensorFailure = L_No
 );
 
-LTLSPEC (G ZugSensorFailure) -> (G ! Hazard)
-
---- -> Zugsensor kann nicht failen 
+--- LTLSPEC ! (ZugSensorFailures U Hazard)

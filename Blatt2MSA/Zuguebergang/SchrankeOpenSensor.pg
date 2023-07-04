@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="f3f94de6-9d1a-45dc-8c96-7c65db34f7ea" name="SchrankeOpenSensor" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <state Id="2a4a2ae7-73f2-49cc-9db3-8d6d25d3b0e6" name="Triggered">
+      <successors>
+        <transition Id="ef1f85ac-f0c9-4c0e-8d0f-f687d39ad0e5" guard="pos &gt; 0  || SchrankeOpenSensorFailure== Yes" label="pos &gt; 0  || SchrankeOpenSensorFailure== Yes">
+          <stateMoniker name="/f3f94de6-9d1a-45dc-8c96-7c65db34f7ea/NoSignal" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="2d55410f-d2e5-414b-9d28-c4c6e62985e3" name="NoSignal">
+      <successors>
+        <transition Id="0ad6c0e7-1966-4d51-9ac9-cc7d2bc6dcc2" guard="pos == 0 &amp;&amp; SchrankeOpenSensorFailure== No" label="pos == 0 &amp;&amp; SchrankeOpenSensorFailure== No">
+          <stateMoniker name="/f3f94de6-9d1a-45dc-8c96-7c65db34f7ea/Triggered" />
+        </transition>
+      </successors>
+    </state>
+    <initialNode Id="2f3deea5-072e-4659-8c41-2f4f4a1b3d0c" name="InitialNode1">
+      <successors>
+        <transition Id="3235c821-6355-49ed-8462-c3ce4b9c3877">
+          <stateMoniker name="/f3f94de6-9d1a-45dc-8c96-7c65db34f7ea/NoSignal" />
+        </transition>
+      </successors>
+    </initialNode>
+  </states>
+  <importedVariables>
+    <programGraphHasImportedVariables Id="449c1a71-a2d3-4e46-a9ad-17cfe7c67e69">
+      <importedVariable Id="ef6d4fcc-7f8b-4b13-ac3e-49cc9777aa90" name="SchrankeOpenSensorFailure" range="No, Yes" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="3727ac5e-58fa-4aa3-960e-a3246fbd5965">
+      <importedVariable Id="ea58f71f-df76-4e32-8cf6-a4ba1e8a543a" name="Schranke.pos" range="0..3" />
+    </programGraphHasImportedVariables>
+  </importedVariables>
+</programGraph>

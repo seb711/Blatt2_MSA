@@ -13,9 +13,6 @@
     </state>
     <state Id="16c7fa38-afa8-4508-bfb1-de3fe9779b33" name="Yes">
       <successors>
-        <transition Id="dfd623be-3303-41e5-a2c4-f4c4649463ee">
-          <stateMoniker name="/3ad80f54-27fc-4224-8d63-8d511533dd69/No" />
-        </transition>
         <transition Id="7dd93bc7-8519-4f60-bc26-063b75ff0cae">
           <stateMoniker name="/3ad80f54-27fc-4224-8d63-8d511533dd69/Yes" />
         </transition>

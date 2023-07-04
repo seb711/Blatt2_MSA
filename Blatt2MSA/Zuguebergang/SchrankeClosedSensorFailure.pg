@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="1cbb190b-9b46-4f6d-9845-ff77a1fd0afb" name="SchrankensensorFailure" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="1cbb190b-9b46-4f6d-9845-ff77a1fd0afb" name="SchrankeClosedSensorFailure" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
   <states>
     <state Id="e1fb8309-8e4d-469b-b74e-d7483b98aa3e" name="No">
       <successors>

@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="4d4edaa8-00d3-4ac7-8498-bc828a688543" name="SchrankeOpenSensorFailure" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <state Id="7c027670-4f65-43e7-8cfb-79f42dbeb468" name="No">
+      <successors>
+        <transition Id="906717cb-6bae-4ff9-8634-3cda5f0d86b2">
+          <stateMoniker name="/4d4edaa8-00d3-4ac7-8498-bc828a688543/Yes" />
+        </transition>
+        <transition Id="fa1876f2-da6e-4a67-9669-d323a96ea02b">
+          <stateMoniker name="/4d4edaa8-00d3-4ac7-8498-bc828a688543/No" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="205c9652-5d2e-44d2-9250-f1294ec0b247" name="Yes">
+      <successors>
+        <transition Id="e9147a1e-ad0e-4fe2-a2a1-0b221b65601b">
+          <stateMoniker name="/4d4edaa8-00d3-4ac7-8498-bc828a688543/Yes" />
+        </transition>
+        <transition Id="f10bf2b5-6e90-4ab3-9fdb-90292dfefa9c">
+          <stateMoniker name="/4d4edaa8-00d3-4ac7-8498-bc828a688543/No" />
+        </transition>
+      </successors>
+    </state>
+    <initialNode Id="b65b1b4e-53f2-4126-9d94-5ae4d571b590" name="InitialNode1">
+      <successors>
+        <transition Id="5ff3484f-bac4-4e4e-9a23-e1b848c8fbd2">
+          <stateMoniker name="/4d4edaa8-00d3-4ac7-8498-bc828a688543/No" />
+        </transition>
+      </successors>
+    </initialNode>
+  </states>
+</programGraph>

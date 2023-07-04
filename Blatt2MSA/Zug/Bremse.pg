@@ -10,7 +10,7 @@
     </state>
     <state Id="6ff62573-9c01-452e-bee1-277859d90877" name="Geschlossen">
       <successors>
-        <transition Id="d838ced3-3d85-4189-b9f8-19f5ccf27497" guard="BremseFest==False || BremseFailure==Yes || Geschwindigkeit==0" label="BremseFest==False || BremseFailure==Yes || Geschwindigkeit==0">
+        <transition Id="d838ced3-3d85-4189-b9f8-19f5ccf27497" guard="BremseFest==False || BremseFailure==Yes" label="BremseFest==False || BremseFailure==Yes">
           <stateMoniker name="/4c920a64-a401-460e-8d4a-556e9028566e/Offen" />
         </transition>
         <transition Id="86fd8509-bbea-43c1-8dda-ccc405691d53" guard="BremseFest==True &amp;&amp; BremseFailure == No" label="BremseFest==True &amp;&amp; BremseFailure == No" precondition="auto">
@@ -28,7 +28,7 @@
   </states>
   <variables>
     <programGraphHasVariables Id="24ee2b3e-99c2-4c33-aa4d-a46e3465a484">
-      <variable Id="140ae230-310d-49ab-b67b-afc320d956eb" name="Bremsverzoegerung" range="2" />
+      <variable Id="140ae230-310d-49ab-b67b-afc320d956eb" name="Bremsverzoegerung" range="3" />
     </programGraphHasVariables>
   </variables>
   <importedVariables>

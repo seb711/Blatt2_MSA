@@ -21,7 +21,7 @@
   </states>
   <variables>
     <programGraphHasVariables Id="2160d3d2-a89a-4197-9b65-0c6f7fed7838">
-      <variable Id="6e5812ff-6800-48c4-a309-2b013aa741f7" name="GemesseneGeschwindigkeit" range="0..15" />
+      <variable Id="6e5812ff-6800-48c4-a309-2b013aa741f7" name="GemesseneGeschwindigkeit" range="0..6" />
     </programGraphHasVariables>
   </variables>
   <importedVariables>

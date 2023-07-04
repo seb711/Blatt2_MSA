@@ -3,7 +3,7 @@
   <states>
     <initialNode Id="34761003-a54e-4396-9244-c758495a7cce" name="InitialNode1">
       <successors>
-        <transition Id="674c8be8-03a5-433c-a254-a260a7f4f48c" guard="closeTrigger == False &amp;&amp; openTrigger == True" label="closeTrigger == False &amp;&amp; openTrigger == True">
+        <transition Id="674c8be8-03a5-433c-a254-a260a7f4f48c" guard="closeTrigger == False &amp;&amp; openTrigger == False" label="closeTrigger == False &amp;&amp; openTrigger == False">
           <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/Idle" />
         </transition>
       </successors>
@@ -17,28 +17,31 @@
     </state>
     <state Id="a17838ef-12da-472e-8ff9-ccb85125b20f" name="BUSecuring">
       <successors>
-        <transition Id="1733dd17-5b45-4bdc-83bf-386a8c5667f8" guard="SchrankenSensor==Geschlossen &amp;&amp;BahnuebergangssteuerungFailure==No" label="SchrankenSensor==Geschlossen &amp;&amp;BahnuebergangssteuerungFailure==No">
+        <transition Id="1733dd17-5b45-4bdc-83bf-386a8c5667f8" guard="SchrankeClosedSensor == Triggered &amp;&amp;BahnuebergangssteuerungFailure==No" action="closeTrigger:=False" label="SchrankeClosedSensor == Triggered &amp;&amp;BahnuebergangssteuerungFailure==No // closeTrigger:=False" precondition="auto">
           <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/BUSecured" />
         </transition>
       </successors>
     </state>
     <state Id="f4e5c37b-a923-4ad0-af4d-a210ebee189f" name="AP_Success">
       <successors>
-        <transition Id="2ac47c01-6053-4ee4-a5ec-1eab1f85af41" guard="ZugSensor == Blocked &amp;&amp; BahnuebergangssteuerungFailure==No" label="ZugSensor == Blocked &amp;&amp; BahnuebergangssteuerungFailure==No">
+        <transition Id="2ac47c01-6053-4ee4-a5ec-1eab1f85af41" guard="ZugSensor == Triggered &amp;&amp; BahnuebergangssteuerungFailure==No" action="time := 0" label="ZugSensor == Triggered &amp;&amp; BahnuebergangssteuerungFailure==No // time := 0" precondition="auto">
           <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/TrainIsPassing" />
         </transition>
       </successors>
     </state>
     <state Id="d0ce25be-a14c-4f7b-8994-ce8d8aead5e8" name="TrainIsPassing">
       <successors>
-        <transition Id="87d33ae0-ca5e-45c2-a950-2640bcf72c7e" guard="ZugSensor == Free &amp;&amp; BahnuebergangssteuerungFailure==No" action="openTrigger := True | closeTrigger := False" label="ZugSensor == Free &amp;&amp; BahnuebergangssteuerungFailure==No // openTrigger := True | closeTrigger := False" precondition="auto">
+        <transition Id="87d33ae0-ca5e-45c2-a950-2640bcf72c7e" guard="(ZugSensor == NoSignal || time &gt;= #timeout) &amp;&amp; BahnuebergangssteuerungFailure==No" action="openTrigger := True" label="(ZugSensor == NoSignal || time &gt;= #timeout) &amp;&amp; BahnuebergangssteuerungFailure==No // openTrigger := True" precondition="auto">
           <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/OpenSchrankeBack" />
+        </transition>
+        <transition Id="9695e874-eabc-4e90-8f41-843fc728363a" guard="(ZugSensor == Triggered &amp;&amp; time &lt; #timeout)" action="time := time + 1" label="(ZugSensor == Triggered &amp;&amp; time &lt; #timeout) // time := time + 1" precondition="auto">
+          <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/TrainIsPassing" />
         </transition>
       </successors>
     </state>
     <state Id="0e582aef-c618-4c41-9c1c-0d439d6885a2" name="OpenSchrankeBack">
       <successors>
-        <transition Id="fc78cbf2-d7fc-4bfb-bab4-1cd32b637e99" guard="SchrankenSensor == Offen &amp;&amp; BahnuebergangssteuerungFailure==No" label="SchrankenSensor == Offen &amp;&amp; BahnuebergangssteuerungFailure==No">
+        <transition Id="fc78cbf2-d7fc-4bfb-bab4-1cd32b637e99" guard="SchrankeOpenSensor == Triggered &amp;&amp; BahnuebergangssteuerungFailure==No" action="openTrigger := False" label="SchrankeOpenSensor == Triggered &amp;&amp; BahnuebergangssteuerungFailure==No // openTrigger := False" precondition="auto">
           <stateMoniker name="/cc7582fe-7f42-4b64-8f7a-a2839caf0e87/Idle" />
         </transition>
       </successors>
@@ -58,19 +61,30 @@
     <programGraphHasVariables Id="23b28e13-4f8d-4f34-9dd0-ba754d50ace2">
       <variable Id="df5d79ba-fcd1-4640-8715-e6fc37436e96" name="openTrigger" range="True, False" />
     </programGraphHasVariables>
+    <programGraphHasVariables Id="876bedcd-ce1e-41ef-8c3c-1f6f19d673d4">
+      <variable Id="aa0d859b-6fa1-49dc-a54a-6172dcbf2c43" name="time" range="0..10" />
+    </programGraphHasVariables>
   </variables>
+  <macros>
+    <programGraphHasMacros Id="9be697e0-4c7c-493f-ae38-b9ec0be489e7">
+      <macro Id="37c954d8-458b-45bb-b661-0dbb45e1d76f" name="#timeout" body="5" />
+    </programGraphHasMacros>
+  </macros>
   <importedVariables>
     <programGraphHasImportedVariables Id="910ac640-4038-4a76-95d8-7c534affd774">
-      <importedVariable Id="11716685-88f6-474a-b87d-b5c6b8d562c8" name="SchrankenSensor" range="Offen, Geschlossen, InTransit" />
+      <importedVariable Id="11716685-88f6-474a-b87d-b5c6b8d562c8" name="SchrankeOpenSensor" range="Triggered, NoSignal" />
     </programGraphHasImportedVariables>
     <programGraphHasImportedVariables Id="130960a0-b1cc-4fc2-9adf-b35f9b126ce3">
       <importedVariable Id="15718954-1cc3-4c31-9d3a-33fd809b2c80" name="BUFunk" range="EPMsg, APMsg, DelayAck, Start, AckSent" />
     </programGraphHasImportedVariables>
     <programGraphHasImportedVariables Id="1fd6f252-1e78-427a-adfc-8937bf31803f">
-      <importedVariable Id="0ec7e734-747b-4ee7-a2ae-cef5bc401205" name="ZugSensor" range="Blocked, Free" />
+      <importedVariable Id="0ec7e734-747b-4ee7-a2ae-cef5bc401205" name="ZugSensor" range="Triggered, NoSignal" />
     </programGraphHasImportedVariables>
     <programGraphHasImportedVariables Id="47714174-51f7-45f8-ab72-93d4ff1ae848">
       <importedVariable Id="e063f366-11d8-427e-b765-04534476f1dd" name="BahnuebergangssteuerungFailure" range="No, Yes" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="719744c8-6d74-4115-9ffc-c8ffd60f7380">
+      <importedVariable Id="603c5363-10d4-4fb3-ba43-969b84d6b62e" name="SchrankeClosedSensor" range="Triggered, NoSignal" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>
